@@ -138,19 +138,6 @@ header .nav {
     animation: scanline 0.5s linear infinite, pixelate 0.2s infinite alternate, glitchColor 0.2s infinite alternate;
 }
 
-/* Glitchy appearance on Load */
-
-@keyframes pixelDissolve {
-    0% { opacity: 0; filter: blur(5px); clip-path: inset(100% 0 0 0); }
-    50% { opacity: 0.5; filter: blur(2px); clip-path: inset(50% 0 0 0); }
-    100% { opacity: 1; filter: blur(0); clip-path: inset(0 0 0 0); }
-}
-
-.pixelated {
-    opacity: 0;
-    animation: pixelDissolve 1s ease-out forwards;
-}
-
 /* Glitch effect for Headings */
 
 @keyframes glitch {
