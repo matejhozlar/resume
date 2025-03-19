@@ -5,7 +5,7 @@
 # Matej Hozlár - Resume
 
 ## Live preview
-You can view my resume live at: **TBD**
+You can view my resume live at: [matejhoz.com](https://matejhoz.com)
 
 ## 🛠️ Technologies Used
 - **HTML**: Structuring the web pages
