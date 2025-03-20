@@ -57,6 +57,13 @@ body {
     width: 208px;
 }
 
+@media (max-width: 600px){
+    .btn {
+        height: 41px;
+        width: 208px;
+    }
+}
+
 .button-purple {
     background: #8A5CF6;
     color: white;
