@@ -100,6 +100,9 @@ header .nav {
     color: white;
 }
 
+
+
+
 /* Language dropdown bar */
 .dropdown-menu {
     background-color: #222 !important;
@@ -187,15 +190,6 @@ body::before {
 
 
 /* Title glitch effect */
-
-@keyframes titleGlitch {
-    0% { transform: translate(0, 0); }
-    20% { transform: translate(-2px, 2px); }
-    40% { transform: translate(2px, -2px); }
-    60% { transform: translate(-2px, -2px); }
-    80% { transform: translate(2px, 2px); }
-    100% { transform: translate(0, 0); }
-}
 
 @keyframes glitchColor {
     0% { text-shadow: -2px 0 red, 2px 0 cyan; }
