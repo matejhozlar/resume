@@ -477,7 +477,7 @@ function showIntroScreen() {
 }
 
 function exitGame() {
-    window.location.href = "../../projects.html";
+    window.location.href = "../../../projects";
 }
 
 document.querySelectorAll(".cell").forEach(cell => {

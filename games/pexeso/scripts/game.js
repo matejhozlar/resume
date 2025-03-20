@@ -244,5 +244,5 @@ function showBoardSelection() {
 }
 
 function exitGame() {
-    window.location.href="../../projects.html";
+    window.location.href="../../../projects";
 }
