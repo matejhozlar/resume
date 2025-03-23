@@ -9,7 +9,7 @@
 <body>
     <div class="login-container">
 
-        <h1>Sign In</h1>
+        <h1>Register</h1>
         <form action="/api/login" method="POST">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
@@ -17,10 +17,13 @@
             <label for="password">Password:</label>
             <input type="text" id="password" name="password" required>
 
-            <button type="submit">Sign In</button>
+            <label for="repeatedPassword">Repeat the password:</label>
+            <input type="text" id="repeatedPassword" name="repeatedPassword" required>
+
+            <button type="submit">Register</button>
         </form>
 
-        <p>Don't have an account? <a href="../register/">Register here</a></p>
+        <p>Already have an account? <a href="../login/">Sign in here</a></p>
     </div>
 </body>
 </html>
