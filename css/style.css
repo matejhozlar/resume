@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
+@media (max-width: 800px) {
+    .about-img {
+        margin-bottom: 20px;
+    }
+}
+
 .navbar-background {
     background-color: #000;
   }
