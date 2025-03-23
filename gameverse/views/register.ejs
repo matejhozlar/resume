@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<style>
+    .input-error {
+        border-color: red !important;
+    }
+</style>
+<body>
+    <div class="login-container">
+
+        <h1>Register</h1>
+        <% if (message && message.length > 0) { %>
+            <div class="alert alert-danger" role="alert">
+                <%= message[0] %>
+            </div>
+            <% } %>
+        <form action="/register" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required
+            value="<%= formData.username ? formData.username : '' %>"
+            class="<%= (message && message[0] !== 'Passwords do not match.' && message.length > 0 ? 'input-error' : '') %>">
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required
+            value="<%= formData.password ? formData.password : '' %>"
+            class="<%= (message && message[0] === 'Passwords do not match.' ? 'input-error' : '') %>">
+            <button type="button" class="toggle-password" onclick="togglePassword('password','repeatedPassword')">
+                <i class="fas fa-eye"></i>
+              </button>
+
+            <label for="repeatedPassword">Repeat the password:</label>
+            <input type="password" id="repeatedPassword" name="repeatedPassword" required
+            value="<%= formData.repeatedPassword ? formData.repeatedPassword : '' %>"
+            class="<%= (message && message[0] === 'Passwords do not match.' ? 'input-error' : '') %>">
+
+            <button type="submit">Register</button>
+        </form>
+
+        <p>Already have an account? <a href="/login">Sign in here</a></p>
+    </div>
+    <script>
+        function togglePassword(fieldId1, fieldId2) {
+          const input1 = document.getElementById(fieldId1);
+          if (input1.type === "password") {
+            input1.type = "text";
+          } else {
+            input1.type = "password";
+          }
+          const input2 = document.getElementById(fieldId2);
+          if (input2.type == "password") {
+            input2.type = "text";
+          } else {
+            input2.type = "password";
+          }
+        }
+      </script>
+</body>
+</html>

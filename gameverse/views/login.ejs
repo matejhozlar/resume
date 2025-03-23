@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="login-container">
+
+        <h1>Sign In</h1>
+        <form action="/login" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="button" class="toggle-password" onclick="togglePassword('password')">
+                <i class="fas fa-eye"></i>
+              </button>
+
+            <button type="submit">Sign In</button>
+        </form>
+
+        <p>Don't have an account? <a href="/register">Register here</a></p>
+    </div>
+    <script>
+        function togglePassword(fieldId) {
+          const input = document.getElementById(fieldId);
+          if (input.type === "password") {
+            input.type = "text";
+          } else {
+            input.type = "password";
+          }
+        }
+      </script>
+</body>
+</html>
