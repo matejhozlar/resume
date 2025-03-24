@@ -70,6 +70,14 @@ app.get("/gameverse", (req, res) => {
     }
 });
 
+app.get("/profile", (req, res) => {
+    if(req.isAuthenticated()) {
+        res.render("profile.ejs");
+    } else {
+        res.redirect("/login");
+    }
+});
+
 app.post(
     "/login",
     passport.authenticate("local", {
