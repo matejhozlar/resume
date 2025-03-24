@@ -19,6 +19,9 @@ app.use(
         secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: true,
+        cookie: {
+            maxAge: 24 * 60 * 60 * 1000,
+        }
     })
 );
 
@@ -40,7 +43,8 @@ const db = new pg.Client({
 db.connect();
 
 app.get("/login", (req, res) => {
-    res.render("login.ejs");
+    const message = req.flash("error") || [];
+    res.render("login.ejs", { message: message });
 });
 
 app.get("/register", (req, res) => {
@@ -58,9 +62,9 @@ app.get("/logout", (req, res) => {
     });
 });
 
-app.get("/secrets", (req, res) => {
+app.get("/gameverse", (req, res) => {
     if(req.isAuthenticated()) {
-        res.render("index.ejs");
+        res.render("gameverse.ejs", { user: req.user });
     } else {
         res.redirect("/login");
     }
@@ -69,8 +73,9 @@ app.get("/secrets", (req, res) => {
 app.post(
     "/login",
     passport.authenticate("local", {
-        successRedirect: "/secrets",
+        successRedirect: "/gameverse",
         failureRedirect: "/login",
+        failureFlash: true,
     })
 );
 
@@ -97,11 +102,12 @@ app.post("/register", async (req, res) => {
                 if(err){
                     console.error("Error hashing password:", err);
                 } else {
+                    console.log(`New user has registered: username=${username}, hashedPassword=${hash}`);
                     const result = await db.query("INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *", [username,hash]);
                     const user = result.rows[0];
                     req.login(user, (err) => {
                         console.log("success");
-                        res.redirect("/secrets");
+                        res.redirect("/gameverse");
                     });
                 }
             });
@@ -125,14 +131,15 @@ passport.use(
                         return cb(err);
                     } else {
                         if(valid) {
+                            console.log(`User logged in: username=${username}, hashedPassword=${user.password}`);
                             return cb(null, user);
                         } else {
-                            return cb(null, false);
+                            return cb(null, false, {message: "Your username and password combination is incorrect. Please try again."});
                         }
                     }
                 });
             } else {
-                cb("User not found");
+                return cb(null, false, {message: "Your username and password combination is incorrect. Please try again."});
             }
         } catch (err) {
             console.log(err);

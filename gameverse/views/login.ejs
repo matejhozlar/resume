@@ -12,6 +12,13 @@
     <div class="login-container">
 
         <h1>Sign In</h1>
+
+        <% if (message && message.length > 0) { %>
+          <div class="alert alert-danger" role="alert">
+            <%= message[0] %>
+          </div>
+        <% } %>
+
         <form action="/login" method="POST">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>

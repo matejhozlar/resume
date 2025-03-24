@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gameverse Menu</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="gameverse-container">
+        <h1 class="gameverse-title">Gameverse</h1>
+        <p class="gameverse-subtitle">Welcome <%= user ? user.username : 'Gamer' %>! Select a game or manage your profile.</p>
+    
+        <div class="game-menu-grid">
+          <!-- Game Card 1 -->
+          <div class="game-card">
+            <h2>Game #1</h2>
+            <p>A short description of your first game. Challenge your mind!</p>
+            <button onclick="window.location.href='/game1'">Play</button>
+          </div>
+    
+          <!-- Game Card 2 -->
+          <div class="game-card">
+            <h2>Game #2</h2>
+            <p>A short description of your second game. Are you ready?</p>
+            <button onclick="window.location.href='/game2'">Play</button>
+          </div>
+    
+          <!-- Game Card 3 -->
+          <div class="game-card">
+            <h2>Game #3</h2>
+            <p>Another game. Put your skills to the test!</p>
+            <button onclick="window.location.href='/game3'">Play</button>
+          </div>
+        </div>
+    
+        <!-- Profile/Logout buttons -->
+        <div class="menu-buttons">
+          <a href="/profile">Profile</a>
+          <a href="/logout">Logout</a>
+        </div>
+      </div>
+</body>
+</html>

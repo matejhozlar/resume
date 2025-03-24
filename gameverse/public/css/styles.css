@@ -95,6 +95,15 @@ html {
         100% { text-shadow: -2px 0 red, 2px 0 cyan; }
     }
 
+@keyframes glitch {
+      0% { transform: skew(0dex); }
+      20% { transform: skew(-5dex); }
+      40% { transform: skew(5deg); }
+      60% { transform: skew(-3deg); }
+      80% { transform: skew(3deg); }
+      100% { transform: skew(0deg); }
+  }
+
 
   .login-container form button:hover {
     animation: pixelate 0.2s infinite alternate;
@@ -122,4 +131,107 @@ html {
   .login-container p a:hover {
     color: #fff;
     text-shadow: 0 0 5px #8A5CF6;
+  }
+
+  /* GameVerse main menu */
+  .gameverse-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+    text-align: center;
+  }
+
+  /* Glitchy heading for “Gameverse” */
+  .gameverse-title {
+    font-size: 36px;
+    color: #fff;
+    margin-bottom: 20px;
+    animation: glitch 1.5s infinite linear alternate, glitchColor 1.5s infinite alternate;
+  }
+
+  /* Optional subheading or welcome text */
+  .gameverse-subtitle {
+    font-size: 16px;
+    margin-bottom: 30px;
+    color: #8A5CF6;
+  }
+
+  /* Grid (or flex) layout for game cards */
+  .game-menu-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Individual game card styling */
+  .game-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 2px solid #8A5CF6;
+    border-radius: 8px;
+    padding: 20px;
+    width: 250px; /* adjust as needed */
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .game-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 15px #8A5CF6, 0 0 30px #8A5CF6;
+  }
+
+  .game-card h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #fff;
+  }
+
+  .game-card p {
+    font-size: 12px;
+    color: #ccc;
+    margin-bottom: 15px;
+    line-height: 1.4;
+  }
+
+  .game-card button {
+    background: #8A5CF6;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-family: 'Press Start 2P', cursive;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .game-card button:hover {
+    animation: pixelate 0.2s infinite alternate, scanline 0.5s linear infinite, glitchColor 0.2s infinite alternate;
+  }
+
+  /* Profile/Logout buttons or links */
+  .menu-buttons {
+    margin-top: 30px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+  }
+
+  .menu-buttons a {
+    display: inline-block;
+    padding: 12px 24px;
+    font-family: 'Press Start 2P', cursive;
+    text-decoration: none;
+    color: #fff;
+    border: 2px solid #8A5CF6;
+    background: linear-gradient(180deg, rgba(0,0,0,0.4), rgba(0,0,0,0.7));
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .menu-buttons a:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 15px #8A5CF6, 0 0 30px #8A5CF6;
+    background: linear-gradient(180deg, rgba(138,92,246,0.3), rgba(0,0,0,0.7));
   }
