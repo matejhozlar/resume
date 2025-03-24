@@ -228,6 +228,9 @@ body::before {
 }
 
 /* Projects.html */
+.red {
+    color: red !important;
+}
 
 #myCarousel {
     height: 500px;
@@ -369,6 +372,13 @@ body::before {
     text-transform: uppercase;
   }
   
+  .gameverse-title {
+    font-size: 18px;
+    color: red;
+    margin-left: 10px;
+    position: relative;
+  }
+
   .project-title {
     font-size: 18px;
     color: #fff;
