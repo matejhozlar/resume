@@ -292,22 +292,6 @@ html {
   animation: glitch 0.2s infinite alternate, glitchColor 0.2s infinite alternate;
 }
 
-/* password change */
-
-.success-msg {
-  color: #00ff88;
-  font-size: 12px;
-  margin-bottom: 15px;
-}
-
-.error-msg {
-  color: #ff4d4d;
-  font-size: 12px;
-  margin-bottom: 15px;
-}
-
-/* password change */
-
 /* action panel */
 
 /* Gameverse menu */

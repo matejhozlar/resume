@@ -32,6 +32,7 @@
               <li><a class="menu-btn" data-page="/load/account-settings" href="#">Account Settings</a></li>
             </ul>
           </li>
+          <li><a class="menu-btn drop-it-down" href="http://127.0.0.1:3000/index.html">Exit</a></li>
         </ul>
 
         <div class="user-panel">
@@ -42,8 +43,13 @@
       </nav>
     
       <div class="content">
-        <h1>Welcome <%= user ? user.username : 'Gamer' %>! <br> Select a game or manage your profile.</h1>
+        <% if (showSettings) { %>
+          <%- include("partials/account-settings", { error: errorMessage, success: successMessage }) %>
+        <% } else { %>
+          <h1>Welcome <%= user ? user.username : 'Gamer' %>! <br> Select a game or manage your profile.</h1>
+        <% } %>
       </div>
+      
     </div>
 
     <script>

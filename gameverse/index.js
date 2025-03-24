@@ -35,6 +35,10 @@ app.use(passport.session());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
+//partials
+app.set("view engine", "ejs");
+app.use("/load", apiRoutes);
+
 const db = new pg.Client({
     user: process.env.PG_USER,
     host: process.env.PG_HOST,
@@ -65,16 +69,21 @@ app.get("/logout", (req, res) => {
 });
 
 app.get("/gameverse", (req, res) => {
-    if(req.isAuthenticated()) {
-        res.render("gameverse.ejs", {
-           user: req.user,
-           errorMessage: req.flash("error"),
-           successMessage: req.flash("success"), 
-        });
+    if (req.isAuthenticated()) {
+      const error = req.flash("error");
+      const success = req.flash("success");
+      const showSettings = req.flash("showSettings")[0];
+  
+      res.render("gameverse.ejs", {
+        user: req.user,
+        errorMessage: error,
+        successMessage: success,
+        showSettings: showSettings,
+      });
     } else {
-        res.redirect("/login");
+      res.redirect("/login");
     }
-});
+  });
 
 app.get("/profile", (req, res) => {
     if(req.isAuthenticated()) {
@@ -140,7 +149,9 @@ app.post("/gameverse/change-password", async (req, res) => {
     const { oldPassword, newPassword, confirmPassword } = req.body;
   
     if (newPassword !== confirmPassword) {
-      return res.redirect("/gameverse"); 
+      req.flash("error", "New passwords do not match.");
+      req.flash("showSettings", true);
+      return res.redirect("/gameverse");
     }
   
     try {
@@ -154,13 +165,15 @@ app.post("/gameverse/change-password", async (req, res) => {
       const passwordMatch = await bcrypt.compare(oldPassword, user.password);
   
       if (!passwordMatch) {
+        req.flash("error", "Old password is incorrect.");
+        req.flash("showSettings", true);
         return res.redirect("/gameverse");
       }
   
       const hashedNewPassword = await bcrypt.hash(newPassword, saltRounds);
-  
       await db.query("UPDATE users SET password = $1 WHERE id = $2", [hashedNewPassword, userId]);
   
+      req.flash("success", "Password changed successfully! Please log in again.");
       res.redirect("/login");
   
     } catch (error) {
@@ -168,6 +181,7 @@ app.post("/gameverse/change-password", async (req, res) => {
       res.status(500).send("Internal server error.");
     }
   });
+  
 
 passport.use(
     new Strategy(async function verify(username, password, cb) {
@@ -206,10 +220,6 @@ passport.serializeUser((user, cb) => {
 passport.deserializeUser((user, cb) => {
     cb(null, user);
 });
-
-//partials
-app.set("view engine", "ejs");
-app.use("/load", apiRoutes);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
