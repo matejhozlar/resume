@@ -63,7 +63,8 @@ const translations = {
         'projects-gameverseTitle' : 'Gameverse coming soon!',
         'projects-gameverseDes' : 'Gameverse is your ultimate retro gaming hub—a digital arcade where classic vibes meet modern functionality. Register or log in to unlock a personalized universe filled with nostalgic arcade games, interactive leaderboards, and an immersive character creation experience that lets you design your very own digital persona. Manage your profile with robust settings tailored to enhance your gaming journey, and get ready for exciting multiplayer features coming soon. Step into Gameverse and become a part of a vibrant community where every login is the start of a new adventure!',
         'projects-gitpreview' : 'GitHub Preview',
-        'aboutpage-certificates' : 'Certificates'
+        'aboutpage-certificates' : 'Certificates',
+        'aboutpage-connectWithMe' : 'Connect with Me'
     },
 
     'sk': {
@@ -130,7 +131,8 @@ const translations = {
         'projects-gameverseTitle' : 'Gameverse už čoskoro!',
         'projects-gameverseDes' : 'Gameverse je váš ultimátny retro herný hub – digitálna arkáda, kde sa stretáva klasická atmosféra s modernou funkčnosťou. Zaregistrujte sa alebo sa prihláste a odomknite si personalizovaný vesmír plný nostalgických arkádových hier, interaktívnych rebríčkov a pohlcujúcej skúsenosti tvorby postavy, ktorá vám umožní navrhnúť si vlastnú digitálnu identitu. Spravujte svoj profil pomocou robustných nastavení prispôsobených pre zlepšenie vašej hernej cesty a pripravte sa na vzrušujúce funkcie multiplayeru, ktoré budú čoskoro pridané. Vstúpte do Gameverse a staňte sa súčasťou živé komunity, kde každé prihlásenie je začiatkom nového dobrodružstva!',
         'projects-gitpreview' : 'GitHub Náhľad',
-        'aboutpage-certificates' : 'Certifikáty'
+        'aboutpage-certificates' : 'Certifikáty',
+        'aboutpage-connectWithMe' : 'Kontakt'
     },
 
     'cz': {
@@ -197,7 +199,8 @@ const translations = {
         'projects-gameverseTitle' : 'Gameverse již brzy!',
         'projects-gameverseDes' : 'Gameverse je vaše ultimátní retro herní centrum – digitální arkáda, kde se setkává klasická atmosféra s moderní funkčností. Zaregistrujte se nebo se přihlaste a odemkněte si personalizovaný vesmír plný nostalgických arkádových her, interaktivních žebříčků a pohlcující zkušenosti tvorby postavy, která vám umožní navrhnout si vlastní digitální identitu. Spravujte svůj profil pomocí robustního nastavení přizpůsobeného ke zlepšení vaší herní cesty a připravte se na vzrušující funkce multiplayeru, které brzy přijdou. Vstupte do Gameverse a staňte se součástí živé komunity, kde každé přihlášení je začátkem nového dobrodružství!',
         'projects-gitpreview' : 'GitHub Náhled',
-        'aboutpage-certificates' : 'Certifikáty'
+        'aboutpage-certificates' : 'Certifikáty',
+        'aboutpage-connectWithMe' : 'Kontakt'
     }
 
 }
