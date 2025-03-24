@@ -9,38 +9,71 @@
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-    <div class="gameverse-container">
-        <h1 class="gameverse-title">Gameverse</h1>
-        <p class="gameverse-subtitle">Welcome <%= user ? user.username : 'Gamer' %>! Select a game or manage your profile.</p>
     
-        <div class="game-menu-grid">
-          <!-- Game Card 1 -->
-          <div class="game-card">
-            <h2>Game #1</h2>
-            <p>A short description of your first game. Challenge your mind!</p>
-            <button onclick="window.location.href='/game1'">Play</button>
-          </div>
-    
-          <!-- Game Card 2 -->
-          <div class="game-card">
-            <h2>Game #2</h2>
-            <p>A short description of your second game. Are you ready?</p>
-            <button onclick="window.location.href='/game2'">Play</button>
-          </div>
-    
-          <!-- Game Card 3 -->
-          <div class="game-card">
-            <h2>Game #3</h2>
-            <p>Another game. Put your skills to the test!</p>
-            <button onclick="window.location.href='/game3'">Play</button>
-          </div>
+  <body>
+    <div class="main-container">
+      <nav class="sidebar">
+        <ul class="menu-list no-bullets">
+          <li class="menu-item has-submenu">
+            <div class="menu-btn toggle-btn">Games</div>
+            <ul class="submenu">
+              <li><a class="menu-btn" href="#">Tic-Tac-Toe</a></li>
+              <li><a class="menu-btn" href="#">Simon Game</a></li>
+              <li><a class="menu-btn" href="#">Pexeso</a></li>
+            </ul>
+          </li>
+          <li><a class="menu-btn" href="#">Multiplayer (Coming Soon)</a></li>
+          <li><a class="menu-btn" href="#">Leaderboards (Coming Soon)</a></li>
+          <li><a class="menu-btn" href="#">Character Creation (Coming Soon)</a></li>
+          <li class="menu-item has-submenu">
+            <div class="menu-btn toggle-btn">Settings</div>
+            <ul class="submenu">
+              <li><a class="menu-btn" href="#">Your Gamer Profile</a></li>
+              <li><a class="menu-btn" data-page="/load/account-settings" href="#">Account Settings</a></li>
+            </ul>
+          </li>
+        </ul>
+
+        <div class="user-panel">
+          <p>🧍 Player: <%= user?.username || 'Gamer' %></p>
+          <p>💾 Profile Level: 03</p>
+          <p>⏳ Time Played: 1h 22m</p>
         </div>
+      </nav>
     
-        <!-- Profile/Logout buttons -->
-        <div class="menu-buttons">
-          <a href="/profile">Profile</a>
-          <a href="/logout">Logout</a>
-        </div>
+      <div class="content">
+        <h1>Welcome <%= user ? user.username : 'Gamer' %>! <br> Select a game or manage your profile.</h1>
       </div>
+    </div>
+
+    <script>
+      document.querySelectorAll('.has-submenu .toggle-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const parent = btn.closest('.has-submenu');
+          parent.classList.toggle('open');
+        });
+      });
+    </script>
+
+    <script>
+      document.querySelectorAll('.menu-btn[data-page]').forEach(link => {
+  link.addEventListener('click', async (e) => {
+    e.preventDefault();
+    const page = link.getAttribute('data-page');
+
+    try {
+      const response = await fetch(page);
+      const html = await response.text();
+      document.querySelector('.content').innerHTML = html;
+    } catch (err) {
+      console.error(err);
+      document.querySelector('.content').innerHTML = '<p>Failed to load content.</p>';
+    }
+  });
+});
+    </script>
+    
+  </body>
+
 </body>
 </html>

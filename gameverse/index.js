@@ -7,6 +7,8 @@ import passport from "passport";
 import { Strategy } from "passport-local";
 import session from "express-session";
 import flash from "connect-flash";
+//api for partials
+import apiRoutes from "./routes/api.js";
 
 
 const app = express();
@@ -64,7 +66,11 @@ app.get("/logout", (req, res) => {
 
 app.get("/gameverse", (req, res) => {
     if(req.isAuthenticated()) {
-        res.render("gameverse.ejs", { user: req.user });
+        res.render("gameverse.ejs", {
+           user: req.user,
+           errorMessage: req.flash("error"),
+           successMessage: req.flash("success"), 
+        });
     } else {
         res.redirect("/login");
     }
@@ -125,6 +131,44 @@ app.post("/register", async (req, res) => {
     }
 });
 
+app.post("/gameverse/change-password", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.redirect("/login");
+    }
+  
+    const userId = req.user.id;
+    const { oldPassword, newPassword, confirmPassword } = req.body;
+  
+    if (newPassword !== confirmPassword) {
+      return res.redirect("/gameverse"); 
+    }
+  
+    try {
+      const result = await db.query("SELECT * FROM users WHERE id = $1", [userId]);
+      const user = result.rows[0];
+  
+      if (!user) {
+        return res.redirect("/login");
+      }
+  
+      const passwordMatch = await bcrypt.compare(oldPassword, user.password);
+  
+      if (!passwordMatch) {
+        return res.redirect("/gameverse");
+      }
+  
+      const hashedNewPassword = await bcrypt.hash(newPassword, saltRounds);
+  
+      await db.query("UPDATE users SET password = $1 WHERE id = $2", [hashedNewPassword, userId]);
+  
+      res.redirect("/login");
+  
+    } catch (error) {
+      console.error("Password change error:", error);
+      res.status(500).send("Internal server error.");
+    }
+  });
+
 passport.use(
     new Strategy(async function verify(username, password, cb) {
         try {
@@ -162,6 +206,10 @@ passport.serializeUser((user, cb) => {
 passport.deserializeUser((user, cb) => {
     cb(null, user);
 });
+
+//partials
+app.set("view engine", "ejs");
+app.use("/load", apiRoutes);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
