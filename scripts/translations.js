@@ -19,7 +19,7 @@ const translations = {
         'aboutpage-selfp' : 'Projects',
         'aboutpage-skills' : 'Skills',
         'aboutpage-advanced' : 'Advanced',
-        'aboutpage-studying' : 'I am constantly studying and getting better day by day!',
+        'aboutpage-study' : 'I am constantly studying and getting better day by day!',
         'aboutpage-programming' : 'Programming',
         'aboutpage-beginner' : 'Beginner',
         'aboutpage-languages' : 'Languages',
@@ -93,7 +93,7 @@ const translations = {
         'aboutpage-en' : 'Angličtina - Stredne pokročilý (B2)',
         'aboutpage-czsk' : 'Slovenčina a čeština - Expert (C2)',
         'aboutpage-present' : 'Súčasnosť',
-        'aboutpage-studying' : 'Neustále študujem a zlepšujem sa každý deň!',
+        'aboutpage-study' : 'Neustále študujem a zlepšujem sa každý deň!',
         /* simonGame */ 
         'simon-rules' : 'Pravidlá',
         'simon-poptitle' : 'Pravidlá Hry',
@@ -161,7 +161,7 @@ const translations = {
         'aboutpage-en' : 'Angličtina - Středně pokročilý (B2)',
         'aboutpage-czsk' : 'Slovenština a čeština - Expert (C2)',
         'aboutpage-present' : 'Současnost',
-        'aboutpage-studying' : 'Neustále studuji a zlepšuji se každý den!',
+        'aboutpage-study' : 'Neustále studuji a zlepšuji se každý den!',
         /* simonGame */
         'simon-rules' : 'Pravidla',
         'simon-poptitle' : 'Pravidla Hry',
