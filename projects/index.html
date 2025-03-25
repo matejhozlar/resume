@@ -1,245 +1,529 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Matej Hozlár - Projects</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/style.css"/>
-</head>
-<body>
-
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body>
     <section id="title" class="navbar-background static">
+      <div class="container navbar-line">
+        <header
+          class="d-flex flex-wrap justify-content-center py-3 mb-5 border-bottom"
+        >
+          <a
+            class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"
+          >
+            <svg class="bi me-2" width="40" height="32">
+              <use xlink:href="#bootstrap"></use>
+            </svg>
+            <span class="fs-4 logo glitch"> Matej Hozlár</span>
+          </a>
 
-        <div class="container navbar-line">
-            <header class="d-flex flex-wrap justify-content-center py-3 mb-5 border-bottom">
-              <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-                <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
-                <span class="fs-4 logo glitch"> Matej Hozlár</span>
+          <ul class="nav nav-pills">
+            <li class="nav-item">
+              <a
+                href="../"
+                class="nav-link main-color"
+                aria-current="page"
+                data-translate="button-home"
+                >Home</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                href="../about"
+                class="nav-link main-color"
+                data-translate="button-about"
+                >About</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                href="#"
+                class="nav-link main-color"
+                data-translate="button-projects"
+                >Projects</a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="http://localhost/login" class="nav-link main-color"
+                >Gameverse</a
+              >
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle main-color"
+                href="#"
+                id="languageDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                >🌍
               </a>
-              
-              <ul class="nav nav-pills">
-                <li class="nav-item"><a href="../" class="nav-link main-color" aria-current="page" data-translate="button-home">Home</a></li>
-                <li class="nav-item"><a href="../about" class="nav-link main-color" data-translate="button-about">About</a></li>
-                <li class="nav-item"><a href="#" class="nav-link main-color" data-translate="button-projects">Projects</a></li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle main-color" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" >🌍
-                  </a>
-                  <ul class="dropdown-menu no-fade" aria-labelledby="languageDropdown">
-                      <li><a class="dropdown-item" href="#" onclick="changeLanguage('en')"><img src="../assets/svg/flags/gb.svg" width="20" height="15" alt="English"/> English</a></li>
-                      <li><a class="dropdown-item" href="#" onclick="changeLanguage('sk')"><img src="../assets/svg/flags/sk.svg" width="20" height="15" alt="Slovak"/> Slovak</a></li>
-                      <li><a class="dropdown-item" href="#" onclick="changeLanguage('cz')"><img src="../assets/svg/flags/cz.svg" width="20" height="15" alt="Czech"/> Czech</a></li>
-                  </ul>
-              </li>
+              <ul
+                class="dropdown-menu no-fade"
+                aria-labelledby="languageDropdown"
+              >
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    onclick="changeLanguage('en')"
+                    ><img
+                      src="../assets/svg/flags/gb.svg"
+                      width="20"
+                      height="15"
+                      alt="English"
+                    />
+                    English</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    onclick="changeLanguage('sk')"
+                    ><img
+                      src="../assets/svg/flags/sk.svg"
+                      width="20"
+                      height="15"
+                      alt="Slovak"
+                    />
+                    Slovak</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    onclick="changeLanguage('cz')"
+                    ><img
+                      src="../assets/svg/flags/cz.svg"
+                      width="20"
+                      height="15"
+                      alt="Czech"
+                    />
+                    Czech</a
+                  >
+                </li>
               </ul>
-            </header>
-          </div>
-
+            </li>
+          </ul>
+        </header>
+      </div>
     </section>
 
     <section id="carousel">
-
-        <div id="myCarousel" class="carousel slide mb-6" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-              <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="" aria-label="Slide 1"></button>
-              <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2" class="active" aria-current="true"></button>
-              <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3" class=""></button>
+      <div id="myCarousel" class="carousel slide mb-6" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          <button
+            type="button"
+            data-bs-target="#myCarousel"
+            data-bs-slide-to="0"
+            class=""
+            aria-label="Slide 1"
+          ></button>
+          <button
+            type="button"
+            data-bs-target="#myCarousel"
+            data-bs-slide-to="1"
+            aria-label="Slide 2"
+            class="active"
+            aria-current="true"
+          ></button>
+          <button
+            type="button"
+            data-bs-target="#myCarousel"
+            data-bs-slide-to="2"
+            aria-label="Slide 3"
+            class=""
+          ></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item">
+            <img
+              src="../assets/images/simongame.png"
+              class="d-block w-100"
+              alt="Slide 1"
+            />
+            <div class="container">
+              <div class="carousel-caption text-start">
+                <h1 data-translate="projects-simonh1">
+                  "Simon" electronic memory game
+                </h1>
+                <p class="opacity-75" data-translate="projects-simonp">
+                  Test your memory!
+                </p>
+                <p>
+                  <a
+                    class="btn btn-lg button-purple"
+                    href="../games/simongame/"
+                    data-translate="projects-simonbtn"
+                    >Try it out</a
+                  >
+                </p>
+              </div>
             </div>
-            <div class="carousel-inner">
-              <div class="carousel-item">
-                <img src="../assets/images/simongame.png" class="d-block w-100" alt="Slide 1">
-                <div class="container">
-                  <div class="carousel-caption text-start">
-                    <h1 data-translate="projects-simonh1">"Simon" electronic memory game</h1>
-                    <p class="opacity-75" data-translate="projects-simonp">Test your memory!</p>
-                    <p><a class="btn btn-lg button-purple" href="../games/simongame/" data-translate="projects-simonbtn">Try it out</a></p>
-                  </div>
-                </div>
-              </div>
-              <div class="carousel-item active">
-                <img src="../assets/images/pexeso.png" class="d-block w-100" alt="Slide 2">
-                <div class="container">
-                  <div class="carousel-caption">
-                    <h1>Pexeso</h1>
-                    <p data-translate="projects-pexesop">Pexeso game with multiple difficulties. Do you think you can take on insane? NO!!</p>
-                    <p><a class="btn btn-lg button-purple" href="../games/pexeso/" data-translate="projects-pexesobtn">Play!</a></p>
-                  </div>
-                </div>
-              </div>
-              <div class="carousel-item">
-                <img src="../assets/images/tic-tac-toe.png" class="d-block w-100" alt="Slide 3">
-                <div class="container">
-                  <div class="carousel-caption text-end">
-                    <h1>Tic-Tac-Toe</h1>
-                    <p data-translate="projects-tictactoep">Challange your friends or AI!</p>
-                    <p><a class="btn btn-lg button-purple" href="../games/tic-tac-toe/" data-translate="projects-tictactoebtn">Challange!</a></p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden" data-translate="carousel-previous">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden" data-translate="carousel-next">Next</span>
-            </button>
           </div>
-
+          <div class="carousel-item active">
+            <img
+              src="../assets/images/pexeso.png"
+              class="d-block w-100"
+              alt="Slide 2"
+            />
+            <div class="container">
+              <div class="carousel-caption">
+                <h1>Pexeso</h1>
+                <p data-translate="projects-pexesop">
+                  Pexeso game with multiple difficulties. Do you think you can
+                  take on insane? NO!!
+                </p>
+                <p>
+                  <a
+                    class="btn btn-lg button-purple"
+                    href="../games/pexeso/"
+                    data-translate="projects-pexesobtn"
+                    >Play!</a
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img
+              src="../assets/images/tic-tac-toe.png"
+              class="d-block w-100"
+              alt="Slide 3"
+            />
+            <div class="container">
+              <div class="carousel-caption text-end">
+                <h1>Tic-Tac-Toe</h1>
+                <p data-translate="projects-tictactoep">
+                  Challange your friends or AI!
+                </p>
+                <p>
+                  <a
+                    class="btn btn-lg button-purple"
+                    href="../games/tic-tac-toe/"
+                    data-translate="projects-tictactoebtn"
+                    >Challange!</a
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#myCarousel"
+          data-bs-slide="prev"
+        >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden" data-translate="carousel-previous"
+            >Previous</span
+          >
+        </button>
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#myCarousel"
+          data-bs-slide="next"
+        >
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden" data-translate="carousel-next"
+            >Next</span
+          >
+        </button>
+      </div>
     </section>
 
     <section id="project-structure" class="container my-5">
-      <h2 class="text-center terminal-header mb-4">$ <span data-translate="projects-projectindex">Project Index</span></h2>
+      <h2 class="text-center terminal-header mb-4">
+        $ <span data-translate="projects-projectindex">Project Index</span>
+      </h2>
       <ul class="structure-list">
-        <li><a href="#websites" data-translate="projects-websites">Websites</a></li>
-        <li><a href="#js-games" data-translate="projects-jsgames">JS Games</a></li>
-        <li><a href="#web-apps" data-translate="projects-webapps">Web Apps</a></li>
-        <li><a href="#C-Projects" data-translate="projects-cprojects">C Projects</a></li>
+        <li>
+          <a href="#websites" data-translate="projects-websites">Websites</a>
+        </li>
+        <li>
+          <a href="#js-games" data-translate="projects-jsgames">JS Games</a>
+        </li>
+        <li>
+          <a href="#web-apps" data-translate="projects-webapps">Web Apps</a>
+        </li>
+        <li>
+          <a href="#C-Projects" data-translate="projects-cprojects"
+            >C Projects</a
+          >
+        </li>
       </ul>
     </section>
-    
+
     <section id="project-list-easy" class="container my-5">
-      <h2 class="text-center terminal-header mb-4" id="websites">$ <span data-translate="projects-websites">Websites</span></h2>
-      
+      <h2 class="text-center terminal-header mb-4" id="websites">
+        $ <span data-translate="projects-websites">Websites</span>
+      </h2>
+
       <div class="project-container">
-
         <div class="project-item">
-          <div class="project-label" data-translate="projects-project">Project:</div>
-          <div class="project-title" data-translate="projects-currentwebsite">Current Website</div>
-          <div class="project-label" data-translate="projects-desc">Description:</div>
+          <div class="project-label" data-translate="projects-project">
+            Project:
+          </div>
+          <div class="project-title" data-translate="projects-currentwebsite">
+            Current Website
+          </div>
+          <div class="project-label" data-translate="projects-desc">
+            Description:
+          </div>
           <div class="project-description" data-translate="projects-currWebDes">
-            Explore the source code behind this website. Built with HTML, CSS, and retro-inspired design, it serves as a resume for me & my projects!
+            Explore the source code behind this website. Built with HTML, CSS,
+            and retro-inspired design, it serves as a resume for me & my
+            projects!
           </div>
           <div class="project-label">GitHub:</div>
           <div class="project-link">
-            <a href="https://github.com/matejhozlar/resume" alt="GitHub link" data-translate="projects-viewOnGit">View on GitHub</a>
-          </div>
-        </div>   
-
-        <div class="project-item">
-          <div class="project-label" data-translate="projects-project">Project:</div>
-          <div class="gameverse-title" data-translate="projects-gameverseTitle">Gameverse coming soon!</div>
-          <div class="project-label" data-translate="projects-desc">Description:</div>
-          <div class="project-description" data-translate="projects-gameverseDes">
-            Gameverse is your ultimate retro gaming hub--a digital arcade where classic vibes meet modern functionality. Register or log in to unlock a personalized universe filled with nostalgic arcade games, interactive leaderboards, and an immersive character creation experience that lets you design your very own digital persona. Manage your profile with robust settings tailored to enhance your gaming journey, and get ready for exciting  <span class="red">multiplayer features comming soon!</span> Step into Gameverse and become a part of a journey where every login is the start of a new adventure!
-          </div>
-          <div class="project-label">GitHub:</div>
-          <div class="project-link">
-            <a href="https://github.com/matejhozlar/resume/tree/gameverse/gameverse" alt="GitHub link" data-translate="projects-gitpreview">GitHub Preview</a>
+            <a
+              href="https://github.com/matejhozlar/resume"
+              alt="GitHub link"
+              data-translate="projects-viewOnGit"
+              >View on GitHub</a
+            >
           </div>
         </div>
 
         <div class="project-item">
-          <div class="project-title" data-translate="projects-tbdTitle">More Projects Coming Soon</div>
+          <div class="project-label" data-translate="projects-project">
+            Project:
+          </div>
+          <div class="gameverse-title" data-translate="projects-gameverseTitle">
+            Gameverse coming soon!
+          </div>
+          <div class="project-label" data-translate="projects-desc">
+            Description:
+          </div>
+          <div
+            class="project-description"
+            data-translate="projects-gameverseDes"
+          >
+            Gameverse is your ultimate retro gaming hub--a digital arcade where
+            classic vibes meet modern functionality. Register or log in to
+            unlock a personalized universe filled with nostalgic arcade games,
+            interactive leaderboards, and an immersive character creation
+            experience that lets you design your very own digital persona.
+            Manage your profile with robust settings tailored to enhance your
+            gaming journey, and get ready for exciting
+            <span class="red">multiplayer features comming soon!</span> Step
+            into Gameverse and become a part of a journey where every login is
+            the start of a new adventure!
+          </div>
+          <div class="project-label">GitHub:</div>
+          <div class="project-link">
+            <a
+              href="https://github.com/matejhozlar/resume/tree/gameverse/gameverse"
+              alt="GitHub link"
+              data-translate="projects-gitpreview"
+              >GitHub Preview</a
+            >
+          </div>
+        </div>
+
+        <div class="project-item">
+          <div class="project-title" data-translate="projects-tbdTitle">
+            More Projects Coming Soon
+          </div>
           <div class="project-description" data-translate="projects-tbdDes">
-            I'm constantly working on new projects and updates. Stay tuned for more innovative and exciting work!
+            I'm constantly working on new projects and updates. Stay tuned for
+            more innovative and exciting work!
           </div>
         </div>
       </div>
-  </section>
+    </section>
 
-  <section id="project-list-easy" class="container my-5">
+    <section id="project-list-easy" class="container my-5">
+      <h2 class="text-center terminal-header mb-4" id="js-games">
+        $ <span data-translate="projects-jsgames">JS Games</span>
+      </h2>
 
-    <h2 class="text-center terminal-header mb-4" id="js-games">$ <span data-translate="projects-jsgames">JS Games</span></h2>
-
-    <div class="project-container">
-
-    <div class="project-item">
-      <div class="project-label" data-translate="projects-project">Project:</div>
-      <div class="project-title" data-translate="projects-simonProjectsTitle">"Simon" electronic game</div>
-      <div class="project-label" data-translate="projects-desc">Description:</div>
-      <div class="project-description" data-translate="projects-simonProjectsDes">
-        Step back in time and test your recall with this retro-inspired memory game! The game flashes a sequence of colored buttons—each accompanied by a catchy sound.
-      </div>
-      <div class="project-label">GitHub:</div>
-      <div class="project-link">
-        <a href="https://github.com/matejhozlar/resume/tree/main/games/simongame" alt="GitHub link" data-translate="projects-viewOnGit">View on GitHub</a>
-        <a href="../games/simongame" alt="Button Play" data-translate="projects-play">Play</a>
-      </div>
-    </div>  
-
-    <div class="project-item">
-      <div class="project-label" data-translate="projects-project">Project:</div>
-      <div class="project-title">Pexeso</div>
-      <div class="project-label" data-translate="projects-desc">Description:</div>
-      <div class="project-description" data-translate="projects-pexesodes">
-        Step into a high-stakes, retro-inspired card matching challenge that tests your memory and reflexes! 
-      </div>
-      <div class="project-label">GitHub:</div>
-      <div class="project-link">
-        <a href="https://github.com/matejhozlar/resume/tree/main/games/pexeso" alt="GitHub link" data-translate="projects-viewOnGit">View on GitHub</a>
-        <a href="../games/pexeso" alt="Button Play" data-translate="projects-play">Play</a>
-      </div>
-    </div> 
-
-    <div class="project-item">
-      <div class="project-label" data-translate="projects-project">Project:</div>
-      <div class="project-title">Tic-Tac-Toe</div>
-      <div class="project-label" data-translate="projects-desc">Description:</div>
-      <div class="project-description" data-translate="projects-tictactoedes">
-        Step into a reimagined classic where Tic Tac Toe meets modern strategy! This isn’t your typical 3×3 grid game—here, you can customize the board size and win conditions.
-      </div>
-      <div class="project-label">GitHub:</div>
-      <div class="project-link">
-        <a href="https://github.com/matejhozlar/resume/tree/main/games/tic-tac-toe" alt="GitHub link" data-translate="projects-viewOnGit">View on GitHub</a>
-        <a href="../games/tic-tac-toe" alt="Button Play" data-translate="projects-play">Play</a>
-      </div>
-    </div> 
-
-  </div>
-
-  </section>
-
-  <section id="project-list-easy" class="container my-5">
-
-    <h2 class="text-center terminal-header mb-4" id="web-apps">$ <span data-translate="projects-webapps">Web Apps</span></h2>
-
-    <div class="project-container">
-  
-      <div class="project-item">
-        <div class="project-label" data-translate="projects-project">Project:</div>
-        <div class="project-title">Google Scraper</div>
-        <div class="project-label" data-translate="projects-desc">Description:</div>
-        <div class="project-description" data-translate="projects-googlescraperdes">
-          This project is a simple web application that allows users to search for a keyword and fetch results from an external API.
+      <div class="project-container">
+        <div class="project-item">
+          <div class="project-label" data-translate="projects-project">
+            Project:
+          </div>
+          <div
+            class="project-title"
+            data-translate="projects-simonProjectsTitle"
+          >
+            "Simon" electronic game
+          </div>
+          <div class="project-label" data-translate="projects-desc">
+            Description:
+          </div>
+          <div
+            class="project-description"
+            data-translate="projects-simonProjectsDes"
+          >
+            Step back in time and test your recall with this retro-inspired
+            memory game! The game flashes a sequence of colored buttons—each
+            accompanied by a catchy sound.
+          </div>
+          <div class="project-label">GitHub:</div>
+          <div class="project-link">
+            <a
+              href="https://github.com/matejhozlar/resume/tree/main/games/simongame"
+              alt="GitHub link"
+              data-translate="projects-viewOnGit"
+              >View on GitHub</a
+            >
+            <a
+              href="../games/simongame"
+              alt="Button Play"
+              data-translate="projects-play"
+              >Play</a
+            >
+          </div>
         </div>
-        <div class="project-label">GitHub:</div>
-        <div class="project-link">
-          <a href="https://github.com/matejhozlar/google-scraper" alt="GitHub link" data-translate="projects-viewOnGit">View on GitHub</a>
-        </div>
-      </div> 
 
-      <div class="project-item">
-        <div class="project-title" data-translate="projects-tbdTitle">More Projects Coming Soon</div>
-        <div class="project-description" data-translate="projects-tbdDes">
-          I'm constantly working on new projects and updates. Stay tuned for more innovative and exciting work!
+        <div class="project-item">
+          <div class="project-label" data-translate="projects-project">
+            Project:
+          </div>
+          <div class="project-title">Pexeso</div>
+          <div class="project-label" data-translate="projects-desc">
+            Description:
+          </div>
+          <div class="project-description" data-translate="projects-pexesodes">
+            Step into a high-stakes, retro-inspired card matching challenge that
+            tests your memory and reflexes!
+          </div>
+          <div class="project-label">GitHub:</div>
+          <div class="project-link">
+            <a
+              href="https://github.com/matejhozlar/resume/tree/main/games/pexeso"
+              alt="GitHub link"
+              data-translate="projects-viewOnGit"
+              >View on GitHub</a
+            >
+            <a
+              href="../games/pexeso"
+              alt="Button Play"
+              data-translate="projects-play"
+              >Play</a
+            >
+          </div>
+        </div>
+
+        <div class="project-item">
+          <div class="project-label" data-translate="projects-project">
+            Project:
+          </div>
+          <div class="project-title">Tic-Tac-Toe</div>
+          <div class="project-label" data-translate="projects-desc">
+            Description:
+          </div>
+          <div
+            class="project-description"
+            data-translate="projects-tictactoedes"
+          >
+            Step into a reimagined classic where Tic Tac Toe meets modern
+            strategy! This isn’t your typical 3×3 grid game—here, you can
+            customize the board size and win conditions.
+          </div>
+          <div class="project-label">GitHub:</div>
+          <div class="project-link">
+            <a
+              href="https://github.com/matejhozlar/resume/tree/main/games/tic-tac-toe"
+              alt="GitHub link"
+              data-translate="projects-viewOnGit"
+              >View on GitHub</a
+            >
+            <a
+              href="../games/tic-tac-toe"
+              alt="Button Play"
+              data-translate="projects-play"
+              >Play</a
+            >
+          </div>
         </div>
       </div>
-  
-    </div>
+    </section>
 
-  </section>
+    <section id="project-list-easy" class="container my-5">
+      <h2 class="text-center terminal-header mb-4" id="web-apps">
+        $ <span data-translate="projects-webapps">Web Apps</span>
+      </h2>
 
-  <section id="project-list-easy" class="container my-5">
-    <h2 class="text-center terminal-header mb-4" id="C-Projects">$ <span data-translate="projects-cprojects">C Projects</span></h2>
+      <div class="project-container">
+        <div class="project-item">
+          <div class="project-label" data-translate="projects-project">
+            Project:
+          </div>
+          <div class="project-title">Google Scraper</div>
+          <div class="project-label" data-translate="projects-desc">
+            Description:
+          </div>
+          <div
+            class="project-description"
+            data-translate="projects-googlescraperdes"
+          >
+            This project is a simple web application that allows users to search
+            for a keyword and fetch results from an external API.
+          </div>
+          <div class="project-label">GitHub:</div>
+          <div class="project-link">
+            <a
+              href="https://github.com/matejhozlar/google-scraper"
+              alt="GitHub link"
+              data-translate="projects-viewOnGit"
+              >View on GitHub</a
+            >
+          </div>
+        </div>
 
-    <div class="project-container">
-
-      <div class="project-item">
-        <div class="project-title" data-translate="projects-tbdTitle">More Projects Coming Soon</div>
-        <div class="project-description" data-translate="projects-tbdDes">
-          I'm constantly working on new projects and updates. Stay tuned for more innovative and exciting work!
+        <div class="project-item">
+          <div class="project-title" data-translate="projects-tbdTitle">
+            More Projects Coming Soon
+          </div>
+          <div class="project-description" data-translate="projects-tbdDes">
+            I'm constantly working on new projects and updates. Stay tuned for
+            more innovative and exciting work!
+          </div>
         </div>
       </div>
+    </section>
 
-    </div>
+    <section id="project-list-easy" class="container my-5">
+      <h2 class="text-center terminal-header mb-4" id="C-Projects">
+        $ <span data-translate="projects-cprojects">C Projects</span>
+      </h2>
 
+      <div class="project-container">
+        <div class="project-item">
+          <div class="project-title" data-translate="projects-tbdTitle">
+            More Projects Coming Soon
+          </div>
+          <div class="project-description" data-translate="projects-tbdDes">
+            I'm constantly working on new projects and updates. Stay tuned for
+            more innovative and exciting work!
+          </div>
+        </div>
+      </div>
+    </section>
 
-  </section>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
     <script src="../scripts/translations.js"></script>
     <script src="../scripts/smooth-scroll.js"></script>
-</body>
+  </body>
 </html>

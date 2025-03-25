@@ -1,133 +1,331 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Matej Hozlár - About Me</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/style.css"/>
-</head>
-<body>
-
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body>
     <section id="title" class="navbar-background static">
+      <div class="container navbar-line">
+        <header
+          class="d-flex flex-wrap justify-content-center py-3 mb-5 border-bottom"
+        >
+          <a
+            class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"
+          >
+            <svg class="bi me-2" width="40" height="32">
+              <use xlink:href="#bootstrap"></use>
+            </svg>
+            <span class="fs-4 logo glitch"> Matej Hozlár</span>
+          </a>
 
-        <div class="container navbar-line">
-            <header class="d-flex flex-wrap justify-content-center py-3 mb-5 border-bottom">
-              <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-                <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
-                <span class="fs-4 logo glitch"> Matej Hozlár</span>
+          <ul class="nav nav-pills">
+            <li class="nav-item">
+              <a
+                href="../"
+                class="nav-link main-color"
+                aria-current="page"
+                data-translate="button-home"
+                >Home</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                href="#"
+                class="nav-link main-color"
+                data-translate="button-about"
+                >About</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                href="../projects"
+                class="nav-link main-color"
+                data-translate="button-projects"
+                >Projects</a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="http://localhost/login" class="nav-link main-color"
+                >Gameverse</a
+              >
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle main-color"
+                href="#"
+                id="languageDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                >🌍
               </a>
-              
-              <ul class="nav nav-pills">
-                <li class="nav-item"><a href="../" class="nav-link main-color" aria-current="page" data-translate="button-home">Home</a></li>
-                <li class="nav-item"><a href="#" class="nav-link main-color" data-translate="button-about">About</a></li>
-                <li class="nav-item"><a href="../projects" class="nav-link main-color" data-translate="button-projects">Projects</a></li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle main-color" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">🌍
-                  </a>
-                  <ul class="dropdown-menu no-fade" aria-labelledby="languageDropdown">
-                      <li><a class="dropdown-item" href="#" onclick="changeLanguage('en')"><img src="../assets/svg/flags/gb.svg" width="20" height="15" alt="English"/> English</a></li>
-                      <li><a class="dropdown-item" href="#" onclick="changeLanguage('sk')"><img src="../assets/svg/flags/sk.svg" width="20" height="15" alt="Slovak"/> Slovak</a></li>
-                      <li><a class="dropdown-item" href="#" onclick="changeLanguage('cz')"><img src="../assets/svg/flags/cz.svg" width="20" height="15" alt="Czech"/> Czech</a></li>
-                  </ul>
-              </li>
+              <ul
+                class="dropdown-menu no-fade"
+                aria-labelledby="languageDropdown"
+              >
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    onclick="changeLanguage('en')"
+                    ><img
+                      src="../assets/svg/flags/gb.svg"
+                      width="20"
+                      height="15"
+                      alt="English"
+                    />
+                    English</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    onclick="changeLanguage('sk')"
+                    ><img
+                      src="../assets/svg/flags/sk.svg"
+                      width="20"
+                      height="15"
+                      alt="Slovak"
+                    />
+                    Slovak</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    onclick="changeLanguage('cz')"
+                    ><img
+                      src="../assets/svg/flags/cz.svg"
+                      width="20"
+                      height="15"
+                      alt="Czech"
+                    />
+                    Czech</a
+                  >
+                </li>
               </ul>
-            </header>
-          </div>
-
+            </li>
+          </ul>
+        </header>
+      </div>
     </section>
 
     <section class="container mt-5 text-light">
-        <div class="row align-items-center">
-            <div class="col-md-4 text-center">
-                <img src="../assets/images/me.png" class="img-fluid pixel-border about-img" alt="Matej Hozlár">
-            </div>
-            <div class="col-md-8">
-                <h1 class="glitch">Matej Hozlár</h1>
-                <p class="lead" data-translate="aboutpage-title">Passionate IT Enthusiast | Problem Solver</p>
-                <p data-translate="aboutpage-text">Hi, my name is Matej Hozlár, and I’m a young, passionate learner with a deep love for IT and problem-solving. Ever since I discovered the world of technology, I’ve been fascinated by how things work and how I can make them better.
-
-                    I started studying IT at university, but for now, my studies are on pause. However, that hasn’t stopped me from learning, growing, and improving every day. I’m always exploring new technologies, working on projects, and challenging myself to solve complex problems.
-                    
-                    What drives me the most is the constant evolution of technology—there’s always something new to discover, and I thrive on that. Whether it’s coding, troubleshooting, or diving into new concepts, I love finding solutions and pushing myself forward.
-                    
-                    I believe that hard work, curiosity, and persistence are the keys to success, and I’m always looking for opportunities to expand my knowledge and skills. The journey in IT is never-ending, and I’m excited for what’s ahead!</p>
-            </div>
+      <div class="row align-items-center">
+        <div class="col-md-4 text-center">
+          <img
+            src="../assets/images/me.png"
+            class="img-fluid pixel-border about-img"
+            alt="Matej Hozlár"
+          />
         </div>
+        <div class="col-md-8">
+          <h1 class="glitch">Matej Hozlár</h1>
+          <p class="lead" data-translate="aboutpage-title">
+            Passionate IT Enthusiast | Problem Solver
+          </p>
+          <p data-translate="aboutpage-text">
+            Hi, my name is Matej Hozlár, and I’m a young, passionate learner
+            with a deep love for IT and problem-solving. Ever since I discovered
+            the world of technology, I’ve been fascinated by how things work and
+            how I can make them better. I started studying IT at university, but
+            for now, my studies are on pause. However, that hasn’t stopped me
+            from learning, growing, and improving every day. I’m always
+            exploring new technologies, working on projects, and challenging
+            myself to solve complex problems. What drives me the most is the
+            constant evolution of technology—there’s always something new to
+            discover, and I thrive on that. Whether it’s coding,
+            troubleshooting, or diving into new concepts, I love finding
+            solutions and pushing myself forward. I believe that hard work,
+            curiosity, and persistence are the keys to success, and I’m always
+            looking for opportunities to expand my knowledge and skills. The
+            journey in IT is never-ending, and I’m excited for what’s ahead!
+          </p>
+        </div>
+      </div>
 
-        <hr class="glitch-line">
+      <hr class="glitch-line" />
 
-        <h2 class="glitch" data-translate="aboutpage-workexp">Work Experience</h2>
-        <ul class="pixel-list">
-            <li><strong>Network Administrator</strong> - Recount-edit s.r.o. (2022-2025)
-                <p class="mb-0" data-translate="aboutpage-netdes">I was responsible for configuring and maintaining the company's IT networks.</p>
+      <h2 class="glitch" data-translate="aboutpage-workexp">Work Experience</h2>
+      <ul class="pixel-list">
+        <li>
+          <strong>Network Administrator</strong> - Recount-edit s.r.o.
+          (2022-2025)
+          <p class="mb-0" data-translate="aboutpage-netdes">
+            I was responsible for configuring and maintaining the company's IT
+            networks.
+          </p>
+        </li>
+        <li>
+          <strong>Freelance Developer</strong> - (2024-<span
+            data-translate="aboutpage-present"
+            >Present</span
+          >)
+        </li>
+        <li>
+          <strong>Crypto Research Analyst</strong> - BLAUHILL CAPITAL j.s.a.
+          (2024-<span data-translate="aboutpage-present">Present</span>)
+          <p class="mb-0">
+            <span data-translate="aboutpage-cryptodes"
+              >I am working on Crypto researches, that are used on sites like
+              altfins.com,</span
+            >
+            <a
+              href="https://altfins.com/research/exclusive?type=coin-picks"
+              class="purple"
+              >LINK</a
+            >
+          </p>
+        </li>
+      </ul>
+
+      <hr class="glitch-line" />
+
+      <h2 class="glitch" data-translate="aboutpage-edu">Education</h2>
+      <ul class="pixel-list">
+        <li>
+          <span data-translate="aboutpage-self"
+            >Self-Taught Developer - Online Courses</span
+          >
+          &amp; <span data-translate="aboutpage-selfp">Projects</span>
+        </li>
+        <li>
+          <span data-translate="aboutpage-sp"
+            >I am constantly studying and getting better day by day!</span
+          >
+        </li>
+      </ul>
+
+      <hr class="glitch-line" />
+
+      <h2 class="glitch" data-translate="aboutpage-skills">Skills</h2>
+      <ul class="pixel-list">
+        <li>
+          Web Development (HTML, CSS, JS, Node.js, React) -
+          <span data-translate="aboutpage-advanced">Advanced</span>
+        </li>
+        <li>
+          <span data-translate="aboutpage-programming">Programming</span>
+          <ol class="olPadding">
+            <li>
+              C/C++ - <span data-translate="aboutpage-advanced">Advanced</span>
             </li>
-            <li><strong>Freelance Developer</strong> - (2024-<span data-translate="aboutpage-present">Present</span>)</li>
-            <li><strong>Crypto Research Analyst</strong> - BLAUHILL CAPITAL j.s.a. (2024-<span data-translate="aboutpage-present">Present</span>)
-                <p class="mb-0"><span data-translate="aboutpage-cryptodes">I am working on Crypto researches, that are used on sites like altfins.com,</span> <a href="https://altfins.com/research/exclusive?type=coin-picks" class="purple">LINK</a></p> 
+            <li>
+              Python - <span data-translate="aboutpage-beginner">Beginner</span>
             </li>
-        </ul>
-
-        <hr class="glitch-line">
-
-        <h2 class="glitch" data-translate="aboutpage-edu">Education</h2>
-        <ul class="pixel-list">
-            <li><span data-translate="aboutpage-self">Self-Taught Developer - Online Courses</span> &amp; <span data-translate="aboutpage-selfp">Projects</span>
+            <li>
+              Java - <span data-translate="aboutpage-beginner">Beginner</span>
             </li>
-            <li ><span data-translate="aboutpage-sp">I am constantly studying and getting better day by day!</span></li>
-        </ul>
-        
-
-        <hr class="glitch-line">
-
-        <h2 class="glitch" data-translate="aboutpage-skills">Skills</h2>
-        <ul class="pixel-list">
-            <li>Web Development (HTML, CSS, JS, Node.js, React) - <span data-translate="aboutpage-advanced">Advanced</span></li>
-            <li><span data-translate="aboutpage-programming">Programming</span>
-                <ol class="olPadding">
-                    <li>C/C++ - <span data-translate="aboutpage-advanced">Advanced</span></li>
-                    <li>Python - <span data-translate="aboutpage-beginner">Beginner</span></li>
-                    <li>Java - <span data-translate="aboutpage-beginner">Beginner</span></li>
-                </ol>
+          </ol>
+        </li>
+        <li>Problem-Solving & Debugging</li>
+        <li>
+          <span data-translate="aboutpage-languages">Languages</span>
+          <ol class="olPadding">
+            <li data-translate="aboutpage-en">
+              English - Upper-itermediate (B2)
             </li>
-            <li>Problem-Solving & Debugging</li>
-            <li><span data-translate="aboutpage-languages">Languages</span>
-                <ol class="olPadding">
-                    <li data-translate="aboutpage-en">English - Upper-itermediate (B2)</li>
-                    <li data-translate="aboutpage-czsk">Slovak & Czech - Expert (C2)</li>
-                </ol>
+            <li data-translate="aboutpage-czsk">
+              Slovak & Czech - Expert (C2)
             </li>
-        </ul>
+          </ol>
+        </li>
+      </ul>
 
-        <hr class="glitch-line">
+      <hr class="glitch-line" />
 
-        <h2 class="glitch" data-translate="aboutpage-certificates">Certificates</h2>
-        <br>
-        <a href="../assets/certificates/Matej_Hozlar.pdf"><img src="../assets/certificates/full-stack.jpg" alt="Certificate image" class="img-fluid pixel-border" style="max-width: 400px; border: 2px solid white; border-radius: 8px;" /></a>
+      <h2 class="glitch" data-translate="aboutpage-certificates">
+        Certificates
+      </h2>
+      <br />
+      <a href="../assets/certificates/Matej_Hozlar.pdf"
+        ><img
+          src="../assets/certificates/full-stack.jpg"
+          alt="Certificate image"
+          class="img-fluid pixel-border"
+          style="max-width: 400px; border: 2px solid white; border-radius: 8px"
+      /></a>
 
-        <hr class="glitch-line">
-        
-         <h2 class="glitch" data-translate="aboutpage-connectWithMe">Connect with Me</h2>
-         <ul class="pixel-list no-bullets">
+      <hr class="glitch-line" />
 
-            <li class="mb-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16">
-                <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z"/>
-              </svg> <a class="purple" href="mailto:hozlarmatej0@gmail.com">Email:</a> hozlarmatej0@gmail.com</li>
-            <li class="mb-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
-  <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"/>
-</svg> <a class="purple" href="https://www.facebook.com/matej.hozlar.9/">Facebook</a></li>
-            <li class="mb-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
-                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
-              </svg> <a class="purple" href="https://github.com/matejhozlar">GitHub</a></li>
-            <li class="mb-2"><a href="#" class="purple">Website Source Code</a></li>
+      <h2 class="glitch" data-translate="aboutpage-connectWithMe">
+        Connect with Me
+      </h2>
+      <ul class="pixel-list no-bullets">
+        <li class="mb-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="currentColor"
+            class="bi bi-envelope-fill"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z"
+            />
+          </svg>
+          <a class="purple" href="mailto:hozlarmatej0@gmail.com">Email:</a>
+          hozlarmatej0@gmail.com
+        </li>
+        <li class="mb-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="currentColor"
+            class="bi bi-facebook"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"
+            />
+          </svg>
+          <a class="purple" href="https://www.facebook.com/matej.hozlar.9/"
+            >Facebook</a
+          >
+        </li>
+        <li class="mb-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="currentColor"
+            class="bi bi-github"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"
+            />
+          </svg>
+          <a class="purple" href="https://github.com/matejhozlar">GitHub</a>
+        </li>
+        <li class="mb-2"><a href="#" class="purple">Website Source Code</a></li>
+      </ul>
 
-         </ul>
-
-        <a href="./assets/CV/CV.pdf" class="btn getintouch mb-5" aria-current="page" data-translate="homepage-cv" download>Download CV</a>
+      <a
+        href="./assets/CV/CV.pdf"
+        class="btn getintouch mb-5"
+        aria-current="page"
+        data-translate="homepage-cv"
+        download
+        >Download CV</a
+      >
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../scripts/translations.js" defer></script>
     <script src="../scripts/smooth-scroll.js"></script>
-</body>
+  </body>
 </html>
