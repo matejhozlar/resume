@@ -10,7 +10,6 @@ import flash from "connect-flash";
 //api for partials
 import apiRoutes from "./routes/api.js";
 
-const app2 = express();
 const app = express();
 const port = 3000;
 const saltRounds = 10;
