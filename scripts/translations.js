@@ -223,15 +223,6 @@ function applyTranslations(lang) {
     });
 }
 
-document.querySelectorAll("[data-translate]").forEach(el => {
-    let key = el.getAttribute("data-translate");
-    console.log("Processing key:", key);
-    if (translations[lang][key]) {
-        console.log("Replacing with:", translations[lang][key]);
-        el.textContent = translations[lang][key];
-    }
-});
-
 document.addEventListener("DOMContentLoaded", () => {
     applyTranslations(currentLanguage);
 
