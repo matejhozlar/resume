@@ -11,6 +11,7 @@ import bcrypt from "bcrypt";
 env.config();
 const app = express();
 const port = process.env.SERVER_PORT;
+const saltRounds = 10;
 
 app.use(
   session({
@@ -55,7 +56,7 @@ app.get("/register", (req, res) => {
 app.post(
   "/login",
   passport.authenticate("local", {
-    successRedirect: "/gameverse",
+    successRedirect: "/login",
     failureRedirect: "/login",
     failureFlash: true,
   })
@@ -98,10 +99,8 @@ app.post("/register", async (req, res) => {
             [username, hash]
           );
           const user = result.rows[0];
-          req.login(user, (err) => {
-            console.log("success");
-            res.redirect("/gameverse");
-          });
+          console.log("success");
+          res.redirect("/login");
         }
       });
     }

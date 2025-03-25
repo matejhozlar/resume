@@ -237,6 +237,10 @@ html {
   width: 100%;
 }
 
+.toggle-btn {
+  font-weight: bold;
+}
+
 .sidebar a,
 .sidebar .toggle-btn {
   display: flex;
@@ -313,6 +317,101 @@ html {
   font-family: "Press Start 2P", cursive;
   border-top: 1px dashed #444;
   text-align: center;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: black;
+  font-family: "Press Start 2P", cursive;
+  color: white;
+}
+
+.main-container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 30%;
+  border-right: 2px solid #8a5cf6;
+  padding: 10px;
+  background-color: black;
+}
+
+.content {
+  width: 70%;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  text-align: center;
+}
+
+.menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-btn {
+  background-color: #000;
+  border: none;
+  color: white;
+  padding: 10px;
+  width: 100%;
+  text-align: left;
+  font-family: "Press Start 2P", cursive;
+  font-size: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #111;
+  transition: background-color 0.2s ease;
+}
+
+.menu-btn:hover {
+  background-color: #8a5cf6;
+  color: #fff;
+}
+
+.submenu {
+  padding-left: 15px;
+  margin-top: 5px;
+}
+
+a.menu-btn {
+  text-decoration: none;
+}
+
+.section-header .section-label {
+  background-color: #000;
+  border: none;
+  color: white;
+  padding: 10px;
+  width: 100%;
+  text-align: left;
+  font-family: "Press Start 2P", cursive;
+  font-size: 10px;
+  border-bottom: 1px solid #111;
+  cursor: default;
+}
+
+.arrow {
+  display: inline-block;
+  margin-right: 10px;
+  transition: transform 0.2s ease;
+  transform: rotate(0deg);
+}
+
+.arrow::before {
+  content: "▶";
+  display: inline-block;
+}
+
+.arrow.open {
+  transform: rotate(90deg);
 }
 
 /* menu panel */
