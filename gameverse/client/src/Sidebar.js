@@ -57,15 +57,19 @@ function Sidebar({ onPageChange }) {
 
         {/* STATIC NON-FOLDING ITEMS */}
         <li className="menu-item">
-          <div className="menu-btn disabled">Multiplayer (Coming Soon)</div>
+          <button className="menu-btn toggle-btn no-arrow" disabled>
+            Multiplayer (Coming Soon)
+          </button>
         </li>
         <li className="menu-item">
-          <div className="menu-btn disabled">Leaderboards (Coming Soon)</div>
+          <button className="menu-btn toggle-btn no-arrow" disabled>
+            Leaderboards (Coming Soon)
+          </button>
         </li>
         <li className="menu-item">
-          <div className="menu-btn disabled">
+          <button className="menu-btn toggle-btn no-arrow" disabled>
             Character Creation (Coming Soon)
-          </div>
+          </button>
         </li>
 
         {/* SETTINGS */}
