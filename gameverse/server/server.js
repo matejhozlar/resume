@@ -10,7 +10,7 @@ import bcrypt from "bcrypt";
 
 env.config();
 const app = express();
-const port = process.env.PORT;
+const port = process.env.SERVER_PORT;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
