@@ -63,27 +63,24 @@ app.post("/login", (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) return next(err);
     if (!user) {
-      req.flash("error", info.message);
-      return res.redirect("/login");
+      return res.status(401).json({ error: info.message });
     }
 
     req.logIn(user, (err) => {
       if (err) return next(err);
-
-      return res.redirect("http://localhost:3000");
+      return res.json({
+        success: true,
+        user: { id: user.id, username: user.username },
+      });
     });
   })(req, res, next);
 });
 
-app.post("/register", async (req, res) => {
-  const username = req.body.username;
-  const password = req.body.password;
-  const repeatedPassword = req.body.repeatedPassword;
+app.post("/register", async (req, res, next) => {
+  const { username, password, repeatedPassword } = req.body;
 
   if (password !== repeatedPassword) {
-    req.flash("error", "Passwords do not match.");
-    req.flash("formData", { username, password, repeatedPassword });
-    return res.redirect("/register");
+    return res.status(400).json({ error: "Passwords do not match." });
   }
 
   try {
@@ -91,34 +88,28 @@ app.post("/register", async (req, res) => {
       "SELECT * FROM users WHERE username = $1",
       [username]
     );
-
     if (checkResult.rows.length > 0) {
-      req.flash(
-        "error",
-        "Username is already taken. Please choose another one."
-      );
-      req.flash("formData", { username, password, repeatedPassword });
-      res.redirect("/register");
-    } else {
-      bcrypt.hash(password, saltRounds, async (err, hash) => {
-        if (err) {
-          console.error("Error hashing password:", err);
-        } else {
-          console.log(
-            `New user has registered: username=${username}, hashedPassword=${hash}`
-          );
-          const result = await db.query(
-            "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *",
-            [username, hash]
-          );
-          const user = result.rows[0];
-          console.log("success");
-          res.redirect("/login");
-        }
-      });
+      return res.status(400).json({ error: "Username already taken." });
     }
+
+    const hash = await bcrypt.hash(password, saltRounds);
+    const result = await db.query(
+      "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id, username",
+      [username, hash]
+    );
+
+    console.log("User registered:", result.rows[0]);
+
+    req.logIn(result.rows[0], (err) => {
+      if (err) return next(err);
+      return res.json({
+        success: true,
+        user: { id: result.rows[0].id, username: result.rows[0].username },
+      });
+    });
   } catch (err) {
-    console.log(err);
+    console.error(err);
+    return res.status(500).json({ error: "Server error." });
   }
 });
 
@@ -200,7 +191,7 @@ app.post("/gameverse/change-username", ensureLoggedIn, async (req, res) => {
     );
 
     req.user.username = newUsername;
-
+    console.log("Username succesfully changed for user:", req.user);
     return res.json({ success: "Username updated successfully." });
   } catch (err) {
     console.error("Error changing username:", err);

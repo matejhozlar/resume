@@ -116,7 +116,7 @@ function Sidebar({ onPageChange }) {
         {/* EXIT */}
         <li>
           <a className="menu-btn" href="/">
-            Exit
+            Log Out
           </a>
         </li>
       </ul>
