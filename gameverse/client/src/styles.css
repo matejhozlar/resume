@@ -333,12 +333,14 @@ html {
 
 .content {
   width: 70%;
+  height: 100vh;
   background-color: #000;
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 24px;
+  overflow-y: auto;
   text-align: center;
   padding: 40px;
   box-sizing: border-box;
@@ -575,10 +577,91 @@ label {
     rgba(0, 0, 0, 0.1) 50%
   );
   background-size: 100% 4px;
-  background-color: transparent;
+  background-color: trans;
   border: 2px solid transparent;
   animation: scanline 0.5s linear infinite, pixelate 0.2s infinite alternate,
     glitchColor 0.2s infinite alternate;
+}
+
+.game-info-wrapper {
+  padding: 2rem;
+  color: white;
+  text-align: center;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.game-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.game-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.description-section {
+  text-align: left;
+}
+
+.description-section h2 {
+  margin-bottom: 0.5rem;
+}
+
+.tags {
+  margin-top: 1rem;
+}
+
+.tag {
+  background-color: #8a5cf6;
+  padding: 5px 10px;
+  border-radius: 10px;
+  margin-right: 10px;
+  font-size: 0.75rem;
+  display: inline-block;
+}
+
+.preview-section h3 {
+  margin-bottom: 1rem;
+}
+
+.preview-images {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.preview-card {
+  border: 2px solid #8a5cf6;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: #111;
+  max-width: 300px;
+  transition: transform 0.3s;
+}
+
+.preview-card:hover {
+  transform: scale(1.03);
+}
+
+.preview-card img {
+  max-width: 100%;
+  border-radius: 5px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.titles {
+  color: #8a5cf6;
 }
 
 /* TicTacToeInfo */
