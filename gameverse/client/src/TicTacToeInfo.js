@@ -52,7 +52,7 @@ function TicTacToeInfo() {
       </div>
 
       <div className="button-group">
-        <button className="play-btn">▶ Play</button>
+        <button className="play-btn">Play</button>
         <button
           className="game-btn"
           onClick={() =>

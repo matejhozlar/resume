@@ -5,7 +5,7 @@ body {
   color: white;
   font-family: "Press Start 2P", cursive;
   overflow-x: hidden;
-  overflow-y: hidden;
+  overflow-y: auto;
   margin: 0;
   padding: 0;
   height: 100%;
@@ -373,10 +373,12 @@ html {
 .main-container {
   display: flex;
   height: 100vh;
+  overflow: hidden;
 }
 
 .sidebar {
   width: 30%;
+  overflow-y: auto;
   border-right: 2px solid #8a5cf6;
   padding: 10px;
   background-color: black;
@@ -384,10 +386,9 @@ html {
 
 .content {
   width: 70%;
+  height: 100vh;
   padding: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: block;
   font-size: 20px;
   text-align: center;
 }
@@ -493,7 +494,8 @@ label {
 }
 
 .sidebar a,
-.sidebar .toggle-btn {
+.sidebar .toggle-btn,
+.preview-card {
   cursor: url("./assets/cursors/pixel-hand-pointer-48x48.png"), auto !important;
 }
 
