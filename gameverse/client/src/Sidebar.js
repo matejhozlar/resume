@@ -99,7 +99,7 @@ function Sidebar({ onPageChange }) {
                 className="menu-btn"
                 onClick={() => onPageChange("account")}
               >
-                Account Settings
+                Change Your Password
               </button>
             </li>
           </ul>
