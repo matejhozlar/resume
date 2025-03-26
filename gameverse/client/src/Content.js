@@ -1,12 +1,13 @@
 import React from "react";
 import ChangePasswordForm from "./ChangePasswordForm";
 import ChangeUsernameForm from "./ChangeUsernameForm";
+import TicTacToeInfo from "./TicTacToeInfo";
 
 function Content({ activePage }) {
   const renderContent = () => {
     switch (activePage) {
       case "tic-tac-toe":
-        return <h1>🕹️ Tic-Tac-Toe</h1>;
+        return <TicTacToeInfo />;
       case "simon":
         return <h1>🔊 Simon Game</h1>;
       case "pexeso":
