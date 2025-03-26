@@ -160,34 +160,48 @@ app.post("/gameverse/change-password", ensureLoggedIn, async (req, res) => {
 
 app.post("/gameverse/change-username", ensureLoggedIn, async (req, res) => {
   try {
-    console.log("req.body:", req.body);
     const { newUsername } = req.body;
-    const user = req.user;
+    const userId = req.user.id;
 
-    const trimmed = newUsername?.trim();
-
-    if (!trimmed) {
+    if (!newUsername || newUsername.trim() === "") {
       return res.json({ error: "Username cannot be empty." });
     }
 
-    const check = await db.query("SELECT * FROM users WHERE username = $1", [
-      trimmed,
-    ]);
-
-    if (check.rows.length > 0) {
-      return res.json({ error: "Username already taken." });
+    const existingUser = await db.query(
+      "SELECT * FROM users WHERE username = $1",
+      [newUsername]
+    );
+    if (existingUser.rows.length > 0) {
+      return res.json({ error: "This username is already taken." });
     }
 
-    await db.query("UPDATE users SET username = $1 WHERE id = $2", [
-      trimmed,
-      user.id,
-    ]);
+    const result = await db.query(
+      "SELECT last_username_change FROM users WHERE id = $1",
+      [userId]
+    );
+    const lastChange = result.rows[0].last_username_change;
 
-    req.login({ ...user, username: trimmed }, (err) => {
-      if (err) console.error("Session update failed:", err);
-    });
+    if (lastChange) {
+      const now = new Date();
+      const diffMs = now - new Date(lastChange);
+      const diffDays = diffMs / (1000 * 60 * 60 * 24);
 
-    return res.json({ success: "Username has been changed." });
+      if (diffDays < 7) {
+        const daysLeft = Math.ceil(7 - diffDays);
+        return res.json({
+          error: `You can change your username again in ${daysLeft} day(s).`,
+        });
+      }
+    }
+
+    await db.query(
+      "UPDATE users SET username = $1, last_username_change = NOW() WHERE id = $2",
+      [newUsername, userId]
+    );
+
+    req.user.username = newUsername;
+
+    return res.json({ success: "Username updated successfully." });
   } catch (err) {
     console.error("Error changing username:", err);
     return res.json({ error: "Something went wrong." });
