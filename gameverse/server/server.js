@@ -7,11 +7,14 @@ import session from "express-session";
 import { Strategy } from "passport-local";
 import passport from "passport";
 import bcrypt from "bcrypt";
+import cors from "cors";
 
 env.config();
 const app = express();
 const port = process.env.SERVER_PORT;
 const saltRounds = 10;
+
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
 app.use(
   session({
@@ -24,9 +27,12 @@ app.use(
   })
 );
 
+app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
 
 const db = new pg.Client({
   user: process.env.DB_USER,
@@ -53,14 +59,21 @@ app.get("/register", (req, res) => {
   res.render("register.ejs", { message: error, formData: formData });
 });
 
-app.post(
-  "/login",
-  passport.authenticate("local", {
-    successRedirect: "/login",
-    failureRedirect: "/login",
-    failureFlash: true,
-  })
-);
+app.post("/login", (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) return next(err);
+    if (!user) {
+      req.flash("error", info.message);
+      return res.redirect("/login");
+    }
+
+    req.logIn(user, (err) => {
+      if (err) return next(err);
+
+      return res.redirect("http://localhost:3000");
+    });
+  })(req, res, next);
+});
 
 app.post("/register", async (req, res) => {
   const username = req.body.username;
@@ -106,6 +119,42 @@ app.post("/register", async (req, res) => {
     }
   } catch (err) {
     console.log(err);
+  }
+});
+
+function ensureLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) return next();
+  return res.status(401).json({ error: "Not authenticated." });
+}
+
+app.post("/gameverse/change-password", ensureLoggedIn, async (req, res) => {
+  try {
+    const { oldPassword, newPassword, confirmPassword } = req.body;
+
+    if (newPassword !== confirmPassword) {
+      return res.json({ error: "Passwords do not match." });
+    }
+
+    const user = req.user;
+    const storedHashedPassword = user.password;
+
+    const isValid = await bcrypt.compare(oldPassword, storedHashedPassword);
+    if (!isValid) {
+      return res.json({ error: "Your old password is incorrect." });
+    }
+
+    const newHashedPassword = await bcrypt.hash(newPassword, saltRounds);
+
+    await db.query("UPDATE users SET password = $1 WHERE id = $2", [
+      newHashedPassword,
+      user.id,
+    ]);
+
+    return res.json({ success: "Password has been changed." });
+  } catch (err) {
+    console.error("Error changing password:", err.stack || err);
+    console.log("req.user:", req.user);
+    return res.json({ error: "Something went wrong." });
   }
 });
 

@@ -1,4 +1,5 @@
 import React from "react";
+import ChangePasswordForm from "./ChangePasswordForm";
 
 function Content({ activePage }) {
   const renderContent = () => {
@@ -12,7 +13,7 @@ function Content({ activePage }) {
       case "profile":
         return <h1>🎮 Your Gamer Profile</h1>;
       case "account":
-        return <h1>⚙️ Account Settings</h1>;
+        return <ChangePasswordForm />;
       default:
         return <h1>Welcome! Select a game or manage your profile.</h1>;
     }

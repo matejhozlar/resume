@@ -428,6 +428,10 @@ a.menu-btn {
 
 /* menu panel */
 
+.changePassword-btn {
+  margin-left: 20px;
+}
+
 /* action panel */
 
 .glitch {
