@@ -73,7 +73,6 @@ html {
   border: none;
   padding: 10px 20px;
   font-family: "Press Start 2P", cursive;
-  cursor: pointer;
   transition: all 0.3s ease;
 }
 
@@ -202,7 +201,6 @@ html {
   border-bottom: 1px solid #333;
   border-left: 4px solid transparent;
   transition: all 0.2s ease;
-  cursor: pointer;
   display: flex;
   align-items: center;
 }
@@ -302,7 +300,6 @@ html {
   padding: 0;
   font: inherit;
   text-decoration: underline;
-  cursor: pointer;
 }
 
 .link-button:hover {
@@ -385,7 +382,6 @@ html {
   text-align: left;
   font-family: "Press Start 2P", cursive;
   font-size: 10px;
-  cursor: pointer;
   border-bottom: 1px solid #111;
   transition: background-color 0.2s ease;
 }
@@ -416,7 +412,6 @@ a.menu-btn {
   font-family: "Press Start 2P", cursive;
   font-size: 10px;
   border-bottom: 1px solid #111;
-  cursor: default;
 }
 
 .arrow {
@@ -457,3 +452,22 @@ a.menu-btn {
 /* action panel */
 
 /* Gameverse menu */
+
+/* cursors */
+body {
+  cursor: url("./assets/cursors/pixel-arrow-48x48.png") 4 4, auto !important;
+}
+html {
+  cursor: url("./assets/cursors/pixel-arrow-48x48.png") 4 4, auto !important;
+}
+
+a,
+button,
+label {
+  cursor: url("./assets/cursors/pixel-hand-pointer-48x48.png"), auto !important;
+}
+
+.sidebar a,
+.sidebar .toggle-btn {
+  cursor: url("./assets/cursors/pixel-hand-pointer-48x48.png"), auto !important;
+}
