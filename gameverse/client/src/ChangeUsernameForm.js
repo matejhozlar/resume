@@ -6,16 +6,17 @@ function ChangeUsernameForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
+    const form = new FormData(e.target);
+    const newUsername = form.get("newUsername");
 
-    const response = await fetch(
-      "http://localhost:5000/gameverse/change-username",
-      {
-        method: "POST",
-        body: formData,
-        credentials: "include",
-      }
-    );
+    const response = await fetch("/gameverse/change-username", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include", // to send session cookies
+      body: JSON.stringify({ newUsername }),
+    });
 
     const result = await response.json();
 
@@ -39,7 +40,9 @@ function ChangeUsernameForm() {
         <label htmlFor="newUsername">New Username:</label>
         <input type="text" id="newUsername" name="newUsername" required />
 
-        <button type="submit">Submit</button>
+        <button type="submit" className="changePassword-btn">
+          Submit
+        </button>
       </form>
     </div>
   );

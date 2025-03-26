@@ -158,6 +158,42 @@ app.post("/gameverse/change-password", ensureLoggedIn, async (req, res) => {
   }
 });
 
+app.post("/gameverse/change-username", ensureLoggedIn, async (req, res) => {
+  try {
+    console.log("req.body:", req.body);
+    const { newUsername } = req.body;
+    const user = req.user;
+
+    const trimmed = newUsername?.trim();
+
+    if (!trimmed) {
+      return res.json({ error: "Username cannot be empty." });
+    }
+
+    const check = await db.query("SELECT * FROM users WHERE username = $1", [
+      trimmed,
+    ]);
+
+    if (check.rows.length > 0) {
+      return res.json({ error: "Username already taken." });
+    }
+
+    await db.query("UPDATE users SET username = $1 WHERE id = $2", [
+      trimmed,
+      user.id,
+    ]);
+
+    req.login({ ...user, username: trimmed }, (err) => {
+      if (err) console.error("Session update failed:", err);
+    });
+
+    return res.json({ success: "Username has been changed." });
+  } catch (err) {
+    console.error("Error changing username:", err);
+    return res.json({ error: "Something went wrong." });
+  }
+});
+
 passport.use(
   new Strategy(async function verify(username, password, cb) {
     try {
