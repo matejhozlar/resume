@@ -666,4 +666,50 @@ label {
   color: #8a5cf6;
 }
 
+.zoom-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(8px);
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
+  cursor: url("./assets/cursors/pixel-hand-pointer-48x48.png"), auto !important;
+}
+
+.zoomed-image {
+  max-width: 90%;
+  max-height: 90%;
+  border: 3px solid #8a5cf6;
+  border-radius: 10px;
+  box-shadow: 0 0 20px #8a5cf6;
+  animation: zoomIn 0.3s ease;
+  cursor: url("./assets/cursors/pixel-hand-pointer-48x48.png"), auto !important;
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  to {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+}
+
 /* TicTacToeInfo */
