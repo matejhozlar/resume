@@ -18,6 +18,10 @@ function TicTacToeInfo() {
   return (
     <>
       <div className="game-info-wrapper">
+        <p className="alert alert-danger">
+          {" "}
+          This game is not tracked in the leaderboards
+        </p>
         <h1 className="game-title titles">Pexeso</h1>
 
         <div className="game-content">
