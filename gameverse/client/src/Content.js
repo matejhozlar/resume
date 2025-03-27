@@ -4,6 +4,7 @@ import ChangeUsernameForm from "./ChangeUsernameForm";
 import TicTacToeInfo from "./TicTacToeInfo";
 import SimonGameInfo from "./SimonGameInfo";
 import PexesoInfo from "./PexesoInfo";
+import Home from "./Home";
 
 function Content({ activePage }) {
   const renderContent = () => {
@@ -18,8 +19,10 @@ function Content({ activePage }) {
         return <ChangePasswordForm />;
       case "username":
         return <ChangeUsernameForm />;
+      case "home":
+        return <Home />;
       default:
-        return <h1>Welcome! Select a game or manage your profile.</h1>;
+        return <Home />;
     }
   };
 

@@ -32,6 +32,14 @@ function Sidebar({ onPageChange, isCollapsed, setIsCollapsed }) {
   return (
     <nav className={`sidebar ${isCollapsed ? "collapsed" : ""}`}>
       <ul className="menu-list no-bullets">
+        <li className="menu-item">
+          <button
+            className="menu-btn toggle-btn no-arrow"
+            onClick={() => onPageChange("home")}
+          >
+            {isCollapsed ? "H" : "Home"}
+          </button>
+        </li>
         {/* GAMES */}
         <li className={`menu-item has-submenu ${openMenu.games ? "open" : ""}`}>
           <button
