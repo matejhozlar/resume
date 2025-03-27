@@ -35,6 +35,18 @@ function TicTacToeInfo() {
               to win the game.
             </p>
             <h4 className="titles">Difficulties</h4>
+            <p>
+              The game offers 4 difficulty levels:
+              <ul>
+                <li>Easy: Relaxing, with no timer.</li>
+                <li>Medium: Balanced timer.</li>
+                <li>Hard: 20-second interval shuffles.</li>
+                <li>
+                  Insane: 10-second interval shuffles with a timer + instant
+                  card flip-back
+                </li>
+              </ul>
+            </p>
             <div className="tags">
               <span className="tag">🕹️ Singleplayer</span>
               <span className="tag">🧠 Memory</span>
