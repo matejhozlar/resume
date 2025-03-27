@@ -34,6 +34,7 @@ function TicTacToeInfo() {
               Medium, Hard and Insane. The player must find all matching pairs
               to win the game.
             </p>
+            <h4 className="titles">Difficulties</h4>
             <div className="tags">
               <span className="tag">🕹️ Singleplayer</span>
               <span className="tag">🧠 Memory</span>
