@@ -3,6 +3,7 @@ import ChangePasswordForm from "./ChangePasswordForm";
 import ChangeUsernameForm from "./ChangeUsernameForm";
 import TicTacToeInfo from "./TicTacToeInfo";
 import SimonGameInfo from "./SimonGameInfo";
+import PexesoInfo from "./PexesoInfo";
 
 function Content({ activePage }) {
   const renderContent = () => {
@@ -12,7 +13,7 @@ function Content({ activePage }) {
       case "simon":
         return <SimonGameInfo />;
       case "pexeso":
-        return <h1>🧠 Pexeso</h1>;
+        return <PexesoInfo />;
       case "account":
         return <ChangePasswordForm />;
       case "username":
