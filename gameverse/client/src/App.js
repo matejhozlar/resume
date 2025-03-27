@@ -48,7 +48,11 @@ function App() {
       {/* Main layout container */}
       <div className="main-container">
         {/* Pass collapse props to the Sidebar */}
-        <Sidebar onPageChange={setActivePage} isCollapsed={isCollapsed} />
+        <Sidebar
+          onPageChange={setActivePage}
+          isCollapsed={isCollapsed}
+          setIsCollapsed={setIsCollapsed}
+        />
         <Content activePage={activePage} />
       </div>
     </div>

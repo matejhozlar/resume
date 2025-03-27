@@ -12,8 +12,6 @@ function Content({ activePage }) {
         return <h1>🔊 Simon Game</h1>;
       case "pexeso":
         return <h1>🧠 Pexeso</h1>;
-      case "profile":
-        return <h1>🎮 Your Gamer Profile</h1>;
       case "account":
         return <ChangePasswordForm />;
       case "username":

@@ -1,12 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-function Sidebar({ onPageChange, isCollapsed }) {
+function Sidebar({ onPageChange, isCollapsed, setIsCollapsed }) {
   const [openMenu, setOpenMenu] = useState({
     games: false,
     settings: false,
   });
 
+  // Whenever the sidebar is collapsed, close all submenus
+  useEffect(() => {
+    if (isCollapsed) {
+      setOpenMenu({
+        games: false,
+        settings: false,
+      });
+    }
+  }, [isCollapsed]);
+
   const toggleMenu = (menu) => {
+    // If the entire sidebar is collapsed, un-collapse it before toggling the submenu
+    if (isCollapsed) {
+      setIsCollapsed(false);
+    }
+
+    // Toggle the specific submenu
     setOpenMenu((prev) => ({
       ...prev,
       [menu]: !prev[menu],
@@ -22,7 +38,6 @@ function Sidebar({ onPageChange, isCollapsed }) {
             className="menu-btn toggle-btn"
             onClick={() => toggleMenu("games")}
           >
-            {/* If collapsed, you might show just an icon or short text */}
             {isCollapsed ? "🎮" : "Singleplayer"}
           </button>
           <ul
