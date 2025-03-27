@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import preview1 from "./assets/images/simongame-preview1.png";
-import preview2 from "./assets/images/simongame-preview2.png";
+import preview1 from "./assets/images/pexeso-preview1.png";
+import preview2 from "./assets/images/pexeso-preview2.png";
 
 function TicTacToeInfo() {
   const [zoomedImage, setZoomedImage] = useState(null);
@@ -18,7 +18,7 @@ function TicTacToeInfo() {
   return (
     <>
       <div className="game-info-wrapper">
-        <h1 className="game-title titles">Simon Game</h1>
+        <h1 className="game-title titles">Pexeso</h1>
 
         <div className="game-content">
           <div className="description-section">
