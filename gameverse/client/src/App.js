@@ -17,7 +17,7 @@ function App() {
           if (newUser) {
             setUser(newUser);
           } else {
-            setIsRegistering(false); // Go back to login
+            setIsRegistering(false);
           }
         }}
       />

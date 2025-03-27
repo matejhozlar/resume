@@ -72,17 +72,7 @@ function TicTacToeInfo() {
         </div>
 
         <div className="button-group">
-          <button
-            className="play-btn"
-            onClick={() =>
-              window.open(
-                "http://localhost:3000/tictactoe/index.html",
-                "_blank"
-              )
-            }
-          >
-            Play
-          </button>
+          <button className="play-btn">Play</button>
           <button
             className="game-btn"
             onClick={() =>
