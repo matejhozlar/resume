@@ -41,7 +41,7 @@ function App() {
   }
 
   return (
-    <div>
+    <div className="app-wrapper">
       {/* Render the header at the top */}
       <Header isCollapsed={isCollapsed} toggleSidebar={toggleSidebar} />
 

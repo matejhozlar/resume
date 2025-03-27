@@ -726,3 +726,48 @@ label {
   text-align: center;
   font-size: 20px;
 }
+
+/* Ensure html and body do not scroll */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Wrapper to structure header + main below it */
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Make header fixed height */
+.header {
+  height: 60px;
+  flex-shrink: 0;
+  position: sticky; /* or fixed, but sticky helps keep stacking context cleaner */
+  top: 0;
+  z-index: 100;
+}
+
+/* Main area takes remaining height below header */
+.main-container {
+  display: flex;
+  flex-grow: 1;
+  overflow: hidden; /* prevent double scroll */
+}
+
+/* Sidebar stays scrollable */
+.sidebar {
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* Only content is scrollable */
+.content {
+  flex-grow: 1;
+  height: 100%;
+  overflow-y: auto;
+}
