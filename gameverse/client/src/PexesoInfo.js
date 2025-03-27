@@ -26,7 +26,7 @@ function TicTacToeInfo() {
               Pexeso is a memory card game where players must find matching
               pairs of cards. The game starts with all cards face down, and
               players must remember the position of each card to find the
-              matching pairs.
+              matching pairs. Avaiable board-sizes: 2x2, 4x4, 6x6, 8x8.
             </p>
             <h4 className="titles">Rules</h4>
             <p>
@@ -50,8 +50,13 @@ function TicTacToeInfo() {
             <div className="tags">
               <span className="tag">🕹️ Singleplayer</span>
               <span className="tag">🧠 Memory</span>
-              <span className="tag">🎵 Sound</span>
-              <span className="tag">🎮 Classic</span>
+              <span className="tag">🎵 Music</span>
+              <span className="tag">🃏 Cards</span>
+              <span className="tag">🧩 Puzzle</span>
+              <span className="tag">⏱️ Timed</span>
+              <span className="tag">👨‍🎓 Brain Training</span>
+              <span className="tag">🎯 Focus</span>
+              <span className="tag">👾 Retro</span>
             </div>
           </div>
 
