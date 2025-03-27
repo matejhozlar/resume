@@ -76,6 +76,14 @@ function Sidebar({ onPageChange, isCollapsed, setIsCollapsed }) {
                 Pexeso
               </button>
             </li>
+            <li>
+              <button
+                className="menu-btn"
+                onClick={() => onPageChange("pixelarena")}
+              >
+                Pixel Arena
+              </button>
+            </li>
           </ul>
         </li>
 

@@ -5,6 +5,7 @@ import TicTacToeInfo from "./TicTacToeInfo";
 import SimonGameInfo from "./SimonGameInfo";
 import PexesoInfo from "./PexesoInfo";
 import Home from "./Home";
+import PixelArena from "./PixelArena/PixelArena";
 
 function Content({ activePage }) {
   const renderContent = () => {
@@ -19,6 +20,8 @@ function Content({ activePage }) {
         return <ChangePasswordForm />;
       case "username":
         return <ChangeUsernameForm />;
+      case "pixelarena":
+        return <PixelArena />;
       case "home":
         return <Home />;
       default:
