@@ -105,14 +105,6 @@ function Sidebar({ onPageChange, isCollapsed, setIsCollapsed }) {
             <li>
               <button
                 className="menu-btn"
-                onClick={() => onPageChange("profile")}
-              >
-                Your Gamer Profile
-              </button>
-            </li>
-            <li>
-              <button
-                className="menu-btn"
                 onClick={() => onPageChange("account")}
               >
                 Change Your Password

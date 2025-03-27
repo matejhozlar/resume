@@ -2,6 +2,7 @@ import React from "react";
 import ChangePasswordForm from "./ChangePasswordForm";
 import ChangeUsernameForm from "./ChangeUsernameForm";
 import TicTacToeInfo from "./TicTacToeInfo";
+import SimonGameInfo from "./SimonGameInfo";
 
 function Content({ activePage }) {
   const renderContent = () => {
@@ -9,7 +10,7 @@ function Content({ activePage }) {
       case "tic-tac-toe":
         return <TicTacToeInfo />;
       case "simon":
-        return <h1>🔊 Simon Game</h1>;
+        return <SimonGameInfo />;
       case "pexeso":
         return <h1>🧠 Pexeso</h1>;
       case "account":

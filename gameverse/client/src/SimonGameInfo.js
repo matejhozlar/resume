@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import preview1 from "./assets/images/tictactoe-preview1.png";
-import preview2 from "./assets/images/tictactoe-preview2.png";
+import preview1 from "./assets/images/simongame-preview1.png";
+import preview2 from "./assets/images/simongame-preview2.png";
 
 function TicTacToeInfo() {
   const [zoomedImage, setZoomedImage] = useState(null);
@@ -18,35 +18,26 @@ function TicTacToeInfo() {
   return (
     <>
       <div className="game-info-wrapper">
-        <h1 className="game-title titles">Tic Tac Toe</h1>
+        <h1 className="game-title titles">Simon Game</h1>
 
         <div className="game-content">
           <div className="description-section">
             <p>
-              Tic-Tac-Toe is a two-player game played on a grid. The goal is to
-              get 3 of your marks in a row—horizontally, vertically, or
-              diagonally—before your opponent.
+              Simon Game is a memory game where players must repeat a sequence
+              of colors and sounds. The game starts with a single color and
+              sound, and the sequence grows longer as the game progresses.
             </p>
             <h4 className="titles">Rules</h4>
             <p>
-              Players take turns placing their mark (X or O) on an empty cell.
-              The first player to get 3 of their marks in a row wins the game.
-            </p>
-            <h4 className="titles">AI Difficulties</h4>
-            <p>
-              The game offers 3 AI difficulties: Easy, Medium, and Hard.
-              <ul>
-                <li>Easy: AI makes random moves.</li>
-                <li>Medium: AI blocks the player from winning.</li>
-                <li>Hard: AI plays to win.</li>
-              </ul>
+              Players must repeat the sequence of colors and sounds by clicking
+              the corresponding buttons. The game ends when a player makes a
+              mistake.
             </p>
             <div className="tags">
-              <span className="tag">👫 1-2 Players</span>
-              <span className="tag">👥 Local Multiplayer</span>
-              <span className="tag">🤖 AI Difficulty</span>
-              <span className="tag">⚙️ Custom Rules</span>
-              <span className="tag">🎵 Music</span>
+              <span className="tag">🕹️ Singleplayer</span>
+              <span className="tag">🧠 Memory</span>
+              <span className="tag">🎵 Sound</span>
+              <span className="tag">🎮 Classic</span>
             </div>
           </div>
 
@@ -75,7 +66,7 @@ function TicTacToeInfo() {
           <button
             className="play-btn"
             onClick={() => {
-              window.location.href = "http://127.0.0.1:3001/games/tic-tac-toe/";
+              window.location.href = "http://127.0.0.1:3001/games/simongame/";
             }}
           >
             Play
@@ -84,7 +75,7 @@ function TicTacToeInfo() {
             className="game-btn"
             onClick={() =>
               window.open(
-                "https://github.com/matejhozlar/resume/tree/main/games/tic-tac-toe",
+                "https://github.com/matejhozlar/resume/tree/main/games/simongame",
                 "_blank"
               )
             }

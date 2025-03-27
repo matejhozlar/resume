@@ -52,6 +52,7 @@ function App() {
           onPageChange={setActivePage}
           isCollapsed={isCollapsed}
           setIsCollapsed={setIsCollapsed}
+          toggleSidebar={toggleSidebar}
         />
         <Content activePage={activePage} />
       </div>
