@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function Sidebar({ onPageChange }) {
+function Sidebar({ onPageChange, isCollapsed }) {
   const [openMenu, setOpenMenu] = useState({
     games: false,
     settings: false,
@@ -14,7 +14,7 @@ function Sidebar({ onPageChange }) {
   };
 
   return (
-    <nav className="sidebar">
+    <nav className={`sidebar ${isCollapsed ? "collapsed" : ""}`}>
       <ul className="menu-list no-bullets">
         {/* GAMES */}
         <li className={`menu-item has-submenu ${openMenu.games ? "open" : ""}`}>
@@ -22,7 +22,8 @@ function Sidebar({ onPageChange }) {
             className="menu-btn toggle-btn"
             onClick={() => toggleMenu("games")}
           >
-            Games
+            {/* If collapsed, you might show just an icon or short text */}
+            {isCollapsed ? "🎮" : "Singleplayer"}
           </button>
           <ul
             className="submenu"
@@ -55,20 +56,20 @@ function Sidebar({ onPageChange }) {
           </ul>
         </li>
 
-        {/* STATIC NON-FOLDING ITEMS */}
+        {/* STATIC ITEMS */}
         <li className="menu-item">
           <button className="menu-btn toggle-btn no-arrow" disabled>
-            Multiplayer (TBD)
+            {isCollapsed ? "🆚" : "Multiplayer (TBD)"}
           </button>
         </li>
         <li className="menu-item">
           <button className="menu-btn toggle-btn no-arrow" disabled>
-            Leaderboards (TBD)
+            {isCollapsed ? "🏆" : "Leaderboards (TBD)"}
           </button>
         </li>
         <li className="menu-item">
           <button className="menu-btn toggle-btn no-arrow" disabled>
-            Character Creation (TBD)
+            {isCollapsed ? "👤" : "Char Creation (TBD)"}
           </button>
         </li>
 
@@ -80,7 +81,7 @@ function Sidebar({ onPageChange }) {
             className="menu-btn toggle-btn"
             onClick={() => toggleMenu("settings")}
           >
-            Settings
+            {isCollapsed ? "⚙️" : "Settings"}
           </button>
           <ul
             className="submenu"
@@ -116,7 +117,7 @@ function Sidebar({ onPageChange }) {
         {/* EXIT */}
         <li>
           <a className="menu-btn" href="/">
-            Log Out
+            {isCollapsed ? "🚪" : "Log Out"}
           </a>
         </li>
       </ul>

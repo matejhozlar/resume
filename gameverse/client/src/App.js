@@ -3,12 +3,19 @@ import Sidebar from "./Sidebar";
 import Content from "./Content";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
+import Header from "./Layout";
 import "./styles.css";
 
 function App() {
   const [user, setUser] = useState(null);
   const [activePage, setActivePage] = useState("home");
   const [isRegistering, setIsRegistering] = useState(false);
+
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsCollapsed((prev) => !prev);
+  };
 
   if (!user) {
     return isRegistering ? (
@@ -34,9 +41,16 @@ function App() {
   }
 
   return (
-    <div className="main-container">
-      <Sidebar onPageChange={setActivePage} />
-      <Content activePage={activePage} />
+    <div>
+      {/* Render the header at the top */}
+      <Header isCollapsed={isCollapsed} toggleSidebar={toggleSidebar} />
+
+      {/* Main layout container */}
+      <div className="main-container">
+        {/* Pass collapse props to the Sidebar */}
+        <Sidebar onPageChange={setActivePage} isCollapsed={isCollapsed} />
+        <Content activePage={activePage} />
+      </div>
     </div>
   );
 }
