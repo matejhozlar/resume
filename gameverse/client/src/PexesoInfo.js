@@ -23,15 +23,16 @@ function TicTacToeInfo() {
         <div className="game-content">
           <div className="description-section">
             <p>
-              Simon Game is a memory game where players must repeat a sequence
-              of colors and sounds. The game starts with a single color and
-              sound, and the sequence grows longer as the game progresses.
+              Pexeso is a memory card game where players must find matching
+              pairs of cards. The game starts with all cards face down, and
+              players must remember the position of each card to find the
+              matching pairs.
             </p>
             <h4 className="titles">Rules</h4>
             <p>
-              Players must repeat the sequence of colors and sounds by clicking
-              the corresponding buttons. The game ends when a player makes a
-              mistake.
+              Singleplayer version of the game offers 4 difficulty levels: Easy,
+              Medium, Hard and Insane. The player must find all matching pairs
+              to win the game.
             </p>
             <div className="tags">
               <span className="tag">🕹️ Singleplayer</span>
