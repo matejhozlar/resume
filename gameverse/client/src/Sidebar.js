@@ -68,6 +68,14 @@ function Sidebar({ onPageChange, isCollapsed, setIsCollapsed }) {
                 Pexeso
               </button>
             </li>
+            <li>
+              <button
+                className="menu-btn"
+                onClick={() => onPageChange("galacticblitz")}
+              >
+                Galactic Blitz
+              </button>
+            </li>
           </ul>
         </li>
 
