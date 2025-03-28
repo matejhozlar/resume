@@ -15,6 +15,8 @@ const BULLET_SPEED = 6;
 const FORWARD_OFFSET = 16;
 const SIDE_OFFSET = 12;
 const SHOOT_COOLDOWN = 200;
+const ACCELERATION = 0.2;
+const FRICTION = 0.1;
 
 const lerpAngle = (a, b, t) => {
   const diff = ((b - a + Math.PI) % (2 * Math.PI)) - Math.PI;
@@ -38,6 +40,8 @@ function PixelArena() {
     x: WORLD_WIDTH / 2,
     y: WORLD_HEIGHT / 2,
     angle: 0,
+    vx: 0,
+    vy: 0,
   });
   const lastAngleRef = useRef(0);
   const bulletsRef = useRef([]);
@@ -58,7 +62,25 @@ function PixelArena() {
 
   const isWalkable = (x, y) => {
     if (!obstacleCtxRef.current) return true;
-    const pixel = obstacleCtxRef.current.getImageData(x, y, 1, 1).data;
+
+    const ix = Math.floor(x);
+    const iy = Math.floor(y);
+
+    const clampedX = Math.max(
+      0,
+      Math.min(obstacleCanvasRef.current.width - 1, ix)
+    );
+    const clampedY = Math.max(
+      0,
+      Math.min(obstacleCanvasRef.current.height - 1, iy)
+    );
+
+    const pixel = obstacleCtxRef.current.getImageData(
+      clampedX,
+      clampedY,
+      1,
+      1
+    ).data;
     return pixel[0] > 0;
   };
 
@@ -123,7 +145,6 @@ function PixelArena() {
       canvas.removeEventListener("mouseenter", handleMouseEnter);
       canvas.removeEventListener("mouseleave", handleMouseLeave);
       canvas.removeEventListener("mousedown", handleClick);
-
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
@@ -156,56 +177,55 @@ function PixelArena() {
       lastAngleRef.current = targetAngle;
       player.angle = lerpAngle(player.angle, targetAngle, 0.2);
 
-      let dx = 0,
-        dy = 0;
-      let forward = { x: 0, y: 0 };
-      let strafe = { x: 0, y: 0 };
+      let inputX = 0,
+        inputY = 0;
 
       if (mouseActiveRef.current) {
-        // Twin-stick mode
         if (keys["w"]) {
-          dx += Math.cos(player.angle) * PLAYER_SPEED;
-          dy += Math.sin(player.angle) * PLAYER_SPEED;
+          inputX += Math.cos(player.angle);
+          inputY += Math.sin(player.angle);
         }
         if (keys["s"]) {
-          dx -= Math.cos(player.angle) * PLAYER_SPEED;
-          dy -= Math.sin(player.angle) * PLAYER_SPEED;
+          inputX -= Math.cos(player.angle);
+          inputY -= Math.sin(player.angle);
         }
         if (keys["a"]) {
-          dx += Math.cos(player.angle - Math.PI / 2) * PLAYER_SPEED;
-          dy += Math.sin(player.angle - Math.PI / 2) * PLAYER_SPEED;
+          inputX += Math.cos(player.angle - Math.PI / 2);
+          inputY += Math.sin(player.angle - Math.PI / 2);
         }
         if (keys["d"]) {
-          dx += Math.cos(player.angle + Math.PI / 2) * PLAYER_SPEED;
-          dy += Math.sin(player.angle + Math.PI / 2) * PLAYER_SPEED;
+          inputX += Math.cos(player.angle + Math.PI / 2);
+          inputY += Math.sin(player.angle + Math.PI / 2);
         }
       } else {
-        // WASD mode — classic top-down movement
-        if (keys["w"]) dy -= PLAYER_SPEED;
-        if (keys["s"]) dy += PLAYER_SPEED;
-        if (keys["a"]) dx -= PLAYER_SPEED;
-        if (keys["d"]) dx += PLAYER_SPEED;
+        if (keys["w"]) inputY -= 1;
+        if (keys["s"]) inputY += 1;
+        if (keys["a"]) inputX -= 1;
+        if (keys["d"]) inputX += 1;
       }
 
-      if (keys["w"]) {
-        dx += forward.x * PLAYER_SPEED;
-        dy += forward.y * PLAYER_SPEED;
-      }
-      if (keys["s"]) {
-        dx -= forward.x * PLAYER_SPEED;
-        dy -= forward.y * PLAYER_SPEED;
-      }
-      if (keys["a"]) {
-        dx += strafe.x * PLAYER_SPEED;
-        dy += strafe.y * PLAYER_SPEED;
-      }
-      if (keys["d"]) {
-        dx -= strafe.x * PLAYER_SPEED;
-        dy -= strafe.y * PLAYER_SPEED;
+      const inputLen = Math.hypot(inputX, inputY);
+      if (inputLen > 0) {
+        inputX /= inputLen;
+        inputY /= inputLen;
       }
 
-      const nextX = Math.max(0, Math.min(WORLD_WIDTH, player.x + dx));
-      const nextY = Math.max(0, Math.min(WORLD_HEIGHT, player.y + dy));
+      player.vx += inputX * ACCELERATION;
+      player.vy += inputY * ACCELERATION;
+
+      if (inputLen === 0) {
+        player.vx *= 1 - FRICTION;
+        player.vy *= 1 - FRICTION;
+      }
+
+      const speed = Math.hypot(player.vx, player.vy);
+      if (speed > PLAYER_SPEED) {
+        player.vx = (player.vx / speed) * PLAYER_SPEED;
+        player.vy = (player.vy / speed) * PLAYER_SPEED;
+      }
+
+      const nextX = Math.max(0, Math.min(WORLD_WIDTH, player.x + player.vx));
+      const nextY = Math.max(0, Math.min(WORLD_HEIGHT, player.y + player.vy));
 
       if (isWalkable(nextX, nextY)) {
         player.x = nextX;
