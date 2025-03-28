@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import mapImage from "../assets/maps/zombie-city.png";
 import playerSprite from "../assets/sprites/survivor.png";
 import mapImageObstacles from "../assets/maps/zombie-city-obstacles.png";
@@ -22,42 +22,19 @@ import reload16 from "../assets/sprites/reloading/survivor-reload_rifle_15.png";
 import reload17 from "../assets/sprites/reloading/survivor-reload_rifle_16.png";
 import reload18 from "../assets/sprites/reloading/survivor-reload_rifle_17.png";
 import reload19 from "../assets/sprites/reloading/survivor-reload_rifle_18.png";
-import idle from "../assets/sprites/movement/idle/survivor-idle_0.png";
-import walking1 from "../assets/sprites/movement/walking/survivor-walk_0.png";
-import walking2 from "../assets/sprites/movement/walking/survivor-walk_1.png";
-import walking3 from "../assets/sprites/movement/walking/survivor-walk_2.png";
-import walking4 from "../assets/sprites/movement/walking/survivor-walk_3.png";
-import walking5 from "../assets/sprites/movement/walking/survivor-walk_4.png";
-import walking6 from "../assets/sprites/movement/walking/survivor-walk_5.png";
-import walking7 from "../assets/sprites/movement/walking/survivor-walk_6.png";
-import walking8 from "../assets/sprites/movement/walking/survivor-walk_7.png";
-import walking9 from "../assets/sprites/movement/walking/survivor-walk_8.png";
-import walking10 from "../assets/sprites/movement/walking/survivor-walk_9.png";
-import walking11 from "../assets/sprites/movement/walking/survivor-walk_10.png";
-import walking12 from "../assets/sprites/movement/walking/survivor-walk_11.png";
-import walking13 from "../assets/sprites/movement/walking/survivor-walk_12.png";
-import walking14 from "../assets/sprites/movement/walking/survivor-walk_13.png";
-import walking15 from "../assets/sprites/movement/walking/survivor-walk_14.png";
-import walking16 from "../assets/sprites/movement/walking/survivor-walk_15.png";
-import walking17 from "../assets/sprites/movement/walking/survivor-walk_16.png";
-import walking18 from "../assets/sprites/movement/walking/survivor-walk_17.png";
-import walking19 from "../assets/sprites/movement/walking/survivor-walk_18.png";
-import walking20 from "../assets/sprites/movement/walking/survivor-walk_19.png";
 
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 600;
 const WORLD_WIDTH = 2000;
 const WORLD_HEIGHT = 2000;
 const PLAYER_SPEED = 1;
-const SPRITE_SIZE = 16;
-const SCALE = 3;
 const BULLET_SPEED = 6;
 const FORWARD_OFFSET = 16;
 const SIDE_OFFSET = 12;
 const SHOOT_COOLDOWN = 200;
 const ACCELERATION = 0.2;
 const FRICTION = 0.1;
-const RELOAD_DURATION = 1000; // ms
+const RELOAD_DURATION = 1000;
 const RELOAD_FRAMES = [
   reload1,
   reload2,
@@ -86,10 +63,13 @@ const lerpAngle = (a, b, t) => {
 };
 
 function PixelArena() {
+  const [gameStarted, setGameStarted] = useState(false);
+
   const canvasRef = useRef(null);
   const bgImageRef = useRef(new Image());
   const spriteImageRef = useRef(new Image());
   const bulletImageRef = useRef(new Image());
+
   const reloadImages = useRef(
     RELOAD_FRAMES.map((src) => {
       const img = new Image();
@@ -107,7 +87,6 @@ function PixelArena() {
   const mouseActiveRef = useRef(false);
   const mouseDownRef = useRef(false);
   const lastShotRef = useRef(0);
-
   const isReloadingRef = useRef(false);
   const reloadStartTimeRef = useRef(0);
 
@@ -179,6 +158,8 @@ function PixelArena() {
   };
 
   useEffect(() => {
+    if (!gameStarted) return;
+
     const handleKeyDown = (e) => {
       const key = e.key.toLowerCase();
       keysRef.current[key] = true;
@@ -225,9 +206,11 @@ function PixelArena() {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, []);
+  }, [gameStarted]);
 
   useEffect(() => {
+    if (!gameStarted) return;
+
     const ctx = canvasRef.current.getContext("2d");
     const loop = () => {
       const keys = keysRef.current;
@@ -321,7 +304,6 @@ function PixelArena() {
             Math.min(frameIndex, reloadImages.current.length - 1)
           ];
       } else {
-        spriteImageRef.current = new Image();
         spriteImageRef.current.src = playerSprite;
       }
 
@@ -348,7 +330,7 @@ function PixelArena() {
       const cameraX = player.x - CANVAS_WIDTH / 2;
       const cameraY = player.y - CANVAS_HEIGHT / 2;
       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-      if (bgImageRef.current.complete)
+      if (bgImageRef.current.complete) {
         ctx.drawImage(
           bgImageRef.current,
           -cameraX,
@@ -356,27 +338,21 @@ function PixelArena() {
           WORLD_WIDTH,
           WORLD_HEIGHT
         );
+      }
 
       bulletsRef.current.forEach((b) => {
         const angle = Math.atan2(b.dy, b.dx);
-        const size = 16;
         ctx.save();
         ctx.translate(b.x - cameraX, b.y - cameraY);
         ctx.rotate(angle);
-        ctx.drawImage(bulletImageRef.current, -size / 2, -size / 2, size, size);
+        ctx.drawImage(bulletImageRef.current, -8, -8, 16, 16);
         ctx.restore();
       });
 
       ctx.save();
       ctx.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
       ctx.rotate(player.angle);
-      ctx.drawImage(
-        spriteImageRef.current,
-        -((SPRITE_SIZE * SCALE) / 2),
-        -((SPRITE_SIZE * SCALE) / 2),
-        SPRITE_SIZE * SCALE,
-        SPRITE_SIZE * SCALE
-      );
+      ctx.drawImage(spriteImageRef.current, -24, -24, 48, 48);
       ctx.restore();
 
       ctx.fillStyle = "white";
@@ -386,13 +362,14 @@ function PixelArena() {
         10,
         20
       );
+
       requestAnimationFrame(loop);
     };
     requestAnimationFrame(loop);
-  }, []);
+  }, [gameStarted]);
 
   return (
-    <div style={{ textAlign: "center", padding: "20px" }}>
+    <div style={{ position: "relative", textAlign: "center" }}>
       <h1 className="titles">Pixel Arena</h1>
       <canvas
         ref={canvasRef}
@@ -403,8 +380,39 @@ function PixelArena() {
           backgroundColor: "#000",
           imageRendering: "pixelated",
           cursor: "crosshair",
+          filter: !gameStarted ? "blur(5px)" : "none",
         }}
-      ></canvas>
+      />
+      {!gameStarted && (
+        <div
+          style={{
+            position: "absolute",
+            top: "30%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            background: "rgba(0,0,0,0.8)",
+            padding: "20px",
+            borderRadius: "12px",
+            color: "#fff",
+            zIndex: 10,
+          }}
+        >
+          <h2>Choose a Map</h2>
+          <div
+            onClick={() => setGameStarted(true)}
+            style={{
+              marginTop: "10px",
+              width: "200px",
+              height: "120px",
+              backgroundImage: `url(${mapImage})`,
+              backgroundSize: "cover",
+              cursor: "pointer",
+              border: "2px solid #fff",
+              borderRadius: "6px",
+            }}
+          ></div>
+        </div>
+      )}
     </div>
   );
 }
