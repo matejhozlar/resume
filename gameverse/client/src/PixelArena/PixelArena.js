@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import mapImage from "../assets/maps/zombie-city.png";
 import playerSprite from "../assets/sprites/survivor.png";
 import mapImageObstacles from "../assets/maps/zombie-city-obstacles.png";
@@ -36,7 +36,7 @@ const SIDE_OFFSET = 12;
 const SHOOT_COOLDOWN = 200;
 const ACCELERATION = 0.2;
 const FRICTION = 0.1;
-const RELOAD_DURATION = 1000; // ms
+const RELOAD_DURATION = 1000;
 const RELOAD_FRAMES = [
   reload1,
   reload2,
@@ -76,7 +76,6 @@ function PixelArena() {
       return img;
     })
   );
-
   const obstacleImageRef = useRef(new Image());
   const obstacleCanvasRef = useRef(document.createElement("canvas"));
   const obstacleCtxRef = useRef(null);
@@ -86,13 +85,12 @@ function PixelArena() {
   const mouseActiveRef = useRef(false);
   const mouseDownRef = useRef(false);
   const lastShotRef = useRef(0);
-
   const isReloadingRef = useRef(false);
   const reloadStartTimeRef = useRef(0);
-
   const currentAmmoRef = useRef(30);
   const reserveAmmoRef = useRef(270);
-
+  const bulletsRef = useRef([]);
+  const lastAngleRef = useRef(0);
   const playerRef = useRef({
     x: WORLD_WIDTH / 2,
     y: WORLD_HEIGHT / 2,
@@ -101,8 +99,7 @@ function PixelArena() {
     vy: 0,
   });
 
-  const lastAngleRef = useRef(0);
-  const bulletsRef = useRef([]);
+  const [gameStarted, setGameStarted] = useState(false);
 
   useEffect(() => {
     bgImageRef.current.src = mapImage;
@@ -171,9 +168,7 @@ function PixelArena() {
         reloadStartTimeRef.current = Date.now();
       }
     };
-    const handleKeyUp = (e) => {
-      keysRef.current[e.key.toLowerCase()] = false;
-    };
+    const handleKeyUp = (e) => (keysRef.current[e.key.toLowerCase()] = false);
     const handleMouseMove = (e) => {
       const rect = canvasRef.current.getBoundingClientRect();
       mouseRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
@@ -207,12 +202,15 @@ function PixelArena() {
   }, []);
 
   useEffect(() => {
+    if (!gameStarted) return;
+
     const ctx = canvasRef.current.getContext("2d");
+
     const loop = () => {
       const keys = keysRef.current;
       const player = playerRef.current;
-      let targetAngle = player.angle;
 
+      let targetAngle = player.angle;
       if (mouseActiveRef.current) {
         const { x: mx, y: my } = mouseRef.current;
         targetAngle = Math.atan2(my - CANVAS_HEIGHT / 2, mx - CANVAS_WIDTH / 2);
@@ -327,7 +325,8 @@ function PixelArena() {
       const cameraX = player.x - CANVAS_WIDTH / 2;
       const cameraY = player.y - CANVAS_HEIGHT / 2;
       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-      if (bgImageRef.current.complete)
+
+      if (bgImageRef.current.complete) {
         ctx.drawImage(
           bgImageRef.current,
           -cameraX,
@@ -335,14 +334,14 @@ function PixelArena() {
           WORLD_WIDTH,
           WORLD_HEIGHT
         );
+      }
 
       bulletsRef.current.forEach((b) => {
         const angle = Math.atan2(b.dy, b.dx);
-        const size = 16;
         ctx.save();
         ctx.translate(b.x - cameraX, b.y - cameraY);
         ctx.rotate(angle);
-        ctx.drawImage(bulletImageRef.current, -size / 2, -size / 2, size, size);
+        ctx.drawImage(bulletImageRef.current, -8, -8, 16, 16);
         ctx.restore();
       });
 
@@ -351,8 +350,8 @@ function PixelArena() {
       ctx.rotate(player.angle);
       ctx.drawImage(
         spriteImageRef.current,
-        -((SPRITE_SIZE * SCALE) / 2),
-        -((SPRITE_SIZE * SCALE) / 2),
+        -24,
+        -24,
         SPRITE_SIZE * SCALE,
         SPRITE_SIZE * SCALE
       );
@@ -365,14 +364,49 @@ function PixelArena() {
         10,
         20
       );
+
       requestAnimationFrame(loop);
     };
+
     requestAnimationFrame(loop);
-  }, []);
+  }, [gameStarted]);
 
   return (
-    <div style={{ textAlign: "center", padding: "20px" }}>
-      <h1 className="titles">Pixel Arena</h1>
+    <div
+      style={{ position: "relative", width: CANVAS_WIDTH, margin: "0 auto" }}
+    >
+      {!gameStarted && (
+        <div
+          style={{
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            backdropFilter: "blur(8px)",
+            background: "rgba(0, 0, 0, 0.3)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 2,
+          }}
+        >
+          <button
+            onClick={() => setGameStarted(true)}
+            style={{
+              fontSize: "24px",
+              padding: "12px 36px",
+              borderRadius: "10px",
+              border: "none",
+              backgroundColor: "#8a5cf6",
+              color: "#fff",
+              cursor: "pointer",
+              boxShadow: "0 0 10px rgba(0,0,0,0.5)",
+            }}
+          >
+            Play
+          </button>
+        </div>
+      )}
+
       <canvas
         ref={canvasRef}
         width={CANVAS_WIDTH}
@@ -382,6 +416,7 @@ function PixelArena() {
           backgroundColor: "#000",
           imageRendering: "pixelated",
           cursor: "crosshair",
+          filter: !gameStarted ? "blur(6px)" : "none",
         }}
       ></canvas>
     </div>
