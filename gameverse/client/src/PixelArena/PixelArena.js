@@ -25,12 +25,14 @@ function PixelArena() {
   const canvasRef = useRef(null);
   const bgImageRef = useRef(new Image());
   const spriteImageRef = useRef(new Image());
-  const bulletImageRef = useRef(new Image()); // ✅ bullet image
+  const bulletImageRef = useRef(new Image());
   const obstacleImageRef = useRef(new Image());
   const obstacleCanvasRef = useRef(document.createElement("canvas"));
   const obstacleCtxRef = useRef(null);
 
   const keysRef = useRef({});
+  const mouseRef = useRef({ x: CANVAS_WIDTH / 2, y: CANVAS_HEIGHT / 2 });
+  const mouseActiveRef = useRef(false);
   const lastShotRef = useRef(0);
   const playerRef = useRef({
     x: WORLD_WIDTH / 2,
@@ -43,7 +45,7 @@ function PixelArena() {
   useEffect(() => {
     bgImageRef.current.src = mapImage;
     spriteImageRef.current.src = playerSprite;
-    bulletImageRef.current.src = bullet; // ✅ Load bullet sprite
+    bulletImageRef.current.src = bullet;
 
     obstacleImageRef.current.src = mapImageObstacles;
     obstacleImageRef.current.onload = () => {
@@ -80,27 +82,50 @@ function PixelArena() {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      const key = e.key.toLowerCase();
-      keysRef.current[key] = true;
+      keysRef.current[e.key.toLowerCase()] = true;
     };
 
     const handleKeyUp = (e) => {
-      const key = e.key.toLowerCase();
-      keysRef.current[key] = false;
+      keysRef.current[e.key.toLowerCase()] = false;
     };
 
     const handleClick = () => {
       shootBullet();
     };
 
+    const handleMouseMove = (e) => {
+      const rect = canvasRef.current.getBoundingClientRect();
+      mouseRef.current = {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      };
+    };
+
+    const handleMouseEnter = () => {
+      mouseActiveRef.current = true;
+    };
+
+    const handleMouseLeave = () => {
+      mouseActiveRef.current = false;
+    };
+
+    const canvas = canvasRef.current;
+    canvas.addEventListener("mousemove", handleMouseMove);
+    canvas.addEventListener("mouseenter", handleMouseEnter);
+    canvas.addEventListener("mouseleave", handleMouseLeave);
+    canvas.addEventListener("mousedown", handleClick);
+
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
-    window.addEventListener("mousedown", handleClick);
 
     return () => {
+      canvas.removeEventListener("mousemove", handleMouseMove);
+      canvas.removeEventListener("mouseenter", handleMouseEnter);
+      canvas.removeEventListener("mouseleave", handleMouseLeave);
+      canvas.removeEventListener("mousedown", handleClick);
+
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
-      window.removeEventListener("mousedown", handleClick);
     };
   }, []);
 
@@ -111,29 +136,80 @@ function PixelArena() {
       const keys = keysRef.current;
       const player = playerRef.current;
 
+      let targetAngle = player.angle;
+
+      if (mouseActiveRef.current) {
+        const { x: mx, y: my } = mouseRef.current;
+        targetAngle = Math.atan2(my - CANVAS_HEIGHT / 2, mx - CANVAS_WIDTH / 2);
+      } else {
+        let dx = 0,
+          dy = 0;
+        if (keys["w"]) dy -= 1;
+        if (keys["s"]) dy += 1;
+        if (keys["a"]) dx -= 1;
+        if (keys["d"]) dx += 1;
+        if (dx !== 0 || dy !== 0) {
+          targetAngle = Math.atan2(dy, dx);
+        }
+      }
+
+      lastAngleRef.current = targetAngle;
+      player.angle = lerpAngle(player.angle, targetAngle, 0.2);
+
       let dx = 0,
         dy = 0;
-      if (keys["w"]) dy -= 1;
-      if (keys["s"]) dy += 1;
-      if (keys["a"]) dx -= 1;
-      if (keys["d"]) dx += 1;
+      let forward = { x: 0, y: 0 };
+      let strafe = { x: 0, y: 0 };
 
-      if (dx !== 0 || dy !== 0) {
-        const len = Math.hypot(dx, dy);
-        dx = (dx / len) * PLAYER_SPEED;
-        dy = (dy / len) * PLAYER_SPEED;
-
-        const nextX = Math.max(0, Math.min(WORLD_WIDTH, player.x + dx));
-        const nextY = Math.max(0, Math.min(WORLD_HEIGHT, player.y + dy));
-
-        if (isWalkable(nextX, nextY)) {
-          player.x = nextX;
-          player.y = nextY;
+      if (mouseActiveRef.current) {
+        // Twin-stick mode
+        if (keys["w"]) {
+          dx += Math.cos(player.angle) * PLAYER_SPEED;
+          dy += Math.sin(player.angle) * PLAYER_SPEED;
         }
+        if (keys["s"]) {
+          dx -= Math.cos(player.angle) * PLAYER_SPEED;
+          dy -= Math.sin(player.angle) * PLAYER_SPEED;
+        }
+        if (keys["a"]) {
+          dx += Math.cos(player.angle - Math.PI / 2) * PLAYER_SPEED;
+          dy += Math.sin(player.angle - Math.PI / 2) * PLAYER_SPEED;
+        }
+        if (keys["d"]) {
+          dx += Math.cos(player.angle + Math.PI / 2) * PLAYER_SPEED;
+          dy += Math.sin(player.angle + Math.PI / 2) * PLAYER_SPEED;
+        }
+      } else {
+        // WASD mode — classic top-down movement
+        if (keys["w"]) dy -= PLAYER_SPEED;
+        if (keys["s"]) dy += PLAYER_SPEED;
+        if (keys["a"]) dx -= PLAYER_SPEED;
+        if (keys["d"]) dx += PLAYER_SPEED;
+      }
 
-        const targetAngle = Math.atan2(dy, dx);
-        lastAngleRef.current = targetAngle;
-        player.angle = lerpAngle(player.angle, targetAngle, 0.2);
+      if (keys["w"]) {
+        dx += forward.x * PLAYER_SPEED;
+        dy += forward.y * PLAYER_SPEED;
+      }
+      if (keys["s"]) {
+        dx -= forward.x * PLAYER_SPEED;
+        dy -= forward.y * PLAYER_SPEED;
+      }
+      if (keys["a"]) {
+        dx += strafe.x * PLAYER_SPEED;
+        dy += strafe.y * PLAYER_SPEED;
+      }
+      if (keys["d"]) {
+        dx -= strafe.x * PLAYER_SPEED;
+        dy -= strafe.y * PLAYER_SPEED;
+      }
+
+      const nextX = Math.max(0, Math.min(WORLD_WIDTH, player.x + dx));
+      const nextY = Math.max(0, Math.min(WORLD_HEIGHT, player.y + dy));
+
+      if (isWalkable(nextX, nextY)) {
+        player.x = nextX;
+        player.y = nextY;
       }
 
       const now = Date.now();
@@ -172,7 +248,6 @@ function PixelArena() {
         );
       }
 
-      // ✅ Draw bullets using sprite
       bulletsRef.current.forEach((b) => {
         const angle = Math.atan2(b.dy, b.dx);
         const size = 16;
