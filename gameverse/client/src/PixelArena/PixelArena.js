@@ -3,6 +3,25 @@ import mapImage from "../assets/maps/zombie-city.png";
 import playerSprite from "../assets/sprites/survivor.png";
 import mapImageObstacles from "../assets/maps/zombie-city-obstacles.png";
 import bullet from "../assets/images/bullet/bullet.png";
+import reload1 from "../assets/images/reloading/survivor-reload_rifle_0.png";
+import reload2 from "../assets/images/reloading/survivor-reload_rifle_1.png";
+import reload3 from "../assets/images/reloading/survivor-reload_rifle_2.png";
+import reload4 from "../assets/images/reloading/survivor-reload_rifle_3.png";
+import reload5 from "../assets/images/reloading/survivor-reload_rifle_4.png";
+import reload6 from "../assets/images/reloading/survivor-reload_rifle_5.png";
+import reload7 from "../assets/images/reloading/survivor-reload_rifle_6.png";
+import reload8 from "../assets/images/reloading/survivor-reload_rifle_7.png";
+import reload9 from "../assets/images/reloading/survivor-reload_rifle_8.png";
+import reload10 from "../assets/images/reloading/survivor-reload_rifle_9.png";
+import reload11 from "../assets/images/reloading/survivor-reload_rifle_10.png";
+import reload12 from "../assets/images/reloading/survivor-reload_rifle_11.png";
+import reload13 from "../assets/images/reloading/survivor-reload_rifle_12.png";
+import reload14 from "../assets/images/reloading/survivor-reload_rifle_13.png";
+import reload15 from "../assets/images/reloading/survivor-reload_rifle_14.png";
+import reload16 from "../assets/images/reloading/survivor-reload_rifle_15.png";
+import reload17 from "../assets/images/reloading/survivor-reload_rifle_16.png";
+import reload18 from "../assets/images/reloading/survivor-reload_rifle_17.png";
+import reload19 from "../assets/images/reloading/survivor-reload_rifle_18.png";
 
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 600;
@@ -17,6 +36,28 @@ const SIDE_OFFSET = 12;
 const SHOOT_COOLDOWN = 200;
 const ACCELERATION = 0.2;
 const FRICTION = 0.1;
+const RELOAD_DURATION = 1000; // ms
+const RELOAD_FRAMES = [
+  reload1,
+  reload2,
+  reload3,
+  reload4,
+  reload5,
+  reload6,
+  reload7,
+  reload8,
+  reload9,
+  reload10,
+  reload11,
+  reload12,
+  reload13,
+  reload14,
+  reload15,
+  reload16,
+  reload17,
+  reload18,
+  reload19,
+];
 
 const lerpAngle = (a, b, t) => {
   const diff = ((b - a + Math.PI) % (2 * Math.PI)) - Math.PI;
@@ -28,6 +69,14 @@ function PixelArena() {
   const bgImageRef = useRef(new Image());
   const spriteImageRef = useRef(new Image());
   const bulletImageRef = useRef(new Image());
+  const reloadImages = useRef(
+    RELOAD_FRAMES.map((src) => {
+      const img = new Image();
+      img.src = src;
+      return img;
+    })
+  );
+
   const obstacleImageRef = useRef(new Image());
   const obstacleCanvasRef = useRef(document.createElement("canvas"));
   const obstacleCtxRef = useRef(null);
@@ -37,6 +86,13 @@ function PixelArena() {
   const mouseActiveRef = useRef(false);
   const mouseDownRef = useRef(false);
   const lastShotRef = useRef(0);
+
+  const isReloadingRef = useRef(false);
+  const reloadStartTimeRef = useRef(0);
+
+  const currentAmmoRef = useRef(30);
+  const reserveAmmoRef = useRef(270);
+
   const playerRef = useRef({
     x: WORLD_WIDTH / 2,
     y: WORLD_HEIGHT / 2,
@@ -44,6 +100,7 @@ function PixelArena() {
     vx: 0,
     vy: 0,
   });
+
   const lastAngleRef = useRef(0);
   const bulletsRef = useRef([]);
 
@@ -51,7 +108,6 @@ function PixelArena() {
     bgImageRef.current.src = mapImage;
     spriteImageRef.current.src = playerSprite;
     bulletImageRef.current.src = bullet;
-
     obstacleImageRef.current.src = mapImageObstacles;
     obstacleImageRef.current.onload = () => {
       obstacleCanvasRef.current.width = obstacleImageRef.current.width;
@@ -83,6 +139,7 @@ function PixelArena() {
   };
 
   const shootBullet = () => {
+    if (currentAmmoRef.current <= 0 || isReloadingRef.current) return;
     const { x, y } = playerRef.current;
     const angle = lastAngleRef.current;
     bulletsRef.current.push({
@@ -97,35 +154,37 @@ function PixelArena() {
       dx: Math.cos(angle) * BULLET_SPEED,
       dy: Math.sin(angle) * BULLET_SPEED,
     });
+    currentAmmoRef.current--;
   };
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      keysRef.current[e.key.toLowerCase()] = true;
+      const key = e.key.toLowerCase();
+      keysRef.current[key] = true;
+      if (
+        key === "r" &&
+        !isReloadingRef.current &&
+        currentAmmoRef.current < 30 &&
+        reserveAmmoRef.current > 0
+      ) {
+        isReloadingRef.current = true;
+        reloadStartTimeRef.current = Date.now();
+      }
     };
     const handleKeyUp = (e) => {
       keysRef.current[e.key.toLowerCase()] = false;
     };
     const handleMouseMove = (e) => {
       const rect = canvasRef.current.getBoundingClientRect();
-      mouseRef.current = {
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
-      };
+      mouseRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
     };
-    const handleMouseEnter = () => {
-      mouseActiveRef.current = true;
-    };
+    const handleMouseEnter = () => (mouseActiveRef.current = true);
     const handleMouseLeave = () => {
       mouseActiveRef.current = false;
       mouseDownRef.current = false;
     };
-    const handleMouseDown = () => {
-      mouseDownRef.current = true;
-    };
-    const handleMouseUp = () => {
-      mouseDownRef.current = false;
-    };
+    const handleMouseDown = () => (mouseDownRef.current = true);
+    const handleMouseUp = () => (mouseDownRef.current = false);
 
     const canvas = canvasRef.current;
     canvas.addEventListener("mousemove", handleMouseMove);
@@ -149,11 +208,9 @@ function PixelArena() {
 
   useEffect(() => {
     const ctx = canvasRef.current.getContext("2d");
-
     const loop = () => {
       const keys = keysRef.current;
       const player = playerRef.current;
-
       let targetAngle = player.angle;
 
       if (mouseActiveRef.current) {
@@ -166,9 +223,7 @@ function PixelArena() {
         if (keys["s"]) dy += 1;
         if (keys["a"]) dx -= 1;
         if (keys["d"]) dx += 1;
-        if (dx !== 0 || dy !== 0) {
-          targetAngle = Math.atan2(dy, dx);
-        }
+        if (dx || dy) targetAngle = Math.atan2(dy, dx);
       }
 
       lastAngleRef.current = targetAngle;
@@ -176,7 +231,6 @@ function PixelArena() {
 
       let inputX = 0,
         inputY = 0;
-
       if (mouseActiveRef.current) {
         if (keys["w"]) {
           inputX += Math.cos(player.angle);
@@ -201,16 +255,15 @@ function PixelArena() {
         if (keys["d"]) inputX += 1;
       }
 
-      const inputLen = Math.hypot(inputX, inputY);
-      if (inputLen > 0) {
-        inputX /= inputLen;
-        inputY /= inputLen;
+      const len = Math.hypot(inputX, inputY);
+      if (len > 0) {
+        inputX /= len;
+        inputY /= len;
       }
 
       player.vx += inputX * ACCELERATION;
       player.vy += inputY * ACCELERATION;
-
-      if (inputLen === 0) {
+      if (len === 0) {
         player.vx *= 1 - FRICTION;
         player.vy *= 1 - FRICTION;
       }
@@ -223,25 +276,45 @@ function PixelArena() {
 
       const nextX = player.x + player.vx;
       const nextY = player.y + player.vy;
-
       if (isWalkable(nextX, nextY)) {
         player.x = nextX;
         player.y = nextY;
       }
 
+      if (isReloadingRef.current) {
+        const elapsed = Date.now() - reloadStartTimeRef.current;
+        const frameIndex = Math.floor(
+          (elapsed / RELOAD_DURATION) * reloadImages.current.length
+        );
+        if (elapsed >= RELOAD_DURATION) {
+          const toReload = Math.min(
+            30 - currentAmmoRef.current,
+            reserveAmmoRef.current
+          );
+          currentAmmoRef.current += toReload;
+          reserveAmmoRef.current -= toReload;
+          isReloadingRef.current = false;
+        }
+        spriteImageRef.current =
+          reloadImages.current[
+            Math.min(frameIndex, reloadImages.current.length - 1)
+          ];
+      } else {
+        spriteImageRef.current = new Image();
+        spriteImageRef.current.src = playerSprite;
+      }
+
       const now = Date.now();
-      const wantsToShoot = keys[" "] || mouseDownRef.current;
-      if (wantsToShoot && now - lastShotRef.current > SHOOT_COOLDOWN) {
+      if (
+        (keys[" "] || mouseDownRef.current) &&
+        now - lastShotRef.current > SHOOT_COOLDOWN
+      ) {
         shootBullet();
         lastShotRef.current = now;
       }
 
       bulletsRef.current = bulletsRef.current
-        .map((b) => ({
-          ...b,
-          x: b.x + b.dx,
-          y: b.y + b.dy,
-        }))
+        .map((b) => ({ ...b, x: b.x + b.dx, y: b.y + b.dy }))
         .filter(
           (b) =>
             b.x >= 0 &&
@@ -253,10 +326,8 @@ function PixelArena() {
 
       const cameraX = player.x - CANVAS_WIDTH / 2;
       const cameraY = player.y - CANVAS_HEIGHT / 2;
-
       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-
-      if (bgImageRef.current.complete) {
+      if (bgImageRef.current.complete)
         ctx.drawImage(
           bgImageRef.current,
           -cameraX,
@@ -264,7 +335,6 @@ function PixelArena() {
           WORLD_WIDTH,
           WORLD_HEIGHT
         );
-      }
 
       bulletsRef.current.forEach((b) => {
         const angle = Math.atan2(b.dy, b.dx);
@@ -276,12 +346,11 @@ function PixelArena() {
         ctx.restore();
       });
 
-      const sprite = spriteImageRef.current;
       ctx.save();
       ctx.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
       ctx.rotate(player.angle);
       ctx.drawImage(
-        sprite,
+        spriteImageRef.current,
         -((SPRITE_SIZE * SCALE) / 2),
         -((SPRITE_SIZE * SCALE) / 2),
         SPRITE_SIZE * SCALE,
@@ -289,9 +358,15 @@ function PixelArena() {
       );
       ctx.restore();
 
+      ctx.fillStyle = "white";
+      ctx.font = "16px monospace";
+      ctx.fillText(
+        `${currentAmmoRef.current} / ${reserveAmmoRef.current}`,
+        10,
+        20
+      );
       requestAnimationFrame(loop);
     };
-
     requestAnimationFrame(loop);
   }, []);
 
