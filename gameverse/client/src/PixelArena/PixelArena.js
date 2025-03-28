@@ -35,6 +35,7 @@ function PixelArena() {
   const keysRef = useRef({});
   const mouseRef = useRef({ x: CANVAS_WIDTH / 2, y: CANVAS_HEIGHT / 2 });
   const mouseActiveRef = useRef(false);
+  const mouseDownRef = useRef(false);
   const lastShotRef = useRef(0);
   const playerRef = useRef({
     x: WORLD_WIDTH / 2,
@@ -62,10 +63,8 @@ function PixelArena() {
 
   const isWalkable = (x, y) => {
     if (!obstacleCtxRef.current) return true;
-
     const ix = Math.floor(x);
     const iy = Math.floor(y);
-
     const clampedX = Math.max(
       0,
       Math.min(obstacleCanvasRef.current.width - 1, ix)
@@ -74,7 +73,6 @@ function PixelArena() {
       0,
       Math.min(obstacleCanvasRef.current.height - 1, iy)
     );
-
     const pixel = obstacleCtxRef.current.getImageData(
       clampedX,
       clampedY,
@@ -87,7 +85,6 @@ function PixelArena() {
   const shootBullet = () => {
     const { x, y } = playerRef.current;
     const angle = lastAngleRef.current;
-
     bulletsRef.current.push({
       x:
         x +
@@ -106,15 +103,9 @@ function PixelArena() {
     const handleKeyDown = (e) => {
       keysRef.current[e.key.toLowerCase()] = true;
     };
-
     const handleKeyUp = (e) => {
       keysRef.current[e.key.toLowerCase()] = false;
     };
-
-    const handleClick = () => {
-      shootBullet();
-    };
-
     const handleMouseMove = (e) => {
       const rect = canvasRef.current.getBoundingClientRect();
       mouseRef.current = {
@@ -122,21 +113,26 @@ function PixelArena() {
         y: e.clientY - rect.top,
       };
     };
-
     const handleMouseEnter = () => {
       mouseActiveRef.current = true;
     };
-
     const handleMouseLeave = () => {
       mouseActiveRef.current = false;
+      mouseDownRef.current = false;
+    };
+    const handleMouseDown = () => {
+      mouseDownRef.current = true;
+    };
+    const handleMouseUp = () => {
+      mouseDownRef.current = false;
     };
 
     const canvas = canvasRef.current;
     canvas.addEventListener("mousemove", handleMouseMove);
     canvas.addEventListener("mouseenter", handleMouseEnter);
     canvas.addEventListener("mouseleave", handleMouseLeave);
-    canvas.addEventListener("mousedown", handleClick);
-
+    canvas.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mouseup", handleMouseUp);
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
 
@@ -144,7 +140,8 @@ function PixelArena() {
       canvas.removeEventListener("mousemove", handleMouseMove);
       canvas.removeEventListener("mouseenter", handleMouseEnter);
       canvas.removeEventListener("mouseleave", handleMouseLeave);
-      canvas.removeEventListener("mousedown", handleClick);
+      canvas.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mouseup", handleMouseUp);
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
@@ -224,8 +221,8 @@ function PixelArena() {
         player.vy = (player.vy / speed) * PLAYER_SPEED;
       }
 
-      const nextX = Math.max(0, Math.min(WORLD_WIDTH, player.x + player.vx));
-      const nextY = Math.max(0, Math.min(WORLD_HEIGHT, player.y + player.vy));
+      const nextX = player.x + player.vx;
+      const nextY = player.y + player.vy;
 
       if (isWalkable(nextX, nextY)) {
         player.x = nextX;
@@ -233,7 +230,8 @@ function PixelArena() {
       }
 
       const now = Date.now();
-      if (keys[" "] && now - lastShotRef.current > SHOOT_COOLDOWN) {
+      const wantsToShoot = keys[" "] || mouseDownRef.current;
+      if (wantsToShoot && now - lastShotRef.current > SHOOT_COOLDOWN) {
         shootBullet();
         lastShotRef.current = now;
       }
@@ -271,7 +269,6 @@ function PixelArena() {
       bulletsRef.current.forEach((b) => {
         const angle = Math.atan2(b.dy, b.dx);
         const size = 16;
-
         ctx.save();
         ctx.translate(b.x - cameraX, b.y - cameraY);
         ctx.rotate(angle);
