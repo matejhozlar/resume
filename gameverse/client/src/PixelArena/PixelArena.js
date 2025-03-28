@@ -1,113 +1,168 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import mapImage from "../assets/maps/zombie-city.png";
 import playerSprite from "../assets/sprites/survivor.png";
+import mapImageObstacles from "../assets/maps/zombie-city-obstacles.png";
+import bullet from "../assets/images/bullet/bullet.png";
 
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 600;
 const WORLD_WIDTH = 2000;
 const WORLD_HEIGHT = 2000;
-const PLAYER_SPEED = 2;
+const PLAYER_SPEED = 1;
 const SPRITE_SIZE = 16;
 const SCALE = 3;
+const BULLET_SPEED = 6;
+const FORWARD_OFFSET = 16;
+const SIDE_OFFSET = 12;
+const SHOOT_COOLDOWN = 200;
 
-const obstacles = [
-  { x: 195, y: 156, width: 273, height: 273 },
-  { x: 762, y: 176, width: 273, height: 273 },
-  { x: 1328, y: 195, width: 312, height: 312 },
-  { x: 195, y: 781, width: 312, height: 312 },
-  { x: 1406, y: 781, width: 273, height: 312 },
-  { x: 195, y: 1406, width: 312, height: 273 },
-  { x: 781, y: 1406, width: 312, height: 273 },
-  { x: 1348, y: 1367, width: 312, height: 312 },
-  { x: 566, y: 1602, width: 117, height: 59 },
-  { x: 1641, y: 625, width: 78, height: 117 },
-];
-
-function isColliding(x, y) {
-  return obstacles.some((obs) => {
-    return (
-      x < obs.x + obs.width &&
-      x + SPRITE_SIZE > obs.x &&
-      y < obs.y + obs.height &&
-      y + SPRITE_SIZE > obs.y
-    );
-  });
-}
+const lerpAngle = (a, b, t) => {
+  const diff = ((b - a + Math.PI) % (2 * Math.PI)) - Math.PI;
+  return a + diff * t;
+};
 
 function PixelArena() {
   const canvasRef = useRef(null);
-  const [keys, setKeys] = useState({});
-  const [player, setPlayer] = useState({
-    x: WORLD_WIDTH / 2,
-    y: WORLD_HEIGHT / 2,
-    angle: 0, // Radians
-  });
-
   const bgImageRef = useRef(new Image());
   const spriteImageRef = useRef(new Image());
+  const bulletImageRef = useRef(new Image()); // ✅ bullet image
+  const obstacleImageRef = useRef(new Image());
+  const obstacleCanvasRef = useRef(document.createElement("canvas"));
+  const obstacleCtxRef = useRef(null);
+
+  const keysRef = useRef({});
+  const lastShotRef = useRef(0);
+  const playerRef = useRef({
+    x: WORLD_WIDTH / 2,
+    y: WORLD_HEIGHT / 2,
+    angle: 0,
+  });
+  const lastAngleRef = useRef(0);
+  const bulletsRef = useRef([]);
 
   useEffect(() => {
     bgImageRef.current.src = mapImage;
     spriteImageRef.current.src = playerSprite;
+    bulletImageRef.current.src = bullet; // ✅ Load bullet sprite
+
+    obstacleImageRef.current.src = mapImageObstacles;
+    obstacleImageRef.current.onload = () => {
+      obstacleCanvasRef.current.width = obstacleImageRef.current.width;
+      obstacleCanvasRef.current.height = obstacleImageRef.current.height;
+      obstacleCtxRef.current = obstacleCanvasRef.current.getContext("2d");
+      obstacleCtxRef.current.drawImage(obstacleImageRef.current, 0, 0);
+    };
   }, []);
 
+  const isWalkable = (x, y) => {
+    if (!obstacleCtxRef.current) return true;
+    const pixel = obstacleCtxRef.current.getImageData(x, y, 1, 1).data;
+    return pixel[0] > 0;
+  };
+
+  const shootBullet = () => {
+    const { x, y } = playerRef.current;
+    const angle = lastAngleRef.current;
+
+    bulletsRef.current.push({
+      x:
+        x +
+        Math.cos(angle) * FORWARD_OFFSET +
+        Math.cos(angle + Math.PI / 2) * SIDE_OFFSET,
+      y:
+        y +
+        Math.sin(angle) * FORWARD_OFFSET +
+        Math.sin(angle + Math.PI / 2) * SIDE_OFFSET,
+      dx: Math.cos(angle) * BULLET_SPEED,
+      dy: Math.sin(angle) * BULLET_SPEED,
+    });
+  };
+
   useEffect(() => {
-    const handleKeyDown = (e) =>
-      setKeys((prev) => ({ ...prev, [e.key.toLowerCase()]: true }));
-    const handleKeyUp = (e) =>
-      setKeys((prev) => ({ ...prev, [e.key.toLowerCase()]: false }));
+    const handleKeyDown = (e) => {
+      const key = e.key.toLowerCase();
+      keysRef.current[key] = true;
+    };
+
+    const handleKeyUp = (e) => {
+      const key = e.key.toLowerCase();
+      keysRef.current[key] = false;
+    };
+
+    const handleClick = () => {
+      shootBullet();
+    };
 
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
+    window.addEventListener("mousedown", handleClick);
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
+      window.removeEventListener("mousedown", handleClick);
     };
   }, []);
 
   useEffect(() => {
     const ctx = canvasRef.current.getContext("2d");
 
-    const draw = () => {
-      let { x, y } = player;
+    const loop = () => {
+      const keys = keysRef.current;
+      const player = playerRef.current;
+
       let dx = 0,
         dy = 0;
+      if (keys["w"]) dy -= 1;
+      if (keys["s"]) dy += 1;
+      if (keys["a"]) dx -= 1;
+      if (keys["d"]) dx += 1;
 
-      if (keys["w"] || keys["arrowup"]) dy -= 1;
-      if (keys["s"] || keys["arrowdown"]) dy += 1;
-      if (keys["a"] || keys["arrowleft"]) dx -= 1;
-      if (keys["d"] || keys["arrowright"]) dx += 1;
-
-      // Normalize diagonal movement
       if (dx !== 0 || dy !== 0) {
-        const length = Math.hypot(dx, dy);
-        dx = (dx / length) * PLAYER_SPEED;
-        dy = (dy / length) * PLAYER_SPEED;
+        const len = Math.hypot(dx, dy);
+        dx = (dx / len) * PLAYER_SPEED;
+        dy = (dy / len) * PLAYER_SPEED;
 
-        const newX = Math.max(0, Math.min(WORLD_WIDTH - SPRITE_SIZE, x + dx));
-        const newY = Math.max(0, Math.min(WORLD_HEIGHT - SPRITE_SIZE, y + dy));
+        const nextX = Math.max(0, Math.min(WORLD_WIDTH, player.x + dx));
+        const nextY = Math.max(0, Math.min(WORLD_HEIGHT, player.y + dy));
 
-        if (!isColliding(newX, newY)) {
-          x = newX;
-          y = newY;
+        if (isWalkable(nextX, nextY)) {
+          player.x = nextX;
+          player.y = nextY;
         }
 
-        // Update facing angle
-        const angle = Math.atan2(dy, dx);
-        setPlayer((prev) => ({ ...prev, x, y, angle }));
-      } else {
-        setPlayer((prev) => ({ ...prev, x, y }));
+        const targetAngle = Math.atan2(dy, dx);
+        lastAngleRef.current = targetAngle;
+        player.angle = lerpAngle(player.angle, targetAngle, 0.2);
       }
 
-      const cameraX = x - CANVAS_WIDTH / 2;
-      const cameraY = y - CANVAS_HEIGHT / 2;
+      const now = Date.now();
+      if (keys[" "] && now - lastShotRef.current > SHOOT_COOLDOWN) {
+        shootBullet();
+        lastShotRef.current = now;
+      }
 
-      // Clear
+      bulletsRef.current = bulletsRef.current
+        .map((b) => ({
+          ...b,
+          x: b.x + b.dx,
+          y: b.y + b.dy,
+        }))
+        .filter(
+          (b) =>
+            b.x >= 0 &&
+            b.x <= WORLD_WIDTH &&
+            b.y >= 0 &&
+            b.y <= WORLD_HEIGHT &&
+            isWalkable(b.x, b.y)
+        );
+
+      const cameraX = player.x - CANVAS_WIDTH / 2;
+      const cameraY = player.y - CANVAS_HEIGHT / 2;
+
       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-      // Draw background
-      if (bgImageRef.current.complete && bgImageRef.current.naturalWidth > 0) {
+      if (bgImageRef.current.complete) {
         ctx.drawImage(
           bgImageRef.current,
           -cameraX,
@@ -117,19 +172,21 @@ function PixelArena() {
         );
       }
 
-      // Draw obstacles (optional)
-      ctx.fillStyle = "rgba(255, 0, 0, 0.3)";
-      obstacles.forEach((obs) => {
-        ctx.fillRect(obs.x - cameraX, obs.y - cameraY, obs.width, obs.height);
+      // ✅ Draw bullets using sprite
+      bulletsRef.current.forEach((b) => {
+        const angle = Math.atan2(b.dy, b.dx);
+        const size = 16;
+
+        ctx.save();
+        ctx.translate(b.x - cameraX, b.y - cameraY);
+        ctx.rotate(angle);
+        ctx.drawImage(bulletImageRef.current, -size / 2, -size / 2, size, size);
+        ctx.restore();
       });
 
-      // Draw player (rotated)
       const sprite = spriteImageRef.current;
-      const drawX = CANVAS_WIDTH / 2;
-      const drawY = CANVAS_HEIGHT / 2;
-
       ctx.save();
-      ctx.translate(drawX, drawY);
+      ctx.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
       ctx.rotate(player.angle);
       ctx.drawImage(
         sprite,
@@ -140,11 +197,11 @@ function PixelArena() {
       );
       ctx.restore();
 
-      requestAnimationFrame(draw);
+      requestAnimationFrame(loop);
     };
 
-    requestAnimationFrame(draw);
-  }, [keys, player]);
+    requestAnimationFrame(loop);
+  }, []);
 
   return (
     <div style={{ textAlign: "center", padding: "20px" }}>
@@ -157,6 +214,7 @@ function PixelArena() {
           border: "2px solid #8a5cf6",
           backgroundColor: "#000",
           imageRendering: "pixelated",
+          cursor: "crosshair",
         }}
       ></canvas>
     </div>
