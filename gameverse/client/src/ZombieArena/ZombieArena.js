@@ -648,8 +648,8 @@ function ZombieArena() {
       ctx.textAlign = "start";
 
       if (time - waveNotificationTimeRef.current < 3000) {
-        ctx.fillStyle = "yellow";
-        ctx.font = "40px monospace";
+        ctx.fillStyle = "red";
+        ctx.font = "40px 'Creepster', cursive";
         ctx.textAlign = "center";
         ctx.fillText(
           `Wave ${waveRef.current} Started!`,
