@@ -350,11 +350,40 @@ function ZombieArena() {
         const speed = 0.3;
 
         if (dist > 1) {
-          zombie.x += (dx / dist) * speed;
-          zombie.y += (dy / dist) * speed;
+          const directions = [
+            [1, 0],
+            [0, 1],
+            [-1, 0],
+            [0, -1],
+            [1, 1],
+            [1, -1],
+            [-1, 1],
+            [-1, -1],
+          ];
+
+          let bestStep = null;
+          let bestDist = dist;
+
+          for (let [dxMul, dyMul] of directions) {
+            const stepX = zombie.x + dxMul * speed;
+            const stepY = zombie.y + dyMul * speed;
+            if (isWalkable(stepX, stepY)) {
+              const newDist = Math.hypot(player.x - stepX, player.y - stepY);
+              if (newDist < bestDist) {
+                bestDist = newDist;
+                bestStep = { x: stepX, y: stepY };
+              }
+            }
+          }
+
+          if (bestStep) {
+            zombie.x = bestStep.x;
+            zombie.y = bestStep.y;
+          }
         }
 
-        zombie.angle = Math.atan2(dy, dx);
+        const angle = Math.atan2(player.y - zombie.y, player.x - zombie.x);
+        zombie.angle = angle;
       });
 
       if (bgImageRef.current.complete) {
