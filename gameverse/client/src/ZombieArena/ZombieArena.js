@@ -99,6 +99,7 @@ function ZombieArena() {
   const reserveAmmoRef = useRef(270);
   const bulletsRef = useRef([]);
   const lastAngleRef = useRef(0);
+  const waveNotificationTimeRef = useRef(0);
   const playerRef = useRef({
     x: WORLD_WIDTH / 2,
     y: WORLD_HEIGHT / 2,
@@ -107,6 +108,7 @@ function ZombieArena() {
     vy: 0,
     health: 100,
     maxHealth: 100,
+    lastDamageTime: 0,
   });
 
   const [gameStarted, setGameStarted] = useState(false);
@@ -407,6 +409,8 @@ function ZombieArena() {
         waveRef.current++;
         lastWaveTimeRef.current = time;
 
+        waveNotificationTimeRef.current = time;
+
         for (let i = 0; i < waveRef.current; i++) {
           let spawnX, spawnY;
           const tileSize = 16;
@@ -508,16 +512,24 @@ function ZombieArena() {
         }
       }
 
-      const playerMinDistance = 20; // adjust this value as needed
+      const damageCooldown = 500;
+      const damageAmount = 10;
+      const currentTime = Date.now();
+
+      const playerMinDistance = 20;
       zombiesRef.current.forEach((zombie) => {
         const dx = player.x - zombie.x;
         const dy = player.y - zombie.y;
         const distance = Math.hypot(dx, dy);
         if (distance < playerMinDistance && distance > 0) {
+          if (currentTime - player.lastDamageTime >= damageCooldown) {
+            player.health -= damageAmount;
+            player.lastDamageTime = currentTime;
+          }
+
           const overlap = playerMinDistance - distance;
           const nx = dx / distance;
           const ny = dy / distance;
-          // Push the player away by the full overlap amount
           player.x += nx * overlap;
           player.y += ny * overlap;
         }
@@ -622,6 +634,30 @@ function ZombieArena() {
         10,
         20
       );
+
+      ctx.fillStyle = "white";
+      ctx.font = "20px monospace";
+      ctx.textAlign = "right";
+      ctx.fillText(`Wave: ${waveRef.current}`, CANVAS_WIDTH - 20, 30);
+
+      const nextWaveCountdown = Math.max(
+        0,
+        (20000 - (time - lastWaveTimeRef.current)) / 1000
+      ).toFixed(1);
+      ctx.fillText(`Next Wave: ${nextWaveCountdown}s`, CANVAS_WIDTH - 20, 60);
+      ctx.textAlign = "start";
+
+      if (time - waveNotificationTimeRef.current < 3000) {
+        ctx.fillStyle = "yellow";
+        ctx.font = "40px monospace";
+        ctx.textAlign = "center";
+        ctx.fillText(
+          `Wave ${waveRef.current} Started!`,
+          CANVAS_WIDTH / 2,
+          CANVAS_HEIGHT / 2
+        );
+        ctx.textAlign = "start";
+      }
 
       requestAnimationFrame(loop);
     };
