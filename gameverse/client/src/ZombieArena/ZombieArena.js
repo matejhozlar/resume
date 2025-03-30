@@ -105,6 +105,8 @@ function ZombieArena() {
     angle: 0,
     vx: 0,
     vy: 0,
+    health: 100,
+    maxHealth: 100,
   });
 
   const [gameStarted, setGameStarted] = useState(false);
@@ -553,6 +555,26 @@ function ZombieArena() {
         SPRITE_SIZE * SCALE
       );
       ctx.restore();
+
+      const healthBarWidth = 50;
+      const healthBarHeight = 5;
+      const healthPercentage = player.health / player.maxHealth;
+      const healthBarX = CANVAS_WIDTH / 2 - healthBarWidth / 2;
+      const healthBarY = CANVAS_HEIGHT / 2 - 40;
+
+      ctx.fillStyle = "red";
+      ctx.fillRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
+
+      ctx.fillStyle = "green";
+      ctx.fillRect(
+        healthBarX,
+        healthBarY,
+        healthBarWidth * healthPercentage,
+        healthBarHeight
+      );
+
+      ctx.strokeStyle = "black";
+      ctx.strokeRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
 
       ctx.fillStyle = "white";
       ctx.font = "16px monospace";
