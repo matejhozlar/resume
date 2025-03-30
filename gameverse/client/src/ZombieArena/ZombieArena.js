@@ -377,6 +377,25 @@ function ZombieArena() {
             b.y <= WORLD_HEIGHT &&
             isWalkable(b.x, b.y)
         );
+      for (let i = bulletsRef.current.length - 1; i >= 0; i--) {
+        const bullet = bulletsRef.current[i];
+        for (let j = zombiesRef.current.length - 1; j >= 0; j--) {
+          const zombie = zombiesRef.current[j];
+          const dx = bullet.x - zombie.x;
+          const dy = bullet.y - zombie.y;
+          const distance = Math.hypot(dx, dy);
+          const bulletRadius = 8;
+          const zombieRadius = 20;
+          if (distance < bulletRadius + zombieRadius) {
+            zombie.health -= 20;
+            bulletsRef.current.splice(i, 1);
+            if (zombie.health <= 0) {
+              zombiesRef.current.splice(j, 1);
+            }
+            break;
+          }
+        }
+      }
 
       const cameraX = player.x - CANVAS_WIDTH / 2;
       const cameraY = player.y - CANVAS_HEIGHT / 2;
