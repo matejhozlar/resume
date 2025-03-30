@@ -164,17 +164,6 @@ function ZombieArena() {
       pathfindingGridRef.current = grid;
       pathfindingGridRef.current.width = grid[0].length;
       pathfindingGridRef.current.height = grid.length;
-      const debugCanvas = document.createElement("canvas");
-      debugCanvas.width = WORLD_WIDTH;
-      debugCanvas.height = WORLD_HEIGHT;
-      const debugCtx = debugCanvas.getContext("2d");
-      for (let ty = 0; ty < tilesY; ty++) {
-        for (let tx = 0; tx < tilesX; tx++) {
-          debugCtx.fillStyle = grid[ty][tx] === 1 ? "green" : "red";
-          debugCtx.fillRect(tx * tileSize, ty * tileSize, tileSize, tileSize);
-        }
-      }
-      document.body.appendChild(debugCanvas);
       isGridReadyRef.current = true;
     };
   }, []);
@@ -388,6 +377,7 @@ function ZombieArena() {
           const zombieRadius = 20;
           if (distance < bulletRadius + zombieRadius) {
             zombie.health -= 20;
+            zombie.flashTimer = 10;
             bulletsRef.current.splice(i, 1);
             if (zombie.health <= 0) {
               zombiesRef.current.splice(j, 1);
@@ -533,22 +523,6 @@ function ZombieArena() {
         }
       });
 
-      // Draw overlay grid
-      for (let ty = 0; ty < pathfindingGridRef.current.length; ty++) {
-        for (let tx = 0; tx < pathfindingGridRef.current[0].length; tx++) {
-          ctx.fillStyle =
-            pathfindingGridRef.current[ty][tx] === 1
-              ? "rgba(0,255,0,0.2)"
-              : "rgba(255,0,0,0.2)";
-          ctx.fillRect(
-            tx * tileSize - cameraX,
-            ty * tileSize - cameraY,
-            tileSize,
-            tileSize
-          );
-        }
-      }
-
       bulletsRef.current.forEach((b) => {
         const angle = Math.atan2(b.dy, b.dx);
         ctx.save();
@@ -565,6 +539,16 @@ function ZombieArena() {
           ctx.translate(zx, zy);
           ctx.rotate(zombie.angle - Math.PI / 2);
           ctx.drawImage(zombieSpriteRef.current, -24, -24, 48, 48);
+
+          if (zombie.flashTimer && zombie.flashTimer > 0) {
+            ctx.globalCompositeOperation = "source-atop";
+            ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
+            ctx.fillRect(-8, -8, 16, 16);
+            ctx.globalCompositeOperation = "source-over";
+
+            zombie.flashTimer--;
+          }
+
           ctx.restore();
 
           const zHealthBarWidth = 40;
