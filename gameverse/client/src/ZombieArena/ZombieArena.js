@@ -64,7 +64,7 @@ const lerpAngle = (a, b, t) => {
   return a + diff * t;
 };
 
-function PixelArena() {
+function ZombieArena() {
   const canvasRef = useRef(null);
   const bgImageRef = useRef(new Image());
   const spriteImageRef = useRef(new Image());
@@ -423,4 +423,4 @@ function PixelArena() {
   );
 }
 
-export default PixelArena;
+export default ZombieArena;

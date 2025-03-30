@@ -79,7 +79,7 @@ function Sidebar({ onPageChange, isCollapsed, setIsCollapsed }) {
             <li>
               <button
                 className="menu-btn"
-                onClick={() => onPageChange("pixelarena")}
+                onClick={() => onPageChange("zombiearena")}
               >
                 Pixel Arena
               </button>

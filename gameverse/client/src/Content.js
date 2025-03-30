@@ -5,9 +5,10 @@ import TicTacToeInfo from "./TicTacToeInfo";
 import SimonGameInfo from "./SimonGameInfo";
 import PexesoInfo from "./PexesoInfo";
 import Home from "./Home";
-import PixelArena from "./PixelArena/PixelArena";
+import ZombieArenaInfo from "./ZombieArena/ZombieArenaInfo";
+import ZombieArena from "./ZombieArena/ZombieArena";
 
-function Content({ activePage }) {
+function Content({ activePage, onPageChange }) {
   const renderContent = () => {
     switch (activePage) {
       case "tic-tac-toe":
@@ -20,8 +21,10 @@ function Content({ activePage }) {
         return <ChangePasswordForm />;
       case "username":
         return <ChangeUsernameForm />;
-      case "pixelarena":
-        return <PixelArena />;
+      case "zombiearena":
+        return <ZombieArenaInfo onPageChange={onPageChange} />;
+      case "zombiearena-play":
+        return <ZombieArena />;
       case "home":
         return <Home />;
       default:

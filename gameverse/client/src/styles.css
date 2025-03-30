@@ -771,3 +771,13 @@ body {
   height: 100%;
   overflow-y: auto;
 }
+
+/* ZombieArena */
+
+.game-canvas {
+  border: 2px solid #8a5cf6;
+  background-color: #000;
+  image-rendering: pixelated;
+  cursor: crosshair; /* ← this brings the crosshair back */
+}
+/* ZombieArena */

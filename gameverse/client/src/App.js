@@ -54,7 +54,7 @@ function App() {
           setIsCollapsed={setIsCollapsed}
           toggleSidebar={toggleSidebar}
         />
-        <Content activePage={activePage} />
+        <Content activePage={activePage} onPageChange={setActivePage} />
       </div>
     </div>
   );
