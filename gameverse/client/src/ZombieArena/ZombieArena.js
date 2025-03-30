@@ -418,7 +418,13 @@ function ZombieArena() {
             }
           } while (!isWalkable(spawnX, spawnY));
 
-          zombiesRef.current.push({ x: spawnX, y: spawnY, angle: 0 });
+          zombiesRef.current.push({
+            x: spawnX,
+            y: spawnY,
+            angle: 0,
+            health: 50,
+            maxHealth: 50,
+          });
           ctx.fillStyle = "rgba(255, 0, 0, 0.2)";
           ctx.fillRect(
             Math.floor(spawnX / tileSize) * tileSize - cameraX,
@@ -541,6 +547,36 @@ function ZombieArena() {
           ctx.rotate(zombie.angle - Math.PI / 2);
           ctx.drawImage(zombieSpriteRef.current, -24, -24, 48, 48);
           ctx.restore();
+
+          const zHealthBarWidth = 40;
+          const zHealthBarHeight = 4;
+          const zHealthPercentage = zombie.health / zombie.maxHealth;
+          const zHealthBarX = zx - zHealthBarWidth / 2;
+          const zHealthBarY = zy - 30;
+
+          ctx.fillStyle = "black";
+          ctx.fillRect(
+            zHealthBarX,
+            zHealthBarY,
+            zHealthBarWidth,
+            zHealthBarHeight
+          );
+
+          ctx.fillStyle = "red";
+          ctx.fillRect(
+            zHealthBarX,
+            zHealthBarY,
+            zHealthBarWidth * zHealthPercentage,
+            zHealthBarHeight
+          );
+
+          ctx.strokeStyle = "white";
+          ctx.strokeRect(
+            zHealthBarX,
+            zHealthBarY,
+            zHealthBarWidth,
+            zHealthBarHeight
+          );
         });
       });
 
