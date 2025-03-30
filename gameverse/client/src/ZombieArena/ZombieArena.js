@@ -470,6 +470,42 @@ function ZombieArena() {
         }
       });
 
+      for (let i = 0; i < zombiesRef.current.length; i++) {
+        const zombieA = zombiesRef.current[i];
+        for (let j = i + 1; j < zombiesRef.current.length; j++) {
+          const zombieB = zombiesRef.current[j];
+          const dx = zombieB.x - zombieA.x;
+          const dy = zombieB.y - zombieA.y;
+          const distance = Math.hypot(dx, dy);
+          const minDistance = 20; // Adjust based on sprite size
+          if (distance < minDistance && distance > 0) {
+            const overlap = (minDistance - distance) / 2;
+            const nx = dx / distance;
+            const ny = dy / distance;
+            // Push each zombie away from each other by half the overlap
+            zombieA.x -= nx * overlap;
+            zombieA.y -= ny * overlap;
+            zombieB.x += nx * overlap;
+            zombieB.y += ny * overlap;
+          }
+        }
+      }
+
+      const playerMinDistance = 20; // adjust this value as needed
+      zombiesRef.current.forEach((zombie) => {
+        const dx = player.x - zombie.x;
+        const dy = player.y - zombie.y;
+        const distance = Math.hypot(dx, dy);
+        if (distance < playerMinDistance && distance > 0) {
+          const overlap = playerMinDistance - distance;
+          const nx = dx / distance;
+          const ny = dy / distance;
+          // Push the player away by the full overlap amount
+          player.x += nx * overlap;
+          player.y += ny * overlap;
+        }
+      });
+
       // Draw overlay grid
       for (let ty = 0; ty < pathfindingGridRef.current.length; ty++) {
         for (let tx = 0; tx < pathfindingGridRef.current[0].length; tx++) {
