@@ -23,6 +23,7 @@ import reload17 from "../assets/sprites/reloading/survivor-reload_rifle_16.png";
 import reload18 from "../assets/sprites/reloading/survivor-reload_rifle_17.png";
 import reload19 from "../assets/sprites/reloading/survivor-reload_rifle_18.png";
 import zombie from "../assets/sprites/zombie.png";
+import { aStar } from "./pathfinding";
 
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 600;
@@ -74,6 +75,8 @@ function ZombieArena() {
   const bgImageRef = useRef(new Image());
   const spriteImageRef = useRef(new Image());
   const bulletImageRef = useRef(new Image());
+  const pathfindingGridRef = useRef([]);
+  const isGridReadyRef = useRef(false);
   const reloadImages = useRef(
     RELOAD_FRAMES.map((src) => {
       const img = new Image();
@@ -113,32 +116,77 @@ function ZombieArena() {
     zombieSpriteRef.current.src = zombie;
     obstacleImageRef.current.src = mapImageObstacles;
     obstacleImageRef.current.onload = () => {
-      obstacleCanvasRef.current.width = obstacleImageRef.current.width;
-      obstacleCanvasRef.current.height = obstacleImageRef.current.height;
+      obstacleCanvasRef.current.width = WORLD_WIDTH;
+      obstacleCanvasRef.current.height = WORLD_HEIGHT;
       obstacleCtxRef.current = obstacleCanvasRef.current.getContext("2d");
-      obstacleCtxRef.current.drawImage(obstacleImageRef.current, 0, 0);
+      obstacleCtxRef.current.imageSmoothingEnabled = false;
+      obstacleCtxRef.current.mozImageSmoothingEnabled = false;
+      obstacleCtxRef.current.webkitImageSmoothingEnabled = false;
+      obstacleCtxRef.current.msImageSmoothingEnabled = false;
+
+      // FIX: draw the obstacle image at full world dimensions.
+      obstacleCtxRef.current.drawImage(
+        obstacleImageRef.current,
+        0,
+        0,
+        WORLD_WIDTH,
+        WORLD_HEIGHT
+      );
+
+      const tileSize = 16;
+      const grid = [];
+      const tilesX = Math.floor(WORLD_WIDTH / tileSize);
+      const tilesY = Math.floor(WORLD_HEIGHT / tileSize);
+
+      for (let y = 0; y < tilesY; y++) {
+        const row = [];
+        for (let x = 0; x < tilesX; x++) {
+          const centerX = x * tileSize + tileSize / 2;
+          const centerY = y * tileSize + tileSize / 2;
+          const pixel = obstacleCtxRef.current.getImageData(
+            Math.floor(centerX),
+            Math.floor(centerY),
+            1,
+            1
+          ).data;
+          const threshold = 50;
+          const isWhite =
+            pixel[0] > threshold &&
+            pixel[1] > threshold &&
+            pixel[2] > threshold;
+          row.push(isWhite ? 1 : 0);
+          console.log(`Pixel at (${centerX}, ${centerY}) =`, pixel);
+        }
+        grid.push(row);
+      }
+      pathfindingGridRef.current = grid;
+      pathfindingGridRef.current.width = grid[0].length;
+      pathfindingGridRef.current.height = grid.length;
+      const debugCanvas = document.createElement("canvas");
+      debugCanvas.width = WORLD_WIDTH;
+      debugCanvas.height = WORLD_HEIGHT;
+      const debugCtx = debugCanvas.getContext("2d");
+      for (let ty = 0; ty < tilesY; ty++) {
+        for (let tx = 0; tx < tilesX; tx++) {
+          debugCtx.fillStyle = grid[ty][tx] === 1 ? "green" : "red";
+          debugCtx.fillRect(tx * tileSize, ty * tileSize, tileSize, tileSize);
+        }
+      }
+      document.body.appendChild(debugCanvas);
+      isGridReadyRef.current = true;
     };
   }, []);
 
+  const tileSize = 16;
+
+  const isTileWalkable = (tx, ty) => {
+    return pathfindingGridRef.current[ty]?.[tx] === 1;
+  };
+
   const isWalkable = (x, y) => {
-    if (!obstacleCtxRef.current) return true;
-    const ix = Math.floor(x);
-    const iy = Math.floor(y);
-    const clampedX = Math.max(
-      0,
-      Math.min(obstacleCanvasRef.current.width - 1, ix)
-    );
-    const clampedY = Math.max(
-      0,
-      Math.min(obstacleCanvasRef.current.height - 1, iy)
-    );
-    const pixel = obstacleCtxRef.current.getImageData(
-      clampedX,
-      clampedY,
-      1,
-      1
-    ).data;
-    return pixel[0] > 0;
+    const tx = Math.floor(x / tileSize);
+    const ty = Math.floor(y / tileSize);
+    return isTileWalkable(tx, ty);
   };
 
   const shootBullet = () => {
@@ -332,60 +380,7 @@ function ZombieArena() {
       const cameraY = player.y - CANVAS_HEIGHT / 2;
       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-      const time = Date.now();
-      if (time - lastWaveTimeRef.current >= 20000) {
-        waveRef.current++;
-        lastWaveTimeRef.current = time;
-        for (let i = 0; i < waveRef.current; i++) {
-          const spawnX = Math.random() * WORLD_WIDTH;
-          const spawnY = Math.random() * WORLD_HEIGHT;
-          zombiesRef.current.push({ x: spawnX, y: spawnY });
-        }
-      }
-
-      zombiesRef.current.forEach((zombie) => {
-        const dx = player.x - zombie.x;
-        const dy = player.y - zombie.y;
-        const dist = Math.hypot(dx, dy);
-        const speed = 0.3;
-
-        if (dist > 1) {
-          const directions = [
-            [1, 0],
-            [0, 1],
-            [-1, 0],
-            [0, -1],
-            [1, 1],
-            [1, -1],
-            [-1, 1],
-            [-1, -1],
-          ];
-
-          let bestStep = null;
-          let bestDist = dist;
-
-          for (let [dxMul, dyMul] of directions) {
-            const stepX = zombie.x + dxMul * speed;
-            const stepY = zombie.y + dyMul * speed;
-            if (isWalkable(stepX, stepY)) {
-              const newDist = Math.hypot(player.x - stepX, player.y - stepY);
-              if (newDist < bestDist) {
-                bestDist = newDist;
-                bestStep = { x: stepX, y: stepY };
-              }
-            }
-          }
-
-          if (bestStep) {
-            zombie.x = bestStep.x;
-            zombie.y = bestStep.y;
-          }
-        }
-
-        const angle = Math.atan2(player.y - zombie.y, player.x - zombie.x);
-        zombie.angle = angle;
-      });
-
+      // Draw background (only once)
       if (bgImageRef.current.complete) {
         ctx.drawImage(
           bgImageRef.current,
@@ -394,6 +389,101 @@ function ZombieArena() {
           WORLD_WIDTH,
           WORLD_HEIGHT
         );
+      }
+
+      const time = Date.now();
+      if (isGridReadyRef.current && time - lastWaveTimeRef.current >= 20000) {
+        waveRef.current++;
+        lastWaveTimeRef.current = time;
+
+        for (let i = 0; i < waveRef.current; i++) {
+          let spawnX, spawnY;
+          const tileSize = 16;
+          const gridW = pathfindingGridRef.current.width;
+          const gridH = pathfindingGridRef.current.height;
+          do {
+            const tx = Math.floor(Math.random() * gridW);
+            const ty = Math.floor(Math.random() * gridH);
+            spawnX = tx * tileSize + tileSize / 2;
+            spawnY = ty * tileSize + tileSize / 2;
+            if (
+              spawnX < 0 ||
+              spawnY < 0 ||
+              spawnX > WORLD_WIDTH ||
+              spawnY > WORLD_HEIGHT
+            ) {
+              continue;
+            }
+          } while (!isWalkable(spawnX, spawnY));
+
+          zombiesRef.current.push({ x: spawnX, y: spawnY, angle: 0 });
+          ctx.fillStyle = "rgba(255, 0, 0, 0.2)";
+          ctx.fillRect(
+            Math.floor(spawnX / tileSize) * tileSize - cameraX,
+            Math.floor(spawnY / tileSize) * tileSize - cameraY,
+            tileSize,
+            tileSize
+          );
+        }
+      }
+
+      zombiesRef.current.forEach((zombie) => {
+        const tileSize = 16;
+        const grid = pathfindingGridRef.current;
+        if (!grid.length) return;
+
+        const now = Date.now();
+        const zx = Math.floor(zombie.x / tileSize);
+        const zy = Math.floor(zombie.y / tileSize);
+        const px = Math.floor(player.x / tileSize);
+        const py = Math.floor(player.y / tileSize);
+
+        // Update the zombie's path every 1000ms or if it doesn't have one yet.
+        if (!zombie.path || now - zombie.lastPathUpdate > 1000) {
+          zombie.path = aStar(grid, [zx, zy], [px, py]);
+          zombie.lastPathUpdate = now;
+        }
+
+        // Ensure the path exists and has waypoints.
+        if (zombie.path && zombie.path.length > 1) {
+          // We use the second node in the path because the first is the zombie's current tile.
+          const [nextX, nextY] = zombie.path[1];
+          const targetX = nextX * tileSize + tileSize / 2;
+          const targetY = nextY * tileSize + tileSize / 2;
+          const dx = targetX - zombie.x;
+          const dy = targetY - zombie.y;
+          const dist = Math.hypot(dx, dy);
+          const speed = 0.5;
+
+          // When close enough to the target, remove it from the path so the next becomes active.
+          if (dist < speed) {
+            zombie.x = targetX;
+            zombie.y = targetY;
+            zombie.path.shift(); // Remove reached waypoint.
+          } else {
+            zombie.x += (dx / dist) * speed;
+            zombie.y += (dy / dist) * speed;
+          }
+          const targetAngle = Math.atan2(dy, dx);
+          const rotationSpeed = 0.01;
+          zombie.angle = lerpAngle(zombie.angle, targetAngle, rotationSpeed);
+        }
+      });
+
+      // Draw overlay grid
+      for (let ty = 0; ty < pathfindingGridRef.current.length; ty++) {
+        for (let tx = 0; tx < pathfindingGridRef.current[0].length; tx++) {
+          ctx.fillStyle =
+            pathfindingGridRef.current[ty][tx] === 1
+              ? "rgba(0,255,0,0.2)"
+              : "rgba(255,0,0,0.2)";
+          ctx.fillRect(
+            tx * tileSize - cameraX,
+            ty * tileSize - cameraY,
+            tileSize,
+            tileSize
+          );
+        }
       }
 
       bulletsRef.current.forEach((b) => {
@@ -438,6 +528,7 @@ function ZombieArena() {
     };
 
     requestAnimationFrame(loop);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameStarted]);
 
   return (
