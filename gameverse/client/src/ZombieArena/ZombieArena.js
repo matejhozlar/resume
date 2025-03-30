@@ -465,7 +465,7 @@ function ZombieArena() {
             zombie.y += (dy / dist) * speed;
           }
           const targetAngle = Math.atan2(dy, dx);
-          const rotationSpeed = 0.01;
+          const rotationSpeed = 0.05;
           zombie.angle = lerpAngle(zombie.angle, targetAngle, rotationSpeed);
         }
       });
@@ -495,13 +495,15 @@ function ZombieArena() {
         ctx.restore();
       });
       zombiesRef.current.forEach((zombie) => {
-        const zx = zombie.x - cameraX;
-        const zy = zombie.y - cameraY;
-        ctx.save();
-        ctx.translate(zx, zy);
-        ctx.rotate(zombie.angle - Math.PI / 2);
-        ctx.drawImage(zombieSpriteRef.current, -24, -24, 48, 48);
-        ctx.restore();
+        zombiesRef.current.forEach((zombie) => {
+          const zx = Math.round(zombie.x - cameraX);
+          const zy = Math.round(zombie.y - cameraY);
+          ctx.save();
+          ctx.translate(zx, zy);
+          ctx.rotate(zombie.angle - Math.PI / 2);
+          ctx.drawImage(zombieSpriteRef.current, -24, -24, 48, 48);
+          ctx.restore();
+        });
       });
 
       ctx.save();
