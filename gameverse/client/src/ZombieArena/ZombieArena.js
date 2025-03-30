@@ -22,6 +22,7 @@ import reload16 from "../assets/sprites/reloading/survivor-reload_rifle_15.png";
 import reload17 from "../assets/sprites/reloading/survivor-reload_rifle_16.png";
 import reload18 from "../assets/sprites/reloading/survivor-reload_rifle_17.png";
 import reload19 from "../assets/sprites/reloading/survivor-reload_rifle_18.png";
+import zombie from "../assets/sprites/zombie.png";
 
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 600;
@@ -65,6 +66,10 @@ const lerpAngle = (a, b, t) => {
 };
 
 function ZombieArena() {
+  const zombieSpriteRef = useRef(new Image());
+  const zombiesRef = useRef([]);
+  const waveRef = useRef(0);
+  const lastWaveTimeRef = useRef(Date.now());
   const canvasRef = useRef(null);
   const bgImageRef = useRef(new Image());
   const spriteImageRef = useRef(new Image());
@@ -105,6 +110,7 @@ function ZombieArena() {
     bgImageRef.current.src = mapImage;
     spriteImageRef.current.src = playerSprite;
     bulletImageRef.current.src = bullet;
+    zombieSpriteRef.current.src = zombie;
     obstacleImageRef.current.src = mapImageObstacles;
     obstacleImageRef.current.onload = () => {
       obstacleCanvasRef.current.width = obstacleImageRef.current.width;
@@ -326,6 +332,31 @@ function ZombieArena() {
       const cameraY = player.y - CANVAS_HEIGHT / 2;
       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
+      const time = Date.now();
+      if (time - lastWaveTimeRef.current >= 20000) {
+        waveRef.current++;
+        lastWaveTimeRef.current = time;
+        for (let i = 0; i < waveRef.current; i++) {
+          const spawnX = Math.random() * WORLD_WIDTH;
+          const spawnY = Math.random() * WORLD_HEIGHT;
+          zombiesRef.current.push({ x: spawnX, y: spawnY });
+        }
+      }
+
+      zombiesRef.current.forEach((zombie) => {
+        const dx = player.x - zombie.x;
+        const dy = player.y - zombie.y;
+        const dist = Math.hypot(dx, dy);
+        const speed = 0.3;
+
+        if (dist > 1) {
+          zombie.x += (dx / dist) * speed;
+          zombie.y += (dy / dist) * speed;
+        }
+
+        zombie.angle = Math.atan2(dy, dx);
+      });
+
       if (bgImageRef.current.complete) {
         ctx.drawImage(
           bgImageRef.current,
@@ -342,6 +373,15 @@ function ZombieArena() {
         ctx.translate(b.x - cameraX, b.y - cameraY);
         ctx.rotate(angle);
         ctx.drawImage(bulletImageRef.current, -8, -8, 16, 16);
+        ctx.restore();
+      });
+      zombiesRef.current.forEach((zombie) => {
+        const zx = zombie.x - cameraX;
+        const zy = zombie.y - cameraY;
+        ctx.save();
+        ctx.translate(zx, zy);
+        ctx.rotate(zombie.angle - Math.PI / 2);
+        ctx.drawImage(zombieSpriteRef.current, -24, -24, 48, 48);
         ctx.restore();
       });
 
