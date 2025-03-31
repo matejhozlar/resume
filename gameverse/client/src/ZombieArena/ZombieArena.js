@@ -551,29 +551,25 @@ function ZombieArena() {
           } while (!isWalkable(packX, packY));
           ammoPacksRef.current.push({ x: packX, y: packY, value: 30 });
         }
-      }
 
-      let medkitSpawnChance = 0;
-      if (waveRef.current < 4) {
-        medkitSpawnChance = 0.0;
-      } else if (waveRef.current < 11) {
-        medkitSpawnChance = 0.3;
-      } else {
-        medkitSpawnChance = Math.min(0.3 + (waveRef.current - 10) * 0.02, 1);
-      }
-      if (Math.random() < medkitSpawnChance) {
-        let packX, packY;
-        do {
-          const tx = Math.floor(
-            Math.random() * pathfindingGridRef.current.width
-          );
-          const ty = Math.floor(
-            Math.random() * pathfindingGridRef.current.height
-          );
-          packX = tx * tileSize + tileSize / 2;
-          packY = ty * tileSize + tileSize / 2;
-        } while (!isWalkable(packX, packY));
-        medkitsRef.current.push({ x: packX, y: packY });
+        if (waveRef.current >= 5 && Math.random() < 0.2) {
+          let packX, packY;
+          do {
+            const tx = Math.floor(
+              Math.random() * pathfindingGridRef.current.width
+            );
+            const ty = Math.floor(
+              Math.random() * pathfindingGridRef.current.height
+            );
+            packX = tx * tileSize + tileSize / 2;
+            packY = ty * tileSize + tileSize / 2;
+          } while (!isWalkable(packX, packY));
+          medkitsRef.current.push({
+            x: packX,
+            y: packY,
+            spawnTime: Date.now(),
+          });
+        }
       }
 
       zombiesRef.current.forEach((zombie) => {
