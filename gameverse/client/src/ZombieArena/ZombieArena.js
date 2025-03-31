@@ -25,6 +25,7 @@ import reload19 from "../assets/sprites/reloading/survivor-reload_rifle_18.png";
 import zombie from "../assets/sprites/zombie.png";
 import { aStar } from "./pathfinding";
 import ammoPack from "../assets/sprites/bullet/ammo.png";
+import armorPack from "../assets/sprites/bullet/armor.png";
 
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 600;
@@ -94,6 +95,9 @@ function ZombieArena() {
   const obstacleCanvasRef = useRef(document.createElement("canvas"));
   const obstacleCtxRef = useRef(null);
 
+  const armorPacksRef = useRef([]);
+  const armorPackImageRef = useRef(new Image());
+
   const keysRef = useRef({});
   const mouseRef = useRef({ x: CANVAS_WIDTH / 2, y: CANVAS_HEIGHT / 2 });
   const mouseActiveRef = useRef(false);
@@ -115,6 +119,8 @@ function ZombieArena() {
     health: 100,
     maxHealth: 100,
     lastDamageTime: 0,
+    armor: 0,
+    maxArmor: 0,
   });
 
   const [gameStarted, setGameStarted] = useState(false);
@@ -124,6 +130,7 @@ function ZombieArena() {
     spriteImageRef.current.src = playerSprite;
     bulletImageRef.current.src = bullet;
     ammoPackImageRef.current.src = ammoPack;
+    armorPackImageRef.current.src = armorPack;
     zombieSpriteRef.current.src = zombie;
     obstacleImageRef.current.src = mapImageObstacles;
     obstacleImageRef.current.onload = () => {
@@ -412,6 +419,29 @@ function ZombieArena() {
         );
       }
 
+      armorPacksRef.current.forEach((pack, index) => {
+        const dx = player.x - pack.x;
+        const dy = player.y - pack.y;
+        const distance = Math.hypot(dx, dy);
+        if (distance < 20) {
+          player.armor = pack.value;
+          player.maxArmor = pack.value;
+          armorPacksRef.current.splice(index, 1);
+        } else {
+          ctx.save();
+          ctx.shadowColor = "cyan";
+          ctx.shadowBlur = 10;
+          ctx.drawImage(
+            armorPackImageRef.current,
+            pack.x - cameraX - 16,
+            pack.y - cameraY - 16,
+            32,
+            32
+          );
+          ctx.restore();
+        }
+      });
+
       ammoPacksRef.current.forEach((pack, index) => {
         // Check collision with the player (simple distance check)
         const dx = player.x - pack.x;
@@ -478,6 +508,21 @@ function ZombieArena() {
           );
         }
 
+        if (waveRef.current >= 5 && Math.random() < 0.2) {
+          let packX, packY;
+          do {
+            const tx = Math.floor(
+              Math.random() * pathfindingGridRef.current.width
+            );
+            const ty = Math.floor(
+              Math.random() * pathfindingGridRef.current.height
+            );
+            packX = tx * tileSize + tileSize / 2;
+            packY = ty * tileSize + tileSize / 2;
+          } while (!isWalkable(packX, packY));
+          armorPacksRef.current.push({ x: packX, y: packY, value: 50 });
+        }
+
         let ammoSpawnChance = 0;
         if (waveRef.current < 4) {
           ammoSpawnChance = 0.0;
@@ -513,7 +558,6 @@ function ZombieArena() {
         const px = Math.floor(player.x / tileSize);
         const py = Math.floor(player.y / tileSize);
 
-        // Update the zombie's path every 1000ms or if it doesn't have one yet.
         if (!zombie.path || now - zombie.lastPathUpdate > 1000) {
           zombie.path = aStar(grid, [zx, zy], [px, py]);
           zombie.lastPathUpdate = now;
@@ -575,7 +619,6 @@ function ZombieArena() {
       const damageCooldown = 500;
       const damageAmount = 10;
       const currentTime = Date.now();
-
       const playerMinDistance = 20;
       zombiesRef.current.forEach((zombie) => {
         const dx = player.x - zombie.x;
@@ -583,7 +626,19 @@ function ZombieArena() {
         const distance = Math.hypot(dx, dy);
         if (distance < playerMinDistance && distance > 0) {
           if (currentTime - player.lastDamageTime >= damageCooldown) {
-            player.health -= damageAmount;
+            let remainingDamage = damageAmount;
+            if (player.armor > 0) {
+              if (player.armor >= remainingDamage) {
+                player.armor -= remainingDamage;
+                remainingDamage = 0;
+              } else {
+                remainingDamage -= player.armor;
+                player.armor = 0;
+              }
+            }
+            if (remainingDamage > 0) {
+              player.health -= remainingDamage;
+            }
             player.lastDamageTime = currentTime;
           }
 
@@ -695,6 +750,23 @@ function ZombieArena() {
 
       ctx.strokeStyle = "black";
       ctx.strokeRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
+
+      if (player.armor > 0) {
+        const armorBarWidth = healthBarWidth;
+        const armorBarHeight = 5;
+        const armorPercentage = player.armor / player.maxArmor;
+        const armorBarX = CANVAS_WIDTH / 2 - armorBarWidth / 2;
+        const armorBarY = healthBarY - 10;
+        ctx.fillStyle = "cyan";
+        ctx.fillRect(
+          armorBarX,
+          armorBarY,
+          armorBarWidth * armorPercentage,
+          armorBarHeight
+        );
+        ctx.strokeStyle = "black";
+        ctx.strokeRect(armorBarX, armorBarY, armorBarWidth, armorBarHeight);
+      }
 
       ctx.fillStyle = "white";
       ctx.font = "16px monospace";
