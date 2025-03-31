@@ -24,6 +24,7 @@ import reload18 from "../assets/sprites/reloading/survivor-reload_rifle_17.png";
 import reload19 from "../assets/sprites/reloading/survivor-reload_rifle_18.png";
 import zombie from "../assets/sprites/zombie.png";
 import { aStar } from "./pathfinding";
+import ammoPack from "../assets/sprites/bullet/ammo.png";
 
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 600;
@@ -67,6 +68,7 @@ const lerpAngle = (a, b, t) => {
 };
 
 function ZombieArena() {
+  const zombiesKilledRef = useRef(0);
   const zombieSpriteRef = useRef(new Image());
   const zombiesRef = useRef([]);
   const waveRef = useRef(0);
@@ -383,6 +385,7 @@ function ZombieArena() {
             bulletsRef.current.splice(i, 1);
             if (zombie.health <= 0) {
               zombiesRef.current.splice(j, 1);
+              zombiesKilledRef.current++;
             }
             break;
           }
@@ -465,9 +468,7 @@ function ZombieArena() {
           zombie.lastPathUpdate = now;
         }
 
-        // Ensure the path exists and has waypoints.
         if (zombie.path && zombie.path.length > 1) {
-          // We use the second node in the path because the first is the zombie's current tile.
           const [nextX, nextY] = zombie.path[1];
           const targetX = nextX * tileSize + tileSize / 2;
           const targetY = nextY * tileSize + tileSize / 2;
@@ -476,11 +477,10 @@ function ZombieArena() {
           const dist = Math.hypot(dx, dy);
           const speed = 0.5;
 
-          // When close enough to the target, remove it from the path so the next becomes active.
           if (dist < speed) {
             zombie.x = targetX;
             zombie.y = targetY;
-            zombie.path.shift(); // Remove reached waypoint.
+            zombie.path.shift();
           } else {
             zombie.x += (dx / dist) * speed;
             zombie.y += (dy / dist) * speed;
@@ -498,12 +498,11 @@ function ZombieArena() {
           const dx = zombieB.x - zombieA.x;
           const dy = zombieB.y - zombieA.y;
           const distance = Math.hypot(dx, dy);
-          const minDistance = 20; // Adjust based on sprite size
+          const minDistance = 20;
           if (distance < minDistance && distance > 0) {
             const overlap = (minDistance - distance) / 2;
             const nx = dx / distance;
             const ny = dy / distance;
-            // Push each zombie away from each other by half the overlap
             zombieA.x -= nx * overlap;
             zombieA.y -= ny * overlap;
             zombieB.x += nx * overlap;
@@ -645,6 +644,21 @@ function ZombieArena() {
         (20000 - (time - lastWaveTimeRef.current)) / 1000
       ).toFixed(1);
       ctx.fillText(`Next Wave: ${nextWaveCountdown}s`, CANVAS_WIDTH - 20, 60);
+      ctx.textAlign = "start";
+
+      ctx.fillStyle = "white";
+      ctx.font = "20px monospace";
+      ctx.textAlign = "right";
+      ctx.fillText(
+        `Zombies Alive: ${zombiesRef.current.length}`,
+        CANVAS_WIDTH - 20,
+        90
+      );
+      ctx.fillText(
+        `Zombies Killed: ${zombiesKilledRef.current}`,
+        CANVAS_WIDTH - 20,
+        120
+      );
       ctx.textAlign = "start";
 
       if (time - waveNotificationTimeRef.current < 3000) {
