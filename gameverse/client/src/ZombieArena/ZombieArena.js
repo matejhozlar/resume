@@ -26,6 +26,7 @@ import zombie from "../assets/sprites/zombie.png";
 import { aStar } from "./pathfinding";
 import ammoPack from "../assets/sprites/bullet/ammo.png";
 import armorPack from "../assets/sprites/bullet/armor.png";
+import medkit from "../assets/sprites/bullet/medkit.png";
 
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 600;
@@ -71,6 +72,10 @@ const lerpAngle = (a, b, t) => {
 function ZombieArena() {
   const ammoPacksRef = useRef([]);
   const ammoPackImageRef = useRef(new Image());
+
+  const medkitsRef = useRef([]);
+  const medkitImageRef = useRef(new Image());
+  const medkitCountRef = useRef(1);
 
   const zombiesKilledRef = useRef(0);
   const zombieSpriteRef = useRef(new Image());
@@ -131,6 +136,7 @@ function ZombieArena() {
     bulletImageRef.current.src = bullet;
     ammoPackImageRef.current.src = ammoPack;
     armorPackImageRef.current.src = armorPack;
+    medkitImageRef.current.src = medkit;
     zombieSpriteRef.current.src = zombie;
     obstacleImageRef.current.src = mapImageObstacles;
     obstacleImageRef.current.onload = () => {
@@ -547,6 +553,29 @@ function ZombieArena() {
         }
       }
 
+      let medkitSpawnChance = 0;
+      if (waveRef.current < 4) {
+        medkitSpawnChance = 0.0;
+      } else if (waveRef.current < 11) {
+        medkitSpawnChance = 0.3;
+      } else {
+        medkitSpawnChance = Math.min(0.3 + (waveRef.current - 10) * 0.02, 1);
+      }
+      if (Math.random() < medkitSpawnChance) {
+        let packX, packY;
+        do {
+          const tx = Math.floor(
+            Math.random() * pathfindingGridRef.current.width
+          );
+          const ty = Math.floor(
+            Math.random() * pathfindingGridRef.current.height
+          );
+          packX = tx * tileSize + tileSize / 2;
+          packY = ty * tileSize + tileSize / 2;
+        } while (!isWalkable(packX, packY));
+        medkitsRef.current.push({ x: packX, y: packY });
+      }
+
       zombiesRef.current.forEach((zombie) => {
         const tileSize = 16;
         const grid = pathfindingGridRef.current;
@@ -659,6 +688,14 @@ function ZombieArena() {
         }
       });
 
+      if (keysRef.current["e"]) {
+        if (medkitCountRef.current > 0 && player.health < player.maxHealth) {
+          medkitCountRef.current--;
+          player.health = Math.min(player.health + 20, player.maxHealth);
+        }
+        keysRef.current["e"] = false;
+      }
+
       bulletsRef.current.forEach((b) => {
         const angle = Math.atan2(b.dy, b.dx);
         ctx.save();
@@ -768,13 +805,36 @@ function ZombieArena() {
         ctx.strokeRect(armorBarX, armorBarY, armorBarWidth, armorBarHeight);
       }
 
+      medkitsRef.current.forEach((pack, index) => {
+        const dx = player.x - pack.x;
+        const dy = player.y - pack.y;
+        const distance = Math.hypot(dx, dy);
+        if (distance < 20) {
+          medkitCountRef.current++;
+          medkitsRef.current.splice(index, 1);
+        } else {
+          ctx.save();
+          ctx.shadowColor = "magenta";
+          ctx.shadowBlur = 10;
+          ctx.drawImage(
+            medkitImageRef.current,
+            pack.x - cameraX - 16,
+            pack.y - cameraY - 16,
+            32,
+            32
+          );
+          ctx.restore();
+        }
+      });
+
       ctx.fillStyle = "white";
       ctx.font = "16px monospace";
       ctx.fillText(
-        `${currentAmmoRef.current} / ${reserveAmmoRef.current}`,
+        `Ammo: ${currentAmmoRef.current} / ${reserveAmmoRef.current}`,
         10,
         20
       );
+      ctx.fillText(`Medkits: ${medkitCountRef.current}`, 10, 40);
 
       ctx.fillStyle = "white";
       ctx.font = "20px monospace";
