@@ -477,7 +477,16 @@ function ZombieArena() {
             tileSize
           );
         }
-        if (Math.random() < 0.5) {
+
+        let ammoSpawnChance = 0;
+        if (waveRef.current < 4) {
+          ammoSpawnChance = 0.0;
+        } else if (waveRef.current < 11) {
+          ammoSpawnChance = 0.3;
+        } else {
+          ammoSpawnChance = Math.min(0.3 + (waveRef.current - 10) * 0.02, 1);
+        }
+        if (Math.random() < ammoSpawnChance) {
           let packX, packY;
           do {
             const tx = Math.floor(
@@ -489,7 +498,7 @@ function ZombieArena() {
             packX = tx * tileSize + tileSize / 2;
             packY = ty * tileSize + tileSize / 2;
           } while (!isWalkable(packX, packY));
-          ammoPacksRef.current.push({ x: packX, y: packY, value: 15 });
+          ammoPacksRef.current.push({ x: packX, y: packY, value: 30 });
         }
       }
 
