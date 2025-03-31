@@ -70,6 +70,9 @@ const lerpAngle = (a, b, t) => {
 };
 
 function ZombieArena() {
+  const backgroundCanvasRef = useRef(document.createElement("canvas"));
+  const backgroundCtxRef = useRef(null);
+
   const ammoPacksRef = useRef([]);
   const ammoPackImageRef = useRef(new Image());
 
@@ -132,12 +135,27 @@ function ZombieArena() {
 
   useEffect(() => {
     bgImageRef.current.src = mapImage;
+    bgImageRef.current.onload = () => {
+      backgroundCanvasRef.current.width = WORLD_WIDTH;
+      backgroundCanvasRef.current.height = WORLD_HEIGHT;
+      backgroundCtxRef.current = backgroundCanvasRef.current.getContext("2d");
+      backgroundCtxRef.current.imageSmoothingEnabled = false;
+      backgroundCtxRef.current.drawImage(
+        bgImageRef.current,
+        0,
+        0,
+        WORLD_WIDTH,
+        WORLD_HEIGHT
+      );
+    };
+
     spriteImageRef.current.src = playerSprite;
     bulletImageRef.current.src = bullet;
     ammoPackImageRef.current.src = ammoPack;
     armorPackImageRef.current.src = armorPack;
     medkitImageRef.current.src = medkit;
     zombieSpriteRef.current.src = zombie;
+
     obstacleImageRef.current.src = mapImageObstacles;
     obstacleImageRef.current.onload = () => {
       obstacleCanvasRef.current.width = WORLD_WIDTH;
@@ -148,7 +166,6 @@ function ZombieArena() {
       obstacleCtxRef.current.webkitImageSmoothingEnabled = false;
       obstacleCtxRef.current.msImageSmoothingEnabled = false;
 
-      // FIX: draw the obstacle image at full world dimensions.
       obstacleCtxRef.current.drawImage(
         obstacleImageRef.current,
         0,
@@ -161,7 +178,6 @@ function ZombieArena() {
       const grid = [];
       const tilesX = Math.floor(WORLD_WIDTH / tileSize);
       const tilesY = Math.floor(WORLD_HEIGHT / tileSize);
-
       for (let y = 0; y < tilesY; y++) {
         const row = [];
         for (let x = 0; x < tilesX; x++) {
@@ -179,7 +195,6 @@ function ZombieArena() {
             pixel[1] > threshold &&
             pixel[2] > threshold;
           row.push(isWhite ? 1 : 0);
-          console.log(`Pixel at (${centerX}, ${centerY}) =`, pixel);
         }
         grid.push(row);
       }
@@ -414,15 +429,8 @@ function ZombieArena() {
       const cameraY = player.y - CANVAS_HEIGHT / 2;
       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-      // Draw background (only once)
-      if (bgImageRef.current.complete) {
-        ctx.drawImage(
-          bgImageRef.current,
-          -cameraX,
-          -cameraY,
-          WORLD_WIDTH,
-          WORLD_HEIGHT
-        );
+      if (backgroundCanvasRef.current) {
+        ctx.drawImage(backgroundCanvasRef.current, -cameraX, -cameraY);
       }
 
       armorPacksRef.current.forEach((pack, index) => {
@@ -583,7 +591,10 @@ function ZombieArena() {
         const px = Math.floor(player.x / tileSize);
         const py = Math.floor(player.y / tileSize);
 
-        if (!zombie.path || now - zombie.lastPathUpdate > 1000) {
+        if (
+          !zombie.path ||
+          now - zombie.lastPathUpdate > 1500 + Math.random() * 500
+        ) {
           zombie.path = aStar(grid, [zx, zy], [px, py]);
           zombie.lastPathUpdate = now;
         }
@@ -701,55 +712,53 @@ function ZombieArena() {
         ctx.restore();
       });
       zombiesRef.current.forEach((zombie) => {
-        zombiesRef.current.forEach((zombie) => {
-          const zx = Math.round(zombie.x - cameraX);
-          const zy = Math.round(zombie.y - cameraY);
-          ctx.save();
-          ctx.translate(zx, zy);
-          ctx.rotate(zombie.angle - Math.PI / 2);
-          ctx.drawImage(zombieSpriteRef.current, -24, -24, 48, 48);
+        const zx = Math.round(zombie.x - cameraX);
+        const zy = Math.round(zombie.y - cameraY);
+        ctx.save();
+        ctx.translate(zx, zy);
+        ctx.rotate(zombie.angle - Math.PI / 2);
+        ctx.drawImage(zombieSpriteRef.current, -24, -24, 48, 48);
 
-          if (zombie.flashTimer && zombie.flashTimer > 0) {
-            ctx.globalCompositeOperation = "source-atop";
-            ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
-            ctx.fillRect(-8, -8, 16, 16);
-            ctx.globalCompositeOperation = "source-over";
+        if (zombie.flashTimer && zombie.flashTimer > 0) {
+          ctx.globalCompositeOperation = "source-atop";
+          ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
+          ctx.fillRect(-8, -8, 16, 16);
+          ctx.globalCompositeOperation = "source-over";
 
-            zombie.flashTimer--;
-          }
+          zombie.flashTimer--;
+        }
 
-          ctx.restore();
+        ctx.restore();
 
-          const zHealthBarWidth = 40;
-          const zHealthBarHeight = 4;
-          const zHealthPercentage = zombie.health / zombie.maxHealth;
-          const zHealthBarX = zx - zHealthBarWidth / 2;
-          const zHealthBarY = zy - 30;
+        const zHealthBarWidth = 40;
+        const zHealthBarHeight = 4;
+        const zHealthPercentage = zombie.health / zombie.maxHealth;
+        const zHealthBarX = zx - zHealthBarWidth / 2;
+        const zHealthBarY = zy - 30;
 
-          ctx.fillStyle = "black";
-          ctx.fillRect(
-            zHealthBarX,
-            zHealthBarY,
-            zHealthBarWidth,
-            zHealthBarHeight
-          );
+        ctx.fillStyle = "black";
+        ctx.fillRect(
+          zHealthBarX,
+          zHealthBarY,
+          zHealthBarWidth,
+          zHealthBarHeight
+        );
 
-          ctx.fillStyle = "red";
-          ctx.fillRect(
-            zHealthBarX,
-            zHealthBarY,
-            zHealthBarWidth * zHealthPercentage,
-            zHealthBarHeight
-          );
+        ctx.fillStyle = "red";
+        ctx.fillRect(
+          zHealthBarX,
+          zHealthBarY,
+          zHealthBarWidth * zHealthPercentage,
+          zHealthBarHeight
+        );
 
-          ctx.strokeStyle = "white";
-          ctx.strokeRect(
-            zHealthBarX,
-            zHealthBarY,
-            zHealthBarWidth,
-            zHealthBarHeight
-          );
-        });
+        ctx.strokeStyle = "white";
+        ctx.strokeRect(
+          zHealthBarX,
+          zHealthBarY,
+          zHealthBarWidth,
+          zHealthBarHeight
+        );
       });
 
       ctx.save();
