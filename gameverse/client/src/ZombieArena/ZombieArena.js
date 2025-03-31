@@ -554,10 +554,20 @@ function ZombieArena() {
             const overlap = (minDistance - distance) / 2;
             const nx = dx / distance;
             const ny = dy / distance;
-            zombieA.x -= nx * overlap;
-            zombieA.y -= ny * overlap;
-            zombieB.x += nx * overlap;
-            zombieB.y += ny * overlap;
+            const pushFactors = [1, 0.5, 0.25];
+            for (const factor of pushFactors) {
+              const newXA = zombieA.x - nx * overlap * factor;
+              const newYA = zombieA.y - ny * overlap * factor;
+              const newXB = zombieB.x + nx * overlap * factor;
+              const newYB = zombieB.y + ny * overlap * factor;
+              if (isWalkable(newXA, newYA) && isWalkable(newXB, newYB)) {
+                zombieA.x = newXA;
+                zombieA.y = newYA;
+                zombieB.x = newXB;
+                zombieB.y = newYB;
+                break;
+              }
+            }
           }
         }
       }
@@ -580,8 +590,17 @@ function ZombieArena() {
           const overlap = playerMinDistance - distance;
           const nx = dx / distance;
           const ny = dy / distance;
-          player.x += nx * overlap;
-          player.y += ny * overlap;
+
+          const pushFactors = [1, 0.5, 0.25];
+          for (const factor of pushFactors) {
+            const newX = player.x + nx * overlap * factor;
+            const newY = player.y + ny * overlap * factor;
+            if (isWalkable(newX, newY)) {
+              player.x = newX;
+              player.y = newY;
+              break;
+            }
+          }
         }
       });
 
