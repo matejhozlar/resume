@@ -68,11 +68,15 @@ const lerpAngle = (a, b, t) => {
 };
 
 function ZombieArena() {
+  const ammoPacksRef = useRef([]);
+  const ammoPackImageRef = useRef(new Image());
+
   const zombiesKilledRef = useRef(0);
   const zombieSpriteRef = useRef(new Image());
   const zombiesRef = useRef([]);
   const waveRef = useRef(0);
   const lastWaveTimeRef = useRef(Date.now());
+
   const canvasRef = useRef(null);
   const bgImageRef = useRef(new Image());
   const spriteImageRef = useRef(new Image());
@@ -119,6 +123,7 @@ function ZombieArena() {
     bgImageRef.current.src = mapImage;
     spriteImageRef.current.src = playerSprite;
     bulletImageRef.current.src = bullet;
+    ammoPackImageRef.current.src = ammoPack;
     zombieSpriteRef.current.src = zombie;
     obstacleImageRef.current.src = mapImageObstacles;
     obstacleImageRef.current.onload = () => {
@@ -407,6 +412,29 @@ function ZombieArena() {
         );
       }
 
+      ammoPacksRef.current.forEach((pack, index) => {
+        // Check collision with the player (simple distance check)
+        const dx = player.x - pack.x;
+        const dy = player.y - pack.y;
+        const distance = Math.hypot(dx, dy);
+        if (distance < 20) {
+          reserveAmmoRef.current += pack.value;
+          ammoPacksRef.current.splice(index, 1);
+        } else {
+          ctx.save();
+          ctx.shadowColor = "yellow";
+          ctx.shadowBlur = 10;
+          ctx.drawImage(
+            ammoPackImageRef.current,
+            pack.x - cameraX - 16,
+            pack.y - cameraY - 16,
+            32,
+            32
+          );
+          ctx.restore();
+        }
+      });
+
       const time = Date.now();
       if (isGridReadyRef.current && time - lastWaveTimeRef.current >= 20000) {
         waveRef.current++;
@@ -448,6 +476,20 @@ function ZombieArena() {
             tileSize,
             tileSize
           );
+        }
+        if (Math.random() < 0.5) {
+          let packX, packY;
+          do {
+            const tx = Math.floor(
+              Math.random() * pathfindingGridRef.current.width
+            );
+            const ty = Math.floor(
+              Math.random() * pathfindingGridRef.current.height
+            );
+            packX = tx * tileSize + tileSize / 2;
+            packY = ty * tileSize + tileSize / 2;
+          } while (!isWalkable(packX, packY));
+          ammoPacksRef.current.push({ x: packX, y: packY, value: 15 });
         }
       }
 
