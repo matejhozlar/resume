@@ -199,6 +199,36 @@ app.post("/gameverse/change-username", ensureLoggedIn, async (req, res) => {
   }
 });
 
+// ZombieArena Best Score
+app.post("/ZombieArenaScore", ensureLoggedIn, async (req, res) => {
+  try {
+    const { wave, zombiesKilled, ammoUsed, accuracy } = req.body;
+    const userId = req.user.id;
+
+    const query = `INSERT INTO zombie_arena (user_id, wave, zombies_killed, ammo_used, accuracy) 
+    VALUES ($1, $2, $3, $4, $5)
+    ON CONFLICT (user_id)
+    DO UPDATE
+      SET wave = EXCLUDED.wave,
+      zombies_killed = EXCLUDED.zombies_killed,
+      ammo_used = EXCLUDED.ammo_used,
+      accuracy = EXCLUDED.accuracy,
+      updated_at = NOW()
+      WHERE zombie_arena.zombies_killed < EXCLUDED.zombies_killed`;
+    const values = [userId, wave, zombiesKilled, ammoUsed, accuracy];
+
+    await db.query(query, values);
+
+    return res.json({
+      success: true,
+      message: "Best score updated if higher.",
+    });
+  } catch (error) {
+    console.error("Error updating best score:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 passport.use(
   new Strategy(async function verify(username, password, cb) {
     try {

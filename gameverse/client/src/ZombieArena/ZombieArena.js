@@ -332,7 +332,30 @@ function ZombieArena() {
 
       if (player.health <= 0) {
         if (!gameOver) {
+          const accuracy =
+            ((zombiesKilledRef.current * 3) / ammoUsedRef.current) * 100;
           setGameOver(true);
+
+          fetch("http://localhost:5000/ZombieArenaScore", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({
+              wave: waveRef.current,
+              zombiesKilled: zombiesKilledRef.current,
+              ammoUsed: ammoUsedRef.current,
+              accuracy: accuracy,
+            }),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.success) {
+                console.log("Best score updated if was higher!");
+              } else {
+                console.error("Error updating best score:", data.error);
+              }
+            })
+            .catch((err) => console.error("Fetch error:", err));
         }
         ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
