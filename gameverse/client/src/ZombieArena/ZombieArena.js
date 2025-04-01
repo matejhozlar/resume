@@ -3,30 +3,12 @@ import mapImage from "../assets/maps/zombie-city.png";
 import playerSprite from "../assets/sprites/survivor.png";
 import mapImageObstacles from "../assets/maps/zombie-city-obstacles.png";
 import bullet from "../assets/sprites/bullet/bullet.png";
-import reload1 from "../assets/sprites/reloading/survivor-reload_rifle_0.png";
-import reload2 from "../assets/sprites/reloading/survivor-reload_rifle_1.png";
-import reload3 from "../assets/sprites/reloading/survivor-reload_rifle_2.png";
-import reload4 from "../assets/sprites/reloading/survivor-reload_rifle_3.png";
-import reload5 from "../assets/sprites/reloading/survivor-reload_rifle_4.png";
-import reload6 from "../assets/sprites/reloading/survivor-reload_rifle_5.png";
-import reload7 from "../assets/sprites/reloading/survivor-reload_rifle_6.png";
-import reload8 from "../assets/sprites/reloading/survivor-reload_rifle_7.png";
-import reload9 from "../assets/sprites/reloading/survivor-reload_rifle_8.png";
-import reload10 from "../assets/sprites/reloading/survivor-reload_rifle_9.png";
-import reload11 from "../assets/sprites/reloading/survivor-reload_rifle_10.png";
-import reload12 from "../assets/sprites/reloading/survivor-reload_rifle_11.png";
-import reload13 from "../assets/sprites/reloading/survivor-reload_rifle_12.png";
-import reload14 from "../assets/sprites/reloading/survivor-reload_rifle_13.png";
-import reload15 from "../assets/sprites/reloading/survivor-reload_rifle_14.png";
-import reload16 from "../assets/sprites/reloading/survivor-reload_rifle_15.png";
-import reload17 from "../assets/sprites/reloading/survivor-reload_rifle_16.png";
-import reload18 from "../assets/sprites/reloading/survivor-reload_rifle_17.png";
-import reload19 from "../assets/sprites/reloading/survivor-reload_rifle_18.png";
 import zombie from "../assets/sprites/zombie.png";
 import { aStar } from "./pathfinding";
 import ammoPack from "../assets/sprites/bullet/ammo.png";
 import armorPack from "../assets/sprites/bullet/armor.png";
 import medkit from "../assets/sprites/bullet/medkit.png";
+import reloadingRifle from "../assets/sprites/reloading/reloadingRifle.js";
 
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 600;
@@ -44,25 +26,25 @@ const FRICTION = 0.1;
 const RELOAD_DURATION = 1000;
 const MAX_PATHFINDING_UPDATES_PER_FRAME = 3;
 const RELOAD_FRAMES = [
-  reload1,
-  reload2,
-  reload3,
-  reload4,
-  reload5,
-  reload6,
-  reload7,
-  reload8,
-  reload9,
-  reload10,
-  reload11,
-  reload12,
-  reload13,
-  reload14,
-  reload15,
-  reload16,
-  reload17,
-  reload18,
-  reload19,
+  reloadingRifle.reload1,
+  reloadingRifle.reload2,
+  reloadingRifle.reload3,
+  reloadingRifle.reload4,
+  reloadingRifle.reload5,
+  reloadingRifle.reload6,
+  reloadingRifle.reload7,
+  reloadingRifle.reload8,
+  reloadingRifle.reload9,
+  reloadingRifle.reload10,
+  reloadingRifle.reload11,
+  reloadingRifle.reload12,
+  reloadingRifle.reload13,
+  reloadingRifle.reload14,
+  reloadingRifle.reload15,
+  reloadingRifle.reload16,
+  reloadingRifle.reload17,
+  reloadingRifle.reload18,
+  reloadingRifle.reload19,
 ];
 
 const lerpAngle = (a, b, t) => {
