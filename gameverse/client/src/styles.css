@@ -823,6 +823,12 @@ body {
   margin: 10px 0 20px 0;
 }
 
+.game-over-accuracy {
+  color: white;
+  font-size: 30px;
+  margin: 10px 0 20px 0;
+}
+
 .restart-button,
 .play-button {
   font-size: 40px;

@@ -971,6 +971,16 @@ function ZombieArena() {
                 Zombies killed: {zombiesKilledRef.current}
               </p>
               <p className="game-over-ammo">Ammo used: {ammoUsedRef.current}</p>
+              <p className="game-over-accuracy">
+                Accuracy:{" "}
+                {ammoUsedRef.current > 0
+                  ? (
+                      ((zombiesKilledRef.current * 3) / ammoUsedRef.current) *
+                      100
+                    ).toFixed(2)
+                  : "0.00"}
+                %
+              </p>
               <button onClick={restartGame} className="restart-button">
                 Restart
               </button>
