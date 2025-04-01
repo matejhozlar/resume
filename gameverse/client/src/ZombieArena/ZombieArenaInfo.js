@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import preview1 from "../assets/images/tictactoe-preview1.png";
-import preview2 from "../assets/images/tictactoe-preview2.png";
+import preview1 from "../assets/images/zombiearena-preview1.png";
+import preview2 from "../assets/images/zombiearena-preview2.png";
 
 function ZombieArenaInfo({ onPageChange }) {
   const [zoomedImage, setZoomedImage] = useState(null);
