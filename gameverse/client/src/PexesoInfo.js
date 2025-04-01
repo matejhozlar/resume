@@ -52,7 +52,7 @@ function TicTacToeInfo() {
               </ul>
             </p>
             <div className="tags">
-              <span className="tag">🕹️ Singleplayer</span>
+              <span className="tag">🕹️ 1 player</span>
               <span className="tag">🧠 Memory</span>
               <span className="tag">🎵 Music</span>
               <span className="tag">🃏 Cards</span>

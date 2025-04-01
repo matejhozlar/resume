@@ -37,7 +37,7 @@ function TicTacToeInfo() {
               mistake.
             </p>
             <div className="tags">
-              <span className="tag">🕹️ Singleplayer</span>
+              <span className="tag">🕹️ 1 player</span>
               <span className="tag">🧠 Memory</span>
               <span className="tag">🎵 Sound</span>
               <span className="tag">🎮 Classic</span>
