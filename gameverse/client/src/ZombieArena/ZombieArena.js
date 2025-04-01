@@ -573,7 +573,8 @@ function ZombieArena() {
 
         waveNotificationTimeRef.current = time;
 
-        for (let i = 0; i < waveRef.current; i++) {
+        const zombieCount = Math.floor((waveRef.current + 1) / 2);
+        for (let i = 0; i < zombieCount; i++) {
           let spawnX, spawnY;
           const tileSize = 16;
           const gridW = pathfindingGridRef.current.width;
