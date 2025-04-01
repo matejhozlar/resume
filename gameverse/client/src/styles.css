@@ -728,7 +728,6 @@ label {
   font-size: 20px;
 }
 
-/* Ensure html and body do not scroll */
 html,
 body {
   margin: 0;
@@ -737,36 +736,31 @@ body {
   overflow: hidden;
 }
 
-/* Wrapper to structure header + main below it */
 .app-wrapper {
   display: flex;
   flex-direction: column;
   height: 100vh;
 }
 
-/* Make header fixed height */
 .header {
   height: 60px;
   flex-shrink: 0;
-  position: sticky; /* or fixed, but sticky helps keep stacking context cleaner */
+  position: sticky;
   top: 0;
   z-index: 100;
 }
 
-/* Main area takes remaining height below header */
 .main-container {
   display: flex;
   flex-grow: 1;
-  overflow: hidden; /* prevent double scroll */
+  overflow: hidden;
 }
 
-/* Sidebar stays scrollable */
 .sidebar {
   height: 100%;
   overflow-y: auto;
 }
 
-/* Only content is scrollable */
 .content {
   flex-grow: 1;
   height: 100%;
@@ -779,6 +773,73 @@ body {
   border: 2px solid #8a5cf6;
   background-color: #000;
   image-rendering: pixelated;
-  cursor: crosshair; /* ← this brings the crosshair back */
+  cursor: crosshair;
+}
+
+.game-container {
+  position: relative;
+  width: 800px; /* Matches your CANVAS_WIDTH */
+  margin: 0 auto;
+}
+
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.game-over-container {
+  text-align: center;
+}
+
+.game-over-title {
+  color: red;
+  font-size: 80px;
+  font-family: "Creepster", cursive;
+  margin: 0 0 20px 0;
+}
+
+.game-over-wave {
+  color: white;
+  font-size: 30px;
+  margin: 0;
+}
+
+.game-over-zombies {
+  color: white;
+  font-size: 30px;
+  margin: 10px 0 20px 0;
+}
+
+.restart-button,
+.play-button {
+  font-size: 40px;
+  padding: 12px 36px;
+  font-family: "Creepster", cursive;
+  background-color: transparent;
+  border: none;
+  color: red;
+}
+
+.restart-button:hover,
+.play-button:hover {
+  color: white;
+}
+
+.game-canvas {
+  border: 2px solid #8a5cf6;
+  background-color: #000;
+  image-rendering: pixelated;
+  cursor: crosshair;
+}
+
+.blurred {
+  filter: blur(6px);
 }
 /* ZombieArena */

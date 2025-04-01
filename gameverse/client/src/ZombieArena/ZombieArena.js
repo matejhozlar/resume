@@ -133,6 +133,39 @@ function ZombieArena() {
   });
 
   const [gameStarted, setGameStarted] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
+
+  const restartGame = () => {
+    playerRef.current = {
+      x: WORLD_WIDTH / 2,
+      y: WORLD_HEIGHT / 2,
+      angle: 0,
+      vx: 0,
+      vy: 0,
+      health: 100,
+      maxHealth: 100,
+      lastDamageTime: 0,
+      armor: 0,
+      maxArmor: 0,
+    };
+
+    zombiesRef.current = [];
+    waveRef.current = 0;
+    ammoPacksRef.current = [];
+    medkitsRef.current = [];
+    armorPacksRef.current = [];
+    currentAmmoRef.current = 30;
+    reserveAmmoRef.current = 270;
+    medkitCountRef.current = 1;
+    lastWaveTimeRef.current = Date.now();
+    zombiesKilledRef.current = 0;
+
+    setGameOver(false);
+    setGameStarted(false);
+    setTimeout(() => {
+      setGameStarted(true);
+    }, 0);
+  };
 
   useEffect(() => {
     bgImageRef.current.src = mapImage;
@@ -292,6 +325,32 @@ function ZombieArena() {
     const loop = () => {
       const keys = keysRef.current;
       const player = playerRef.current;
+
+      if (player.health <= 0) {
+        if (!gameOver) {
+          setGameOver(true);
+        }
+        ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+        ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        ctx.fillStyle = "red";
+        ctx.font = "50px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText("Game Over", CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2 - 50);
+        ctx.fillStyle = "white";
+        ctx.font = "30px Arial";
+        ctx.fillText(
+          `Wave reached: ${waveRef.current}`,
+          CANVAS_WIDTH / 2,
+          CANVAS_HEIGHT / 2
+        );
+        ctx.fillText(
+          `Zombies killed: ${zombiesKilledRef.current}`,
+          CANVAS_WIDTH / 2,
+          CANVAS_HEIGHT / 2 + 40
+        );
+        return;
+      }
 
       let targetAngle = player.angle;
       if (mouseActiveRef.current) {
@@ -894,41 +953,31 @@ function ZombieArena() {
 
     requestAnimationFrame(loop);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameStarted]);
+  }, [gameStarted, gameOver]);
 
   return (
-    <div
-      style={{ position: "relative", width: CANVAS_WIDTH, margin: "0 auto" }}
-    >
-      {!gameStarted && (
-        <div
-          style={{
-            position: "absolute",
-            width: "100%",
-            height: "100%",
-            backdropFilter: "blur(8px)",
-            background: "rgba(0, 0, 0, 0.3)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 2,
-          }}
-        >
-          <button
-            onClick={() => setGameStarted(true)}
-            style={{
-              fontSize: "24px",
-              padding: "12px 36px",
-              borderRadius: "10px",
-              border: "none",
-              backgroundColor: "#8a5cf6",
-              color: "#fff",
-              cursor: "pointer",
-              boxShadow: "0 0 10px rgba(0,0,0,0.5)",
-            }}
-          >
-            Play
-          </button>
+    <div className="game-container">
+      {(!gameStarted || gameOver) && (
+        <div className="overlay">
+          {gameOver ? (
+            <div className="game-over-container">
+              <h1 className="game-over-title">Game Over</h1>
+              <p className="game-over-wave">Wave reached: {waveRef.current}</p>
+              <p className="game-over-zombies">
+                Zombies killed: {zombiesKilledRef.current}
+              </p>
+              <button onClick={restartGame} className="restart-button">
+                Restart
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => setGameStarted(true)}
+              className="play-button"
+            >
+              Play
+            </button>
+          )}
         </div>
       )}
 
@@ -936,13 +985,7 @@ function ZombieArena() {
         ref={canvasRef}
         width={CANVAS_WIDTH}
         height={CANVAS_HEIGHT}
-        style={{
-          border: "2px solid #8a5cf6",
-          backgroundColor: "#000",
-          imageRendering: "pixelated",
-          cursor: "crosshair",
-          filter: !gameStarted ? "blur(6px)" : "none",
-        }}
+        className={`game-canvas ${!gameStarted ? "blurred" : ""}`}
       ></canvas>
     </div>
   );
