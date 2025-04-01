@@ -74,6 +74,8 @@ function ZombieArena() {
   const backgroundCanvasRef = useRef(document.createElement("canvas"));
   const backgroundCtxRef = useRef(null);
 
+  const ammoUsedRef = useRef(0);
+
   const ammoPacksRef = useRef([]);
   const ammoPackImageRef = useRef(new Image());
 
@@ -159,6 +161,7 @@ function ZombieArena() {
     medkitCountRef.current = 1;
     lastWaveTimeRef.current = Date.now();
     zombiesKilledRef.current = 0;
+    ammoUsedRef.current = 0;
 
     setGameOver(false);
     setGameStarted(false);
@@ -268,6 +271,7 @@ function ZombieArena() {
       dy: Math.sin(angle) * BULLET_SPEED,
     });
     currentAmmoRef.current--;
+    ammoUsedRef.current++;
   };
 
   useEffect(() => {
@@ -966,6 +970,7 @@ function ZombieArena() {
               <p className="game-over-zombies">
                 Zombies killed: {zombiesKilledRef.current}
               </p>
+              <p className="game-over-ammo">Ammo used: {ammoUsedRef.current}</p>
               <button onClick={restartGame} className="restart-button">
                 Restart
               </button>
@@ -975,7 +980,7 @@ function ZombieArena() {
               onClick={() => setGameStarted(true)}
               className="play-button"
             >
-              Play
+              Start
             </button>
           )}
         </div>

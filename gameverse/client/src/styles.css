@@ -817,6 +817,12 @@ body {
   margin: 10px 0 20px 0;
 }
 
+.game-over-ammo {
+  color: white;
+  font-size: 30px;
+  margin: 10px 0 20px 0;
+}
+
 .restart-button,
 .play-button {
   font-size: 40px;
@@ -824,7 +830,14 @@ body {
   font-family: "Creepster", cursive;
   background-color: transparent;
   border: none;
+  outline: none !important;
   color: red;
+}
+
+.restart-button::-moz-focus-inner,
+.play-button::-moz-focus-inner {
+  border: 0;
+  padding: 0;
 }
 
 .restart-button:hover,

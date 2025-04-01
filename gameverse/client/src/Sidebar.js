@@ -81,7 +81,7 @@ function Sidebar({ onPageChange, isCollapsed, setIsCollapsed }) {
                 className="menu-btn"
                 onClick={() => onPageChange("zombiearena")}
               >
-                Pixel Arena
+                Zombie Arena
               </button>
             </li>
           </ul>
@@ -101,6 +101,11 @@ function Sidebar({ onPageChange, isCollapsed, setIsCollapsed }) {
         <li className="menu-item">
           <button className="menu-btn toggle-btn no-arrow" disabled>
             {isCollapsed ? "👤" : "Char Creation (TBD)"}
+          </button>
+        </li>
+        <li className="menu-item">
+          <button className="menu-btn toggle-btn no-arrow" disabled>
+            {isCollapsed ? "📓" : "Patch Notes (TBD)"}
           </button>
         </li>
 
