@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import mapImage from "../assets/maps/zombie-city.png";
 import playerSprite from "../assets/sprites/survivor.png";
 import mapImageObstacles from "../assets/maps/zombie-city-obstacles.png";
+import playerSpriteHandgun from "../assets/sprites/survivor-handgun.png";
 import bullet from "../assets/sprites/bullet/bullet.png";
 import zombie from "../assets/sprites/zombie.png";
 import { aStar } from "./pathfinding";
@@ -9,6 +10,7 @@ import ammoPack from "../assets/sprites/bullet/ammo.png";
 import armorPack from "../assets/sprites/bullet/armor.png";
 import medkit from "../assets/sprites/bullet/medkit.png";
 import reloadingRifle from "../assets/sprites/reloading/reloadingRifle.js";
+import reloadingHandgun from "../assets/sprites/reloading/reloadingHandgun.js";
 
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 600;
@@ -20,11 +22,14 @@ const SCALE = 3;
 const BULLET_SPEED = 6;
 const FORWARD_OFFSET = 16;
 const SIDE_OFFSET = 12;
-const SHOOT_COOLDOWN = 200;
 const ACCELERATION = 0.2;
 const FRICTION = 0.1;
 const RELOAD_DURATION = 1000;
 const MAX_PATHFINDING_UPDATES_PER_FRAME = 3;
+const RIFLE_DAMAGE = 20;
+const HANDGUN_DAMAGE = 30;
+const RIFLE_COOLDOWN = 200;
+const HANDGUN_COOLDOWN = 400;
 const RELOAD_FRAMES = [
   reloadingRifle.reload1,
   reloadingRifle.reload2,
@@ -53,6 +58,11 @@ const lerpAngle = (a, b, t) => {
 };
 
 function ZombieArena() {
+  const weaponRef = useRef("rifle");
+
+  const handgunAmmoRef = useRef(7);
+  const handgunReserveRef = useRef(14);
+
   const backgroundCanvasRef = useRef(document.createElement("canvas"));
   const backgroundCtxRef = useRef(null);
 
@@ -224,6 +234,14 @@ function ZombieArena() {
     };
   }, []);
 
+  const reloadHandgunImages = useRef(
+    Object.values(reloadingHandgun).map((src) => {
+      const img = new Image();
+      img.src = src;
+      return img;
+    })
+  );
+
   const tileSize = 16;
 
   const isTileWalkable = (tx, ty) => {
@@ -237,9 +255,17 @@ function ZombieArena() {
   };
 
   const shootBullet = () => {
-    if (currentAmmoRef.current <= 0 || isReloadingRef.current) return;
+    if (isReloadingRef.current) return;
+
     const { x, y } = playerRef.current;
     const angle = lastAngleRef.current;
+
+    const weapon = weaponRef.current;
+    const currentAmmo =
+      weapon === "rifle" ? currentAmmoRef.current : handgunAmmoRef.current;
+
+    if (currentAmmo <= 0) return;
+
     bulletsRef.current.push({
       x:
         x +
@@ -252,8 +278,14 @@ function ZombieArena() {
       dx: Math.cos(angle) * BULLET_SPEED,
       dy: Math.sin(angle) * BULLET_SPEED,
     });
-    currentAmmoRef.current--;
+
     ammoUsedRef.current++;
+
+    if (weapon === "rifle") {
+      currentAmmoRef.current--;
+    } else {
+      handgunAmmoRef.current--;
+    }
   };
 
   useEffect(() => {
@@ -263,11 +295,18 @@ function ZombieArena() {
       if (
         key === "r" &&
         !isReloadingRef.current &&
-        currentAmmoRef.current < 30 &&
-        reserveAmmoRef.current > 0
+        ((weaponRef.current === "rifle" &&
+          currentAmmoRef.current < 30 &&
+          reserveAmmoRef.current > 0) ||
+          (weaponRef.current === "handgun" &&
+            handgunAmmoRef.current < 7 &&
+            handgunReserveRef.current > 0))
       ) {
         isReloadingRef.current = true;
         reloadStartTimeRef.current = Date.now();
+      }
+      if (key === "q") {
+        weaponRef.current = weaponRef.current === "rifle" ? "handgun" : "rifle";
       }
     };
     const handleKeyUp = (e) => (keysRef.current[e.key.toLowerCase()] = false);
@@ -432,31 +471,50 @@ function ZombieArena() {
 
       if (isReloadingRef.current) {
         const elapsed = Date.now() - reloadStartTimeRef.current;
+
+        const frames =
+          weaponRef.current === "rifle"
+            ? reloadImages.current
+            : reloadHandgunImages.current;
+
         const frameIndex = Math.floor(
-          (elapsed / RELOAD_DURATION) * reloadImages.current.length
+          (elapsed / RELOAD_DURATION) * frames.length
         );
+        spriteImageRef.current =
+          frames[Math.min(frameIndex, frames.length - 1)];
+
         if (elapsed >= RELOAD_DURATION) {
-          const toReload = Math.min(
-            30 - currentAmmoRef.current,
-            reserveAmmoRef.current
-          );
-          currentAmmoRef.current += toReload;
-          reserveAmmoRef.current -= toReload;
+          if (weaponRef.current === "rifle") {
+            const toReload = Math.min(
+              30 - currentAmmoRef.current,
+              reserveAmmoRef.current
+            );
+            currentAmmoRef.current += toReload;
+            reserveAmmoRef.current -= toReload;
+          } else {
+            const toReload = Math.min(
+              7 - handgunAmmoRef.current,
+              handgunReserveRef.current
+            );
+            handgunAmmoRef.current += toReload;
+            handgunReserveRef.current -= toReload;
+          }
+
           isReloadingRef.current = false;
         }
-        spriteImageRef.current =
-          reloadImages.current[
-            Math.min(frameIndex, reloadImages.current.length - 1)
-          ];
       } else {
         spriteImageRef.current = new Image();
-        spriteImageRef.current.src = playerSprite;
+        spriteImageRef.current.src =
+          weaponRef.current === "rifle" ? playerSprite : playerSpriteHandgun;
       }
 
       const now = Date.now();
+      const weaponInUse = weaponRef.current;
+      const cooldown =
+        weaponInUse === "rifle" ? RIFLE_COOLDOWN : HANDGUN_COOLDOWN;
       if (
         (keys[" "] || mouseDownRef.current) &&
-        now - lastShotRef.current > SHOOT_COOLDOWN
+        now - lastShotRef.current > cooldown
       ) {
         shootBullet();
         lastShotRef.current = now;
@@ -482,7 +540,9 @@ function ZombieArena() {
           const bulletRadius = 8;
           const zombieRadius = 20;
           if (distance < bulletRadius + zombieRadius) {
-            zombie.health -= 20;
+            const weapon = weaponRef.current;
+            const damage = weapon === "rifle" ? RIFLE_DAMAGE : HANDGUN_DAMAGE;
+            zombie.health -= damage;
             zombie.flashTimer = 10;
             bulletsRef.current.splice(i, 1);
             if (zombie.health <= 0) {
@@ -526,12 +586,12 @@ function ZombieArena() {
       });
 
       ammoPacksRef.current.forEach((pack, index) => {
-        // Check collision with the player (simple distance check)
         const dx = player.x - pack.x;
         const dy = player.y - pack.y;
         const distance = Math.hypot(dx, dy);
         if (distance < 20) {
           reserveAmmoRef.current += pack.value;
+          handgunReserveRef.current += 14;
           ammoPacksRef.current.splice(index, 1);
         } else {
           ctx.save();
@@ -912,12 +972,14 @@ function ZombieArena() {
 
       ctx.fillStyle = "white";
       ctx.font = "16px monospace";
-      ctx.fillText(
-        `Ammo: ${currentAmmoRef.current} / ${reserveAmmoRef.current}`,
-        10,
-        20
-      );
-      ctx.fillText(`Medkits: ${medkitCountRef.current}`, 10, 40);
+      const weapon = weaponRef.current;
+      const ammo =
+        weapon === "rifle"
+          ? `${currentAmmoRef.current} / ${reserveAmmoRef.current}`
+          : `${handgunAmmoRef.current} / ${handgunReserveRef.current}`;
+
+      ctx.fillText(`Ammo: ${ammo}`, 10, 40);
+      ctx.fillText(`Medkits: ${medkitCountRef.current}`, 10, 60);
 
       ctx.fillStyle = "white";
       ctx.font = "20px monospace";
