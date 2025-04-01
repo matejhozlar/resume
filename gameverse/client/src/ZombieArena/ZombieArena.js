@@ -42,6 +42,7 @@ const SHOOT_COOLDOWN = 200;
 const ACCELERATION = 0.2;
 const FRICTION = 0.1;
 const RELOAD_DURATION = 1000;
+const MAX_PATHFINDING_UPDATES_PER_FRAME = 3;
 const RELOAD_FRAMES = [
   reload1,
   reload2,
@@ -580,6 +581,8 @@ function ZombieArena() {
         }
       }
 
+      let pathfindingUpdatesThisFrame = 0;
+
       zombiesRef.current.forEach((zombie) => {
         const tileSize = 16;
         const grid = pathfindingGridRef.current;
@@ -591,12 +594,17 @@ function ZombieArena() {
         const px = Math.floor(player.x / tileSize);
         const py = Math.floor(player.y / tileSize);
 
-        if (
+        const needsNewPath =
           !zombie.path ||
-          now - zombie.lastPathUpdate > 1500 + Math.random() * 500
+          now - zombie.lastPathUpdate > 1500 + Math.random() * 500;
+
+        if (
+          needsNewPath &&
+          pathfindingUpdatesThisFrame < MAX_PATHFINDING_UPDATES_PER_FRAME
         ) {
           zombie.path = aStar(grid, [zx, zy], [px, py]);
           zombie.lastPathUpdate = now;
+          pathfindingUpdatesThisFrame++;
         }
 
         if (zombie.path && zombie.path.length > 1) {
@@ -616,6 +624,7 @@ function ZombieArena() {
             zombie.x += (dx / dist) * speed;
             zombie.y += (dy / dist) * speed;
           }
+
           const targetAngle = Math.atan2(dy, dx);
           const rotationSpeed = 0.05;
           zombie.angle = lerpAngle(zombie.angle, targetAngle, rotationSpeed);
