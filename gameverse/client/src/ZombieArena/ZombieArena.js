@@ -111,6 +111,7 @@ function ZombieArena() {
   const currentAmmoRef = useRef(30);
   const reserveAmmoRef = useRef(270);
   const bulletsRef = useRef([]);
+  const bulletHitsRef = useRef(0);
   const lastAngleRef = useRef(0);
   const waveNotificationTimeRef = useRef(0);
   const playerRef = useRef({
@@ -353,8 +354,7 @@ function ZombieArena() {
 
       if (player.health <= 0) {
         if (!gameOver) {
-          const accuracy =
-            ((zombiesKilledRef.current * 3) / ammoUsedRef.current) * 100;
+          const accuracy = (bulletHitsRef.current / ammoUsedRef.current) * 100;
           setGameOver(true);
 
           fetch("http://localhost:5000/ZombieArenaScore", {
@@ -545,6 +545,7 @@ function ZombieArena() {
             zombie.health -= damage;
             zombie.flashTimer = 10;
             bulletsRef.current.splice(i, 1);
+            bulletHitsRef.current++;
             if (zombie.health <= 0) {
               zombiesRef.current.splice(j, 1);
               zombiesKilledRef.current++;
