@@ -12,6 +12,7 @@ import medkit from "../assets/sprites/bullet/medkit.png";
 import reloadingRifle from "../assets/sprites/reloading/reloadingRifle.js";
 import reloadingHandgun from "../assets/sprites/reloading/reloadingHandgun.js";
 import grenade from "../assets/sprites/bullet/grenade.png";
+import explosionSprite from "../assets/sprites/bullet/explosion.png";
 
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 600;
@@ -34,6 +35,11 @@ const HANDGUN_COOLDOWN = 400;
 const GRENADE_TIMER = 3000;
 const GRENADE_RADIUS = 100;
 const GRENADE_DAMAGE = 50;
+const EXPLOSION_COLS = 8;
+const EXPLOSION_TOTAL_FRAMES = 64;
+const EXPLOSION_FRAME_DURATION = 5;
+const EXPLOSION_DRAW_SIZE = 256;
+const EXPLOSION_ATLAS_FRAME_SIZE = 512;
 const RELOAD_FRAMES = [
   reloadingRifle.reload1,
   reloadingRifle.reload2,
@@ -62,6 +68,9 @@ const lerpAngle = (a, b, t) => {
 };
 
 function ZombieArena() {
+  const explosionsRef = useRef([]);
+  const explosionsImageRef = useRef(new Image());
+
   const grenadesRef = useRef([]);
   const grenadeImageRef = useRef(new Image());
   const grenadeCountRef = useRef(0);
@@ -194,6 +203,7 @@ function ZombieArena() {
     armorPackImageRef.current.src = armorPack;
     medkitImageRef.current.src = medkit;
     zombieSpriteRef.current.src = zombie;
+    explosionsImageRef.current.src = explosionSprite;
 
     obstacleImageRef.current.src = mapImageObstacles;
     obstacleImageRef.current.onload = () => {
@@ -686,7 +696,7 @@ function ZombieArena() {
           armorPacksRef.current.push({ x: packX, y: packY, value: 50 });
         }
 
-        if (waveRef.current >= 0) {
+        if (waveRef.current >= 5 && Math.random() < 0.2) {
           let packX, packY;
           do {
             const tx = Math.floor(
@@ -1058,6 +1068,12 @@ function ZombieArena() {
               }
             }
 
+            explosionsRef.current.push({
+              x: grenade.x,
+              y: grenade.y,
+              startTime: Date.now(),
+            });
+
             const grenadeIndex = grenadesRef.current.indexOf(grenade);
             if (grenadeIndex !== -1) {
               grenadesRef.current.splice(grenadeIndex, 1);
@@ -1079,6 +1095,33 @@ function ZombieArena() {
             );
           }
         });
+
+      explosionsRef.current = explosionsRef.current.filter((explosion) => {
+        const elapsed = Date.now() - explosion.startTime;
+        const frame = Math.floor(elapsed / EXPLOSION_FRAME_DURATION);
+
+        if (frame >= EXPLOSION_TOTAL_FRAMES) return false;
+
+        const sx = (frame % EXPLOSION_COLS) * EXPLOSION_ATLAS_FRAME_SIZE;
+        const sy =
+          Math.floor(frame / EXPLOSION_COLS) * EXPLOSION_ATLAS_FRAME_SIZE;
+        const dx = explosion.x - cameraX - EXPLOSION_DRAW_SIZE / 2;
+        const dy = explosion.y - cameraY - EXPLOSION_DRAW_SIZE / 2;
+
+        ctx.drawImage(
+          explosionsImageRef.current,
+          sx,
+          sy,
+          EXPLOSION_ATLAS_FRAME_SIZE,
+          EXPLOSION_ATLAS_FRAME_SIZE,
+          dx,
+          dy,
+          EXPLOSION_DRAW_SIZE,
+          EXPLOSION_DRAW_SIZE
+        );
+
+        return true;
+      });
 
       const weapon = weaponRef.current;
       const ammo =
