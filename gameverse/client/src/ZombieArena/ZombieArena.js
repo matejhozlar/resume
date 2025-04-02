@@ -168,10 +168,13 @@ function ZombieArena() {
     armorPacksRef.current = [];
     currentAmmoRef.current = 30;
     reserveAmmoRef.current = 270;
+    handgunAmmoRef.current = 7;
+    handgunReserveRef.current = 14;
     medkitCountRef.current = 1;
     lastWaveTimeRef.current = Date.now();
     zombiesKilledRef.current = 0;
     ammoUsedRef.current = 0;
+    grenadeCountRef.current = 0;
 
     setGameOver(false);
     setGameStarted(false);
@@ -1065,6 +1068,25 @@ function ZombieArena() {
                   zombiesRef.current.splice(j, 1);
                   zombiesKilledRef.current++;
                 }
+              }
+            }
+
+            const pdx = player.x - grenade.x;
+            const pdy = player.y - grenade.y;
+            const playerDistance = Math.hypot(pdx, pdy);
+            if (playerDistance <= GRENADE_RADIUS) {
+              let remainingDamage = GRENADE_DAMAGE;
+              if (player.armor > 0) {
+                if (player.armor >= remainingDamage) {
+                  player.armor -= remainingDamage;
+                  remainingDamage = 0;
+                } else {
+                  remainingDamage -= player.armor;
+                  player.armor = 0;
+                }
+              }
+              if (remainingDamage > 0) {
+                player.health -= remainingDamage;
               }
             }
 
