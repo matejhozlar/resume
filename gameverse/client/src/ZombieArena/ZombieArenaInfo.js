@@ -39,6 +39,8 @@ function ZombieArenaInfo({ onPageChange }) {
                 MedKits: Apply medkits to heal 10 points of your health by
                 pressing 'E'
               </li>
+              <li>Change your weapons by pressing 'Q'</li>
+              <li>Throw a grenade by pressing 'G'</li>
               <li>
                 Aiming & Shooting: Aim with your mouse and click or press
                 'Space'/'Mouse1' to shoot.
