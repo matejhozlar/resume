@@ -175,6 +175,7 @@ function ZombieArena() {
     zombiesKilledRef.current = 0;
     ammoUsedRef.current = 0;
     grenadeCountRef.current = 0;
+    bulletHitsRef.current = 0;
 
     setGameOver(false);
     setGameStarted(false);
