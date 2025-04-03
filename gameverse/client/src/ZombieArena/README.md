@@ -40,14 +40,6 @@ Stay alive against ever-increasing waves of zombies. Loot, reload, heal, and exp
 | `G`              | Throw Grenade           |
 | `E`              | Use Medkit              |
 
----
-
-## 📸 Screenshots
-
-
-| In-Game | Game Over |
-|--------|-----------|
-| ![Gameplay](https://via.placeholder.com/400x250?text=Gameplay+Screenshot) | ![Game Over](https://via.placeholder.com/400x250?text=Game+Over+Screen) |
 
 
 
