@@ -1,5 +1,4 @@
 export function aStar(grid, start, end) {
-  // 8-directional movement (including diagonals)
   const dirs = [
     [0, -1], // up
     [1, -1], // up-right
@@ -20,14 +19,12 @@ export function aStar(grid, start, end) {
   const fScore = { [startKey]: heuristic(start, end) };
 
   function heuristic(a, b) {
-    // Euclidean distance heuristic
     const dx = b[0] - a[0];
     const dy = b[1] - a[1];
     return Math.sqrt(dx * dx + dy * dy);
   }
 
   while (openSet.length > 0) {
-    // Pick the node with the lowest fScore
     let lowestIndex = 0;
     for (let i = 1; i < openSet.length; i++) {
       const key = `${openSet[i][0]},${openSet[i][1]}`;
@@ -40,10 +37,8 @@ export function aStar(grid, start, end) {
     const current = openSet.splice(lowestIndex, 1)[0];
     const currentKey = `${current[0]},${current[1]}`;
 
-    // Mark this node as processed
     closedSet.add(currentKey);
 
-    // Goal reached; reconstruct path
     if (current[0] === end[0] && current[1] === end[1]) {
       const path = [current];
       while (cameFrom[`${path[0][0]},${path[0][1]}`]) {
@@ -52,13 +47,11 @@ export function aStar(grid, start, end) {
       return path;
     }
 
-    // Explore neighbors
     for (const [dx, dy] of dirs) {
       const neighbor = [current[0] + dx, current[1] + dy];
       const [x, y] = neighbor;
       const neighborKey = `${x},${y}`;
 
-      // Skip if out of bounds, non-walkable, or already processed
       if (
         y < 0 ||
         y >= grid.length ||
@@ -70,7 +63,6 @@ export function aStar(grid, start, end) {
         continue;
       }
 
-      // Cost: diagonal moves cost more
       const moveCost = dx !== 0 && dy !== 0 ? 1.4 : 1;
       const tentativeG = gScore[currentKey] + moveCost;
 
@@ -85,6 +77,5 @@ export function aStar(grid, start, end) {
     }
   }
 
-  // No path found
   return [];
 }
