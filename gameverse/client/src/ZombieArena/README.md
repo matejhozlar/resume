@@ -1,8 +1,6 @@
 # 🧟‍♂️ Zombie Arena
 
-[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![Game Status](https://img.shields.io/badge/status-playable-green)
-![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 ![React](https://img.shields.io/badge/built%20with-React-blue)
 
 **Zombie Arena** is a top-down survival shooter built with **React + Canvas**. Survive endless waves of zombies, loot supplies, and unleash grenades in this retro-style pixel apocalypse.
