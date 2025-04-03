@@ -46,7 +46,6 @@ Stay alive against ever-increasing waves of zombies. Loot, reload, heal, and exp
 
 ## 📸 Screenshots
 
-> *(You can replace these placeholders with your own)*
 
 | In-Game | Game Over |
 |--------|-----------|
