@@ -64,6 +64,6 @@ src/
 ├── utils/
 │   └── pathfinding.js   # A* pathfinding
 └── App.jsx              # Entry point
-
+```
 
 
