@@ -1,63 +1,60 @@
+import TinyQueue from "tinyqueue";
+
 export function aStar(grid, start, end) {
   const dirs = [
-    [0, -1], // up
-    [1, -1], // up-right
-    [1, 0], // right
-    [1, 1], // down-right
-    [0, 1], // down
-    [-1, 1], // down-left
-    [-1, 0], // left
-    [-1, -1], // up-left
+    [0, -1],
+    [1, -1],
+    [1, 0],
+    [1, 1],
+    [0, 1],
+    [-1, 1],
+    [-1, 0],
+    [-1, -1],
   ];
 
-  const openSet = [start];
-  const closedSet = new Set();
-  const cameFrom = {};
+  const heuristic = (a, b) => {
+    const dx = b[0] - a[0];
+    const dy = b[1] - a[1];
+    return Math.sqrt(dx * dx + dy * dy);
+  };
 
   const startKey = `${start[0]},${start[1]}`;
   const gScore = { [startKey]: 0 };
   const fScore = { [startKey]: heuristic(start, end) };
+  const cameFrom = {};
 
-  function heuristic(a, b) {
-    const dx = b[0] - a[0];
-    const dy = b[1] - a[1];
-    return Math.sqrt(dx * dx + dy * dy);
-  }
+  const openQueue = new TinyQueue(
+    [{ pos: start, f: fScore[startKey] }],
+    (a, b) => a.f - b.f
+  );
+  const closedSet = new Set();
 
-  while (openSet.length > 0) {
-    let lowestIndex = 0;
-    for (let i = 1; i < openSet.length; i++) {
-      const key = `${openSet[i][0]},${openSet[i][1]}`;
-      const lowestKey = `${openSet[lowestIndex][0]},${openSet[lowestIndex][1]}`;
-      if ((fScore[key] || Infinity) < (fScore[lowestKey] || Infinity)) {
-        lowestIndex = i;
-      }
-    }
+  while (openQueue.length > 0) {
+    const current = openQueue.pop();
+    const [cx, cy] = current.pos;
+    const currentKey = `${cx},${cy}`;
 
-    const current = openSet.splice(lowestIndex, 1)[0];
-    const currentKey = `${current[0]},${current[1]}`;
-
-    closedSet.add(currentKey);
-
-    if (current[0] === end[0] && current[1] === end[1]) {
-      const path = [current];
+    if (cx === end[0] && cy === end[1]) {
+      const path = [current.pos];
       while (cameFrom[`${path[0][0]},${path[0][1]}`]) {
         path.unshift(cameFrom[`${path[0][0]},${path[0][1]}`]);
       }
       return path;
     }
 
+    closedSet.add(currentKey);
+
     for (const [dx, dy] of dirs) {
-      const neighbor = [current[0] + dx, current[1] + dy];
-      const [x, y] = neighbor;
-      const neighborKey = `${x},${y}`;
+      const nx = cx + dx;
+      const ny = cy + dy;
+      const neighborKey = `${nx},${ny}`;
 
       if (
-        y < 0 ||
-        y >= grid.length ||
-        x < 0 ||
-        x >= grid[0].length ||
-        grid[y][x] === 0 ||
+        ny < 0 ||
+        ny >= grid.length ||
+        nx < 0 ||
+        nx >= grid[0].length ||
+        grid[ny][nx] === 0 ||
         closedSet.has(neighborKey)
       ) {
         continue;
@@ -67,12 +64,11 @@ export function aStar(grid, start, end) {
       const tentativeG = gScore[currentKey] + moveCost;
 
       if (tentativeG < (gScore[neighborKey] || Infinity)) {
-        cameFrom[neighborKey] = current;
+        cameFrom[neighborKey] = [cx, cy];
         gScore[neighborKey] = tentativeG;
-        fScore[neighborKey] = tentativeG + heuristic(neighbor, end);
-        if (!openSet.some((n) => n[0] === x && n[1] === y)) {
-          openSet.push(neighbor);
-        }
+        const estimatedF = tentativeG + heuristic([nx, ny], end);
+        fScore[neighborKey] = estimatedF;
+        openQueue.push({ pos: [nx, ny], f: estimatedF });
       }
     }
   }

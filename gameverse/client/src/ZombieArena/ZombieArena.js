@@ -68,6 +68,8 @@ const lerpAngle = (a, b, t) => {
 };
 
 function ZombieArena() {
+  const pathCacheRef = useRef(new Map());
+
   const explosionsRef = useRef([]);
   const explosionsImageRef = useRef(new Image());
 
@@ -373,6 +375,20 @@ function ZombieArena() {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = Date.now();
+      const cache = pathCacheRef.current;
+      for (const [key, value] of cache.entries()) {
+        if (now - value.time > 2000) {
+          cache.delete(key);
+        }
+      }
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -785,9 +801,19 @@ function ZombieArena() {
           needsNewPath &&
           pathfindingUpdatesThisFrame < MAX_PATHFINDING_UPDATES_PER_FRAME
         ) {
-          zombie.path = aStar(grid, [zx, zy], [px, py]);
+          const cacheKey = `${zx},${zy}->${px},${py}`;
+          const cached = pathCacheRef.current.get(cacheKey);
+
+          if (cached && now - cached.time < 500) {
+            zombie.path = cached.path;
+          } else {
+            const path = aStar(grid, [zx, zy], [px, py]);
+            zombie.path = path;
+            pathCacheRef.current.set(cacheKey, { path, time: now });
+            pathfindingUpdatesThisFrame++;
+          }
+
           zombie.lastPathUpdate = now;
-          pathfindingUpdatesThisFrame++;
         }
 
         if (zombie.path && zombie.path.length > 1) {
