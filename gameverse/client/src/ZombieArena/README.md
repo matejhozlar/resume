@@ -54,5 +54,17 @@ Stay alive against ever-increasing waves of zombies. Loot, reload, heal, and exp
 
 ---
 
+🗃️ Project Structure
+```bash
+Copy
+Edit
+src/
+├── assets/              # Sprites, maps, explosions, UI
+├── components/
+│   └── ZombieArena.jsx  # Main game logic
+├── utils/
+│   └── pathfinding.js   # A* pathfinding
+└── App.jsx              # Entry point
+
 
 
