@@ -7,6 +7,7 @@ import PexesoInfo from "./PexesoInfo";
 import Home from "./Home";
 import ZombieArenaInfo from "./ZombieArena/ZombieArenaInfo";
 import ZombieArena from "./ZombieArena/ZombieArena";
+import Leaderboard from "./Leaderboards";
 
 function Content({ activePage, onPageChange }) {
   const renderContent = () => {
@@ -25,6 +26,8 @@ function Content({ activePage, onPageChange }) {
         return <ZombieArenaInfo onPageChange={onPageChange} />;
       case "zombiearena-play":
         return <ZombieArena />;
+      case "leaderboard":
+        return <Leaderboard />;
       case "home":
         return <Home />;
       default:

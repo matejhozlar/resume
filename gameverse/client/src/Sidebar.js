@@ -94,8 +94,11 @@ function Sidebar({ onPageChange, isCollapsed, setIsCollapsed }) {
           </button>
         </li>
         <li className="menu-item">
-          <button className="menu-btn toggle-btn no-arrow" disabled>
-            {isCollapsed ? "🏆" : "Leaderboards (TBD)"}
+          <button
+            className="menu-btn toggle-btn no-arrow"
+            onClick={() => onPageChange("leaderboard")}
+          >
+            {isCollapsed ? "🏆" : "Leaderboards"}
           </button>
         </li>
         <li className="menu-item">

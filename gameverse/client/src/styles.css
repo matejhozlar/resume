@@ -862,3 +862,83 @@ body {
   filter: blur(6px);
 }
 /* ZombieArena */
+
+/* Leaderboards */
+
+.leaderboard-table {
+  margin: 0 auto;
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 900px;
+  font-size: 14px;
+}
+
+.leaderboard-table th,
+.leaderboard-table td {
+  border: 1px solid #8a5cf6;
+  padding: 8px;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.leaderboard-table .rank-col {
+  width: 100px;
+}
+
+.leaderboard-table .username-col {
+  width: 200px;
+}
+
+.leaderboard-table .wave-col {
+  width: 200px;
+}
+
+.leaderboard-table .zombies-col {
+  width: 200px;
+}
+
+.leaderboard-table .ammo-col {
+  width: 200px;
+}
+
+.leaderboard-table .accuracy-col {
+  width: 200px;
+}
+
+.leaderboard-container {
+  padding: 20px;
+  text-align: center;
+}
+
+.leaderboard-container h1 {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.leaderboard-table {
+  margin: 0 auto;
+  border-collapse: collapse;
+  width: 900px;
+  table-layout: fixed;
+  font-size: 14px;
+}
+
+.leaderboard-table th,
+.leaderboard-table td {
+  border: 1px solid #8a5cf6;
+  padding: 8px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rank-col {
+  width: 60px;
+}
+
+.uniform-col {
+  width: calc((900px - 60px) / 5);
+}
+
+/* Leaderboards */

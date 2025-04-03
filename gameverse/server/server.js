@@ -59,6 +59,32 @@ app.get("/register", (req, res) => {
   res.render("register.ejs", { message: error, formData: formData });
 });
 
+app.get("/ZombieArenaLeaderboard", async (req, res) => {
+  try {
+    const limit = req.query.limit ? parseInt(req.query.limit) : 10;
+
+    const leaderboardQuery = `
+      SELECT 
+        u.username, 
+        z.wave, 
+        z.zombies_killed, 
+        z.ammo_used, 
+        z.accuracy, 
+        z.updated_at
+      FROM zombie_arena z
+      JOIN users u ON z.user_id = u.id
+      ORDER BY z.zombies_killed DESC, z.wave DESC
+      LIMIT $1
+    `;
+
+    const result = await db.query(leaderboardQuery, [limit]);
+    res.json(result.rows);
+  } catch (error) {
+    console.error("Error fetching leaderboard:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 app.post("/login", (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) return next(err);
