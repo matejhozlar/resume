@@ -1,8 +1,6 @@
 # 🧟‍♂️ Zombie Arena
 
-[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![Game Status](https://img.shields.io/badge/status-playable-green)
-![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 ![React](https://img.shields.io/badge/built%20with-React-blue)
 
 **Zombie Arena** is a top-down survival shooter built with **React + Canvas**. Survive endless waves of zombies, loot supplies, and unleash grenades in this retro-style pixel apocalypse.
@@ -42,28 +40,8 @@ Stay alive against ever-increasing waves of zombies. Loot, reload, heal, and exp
 | `G`              | Throw Grenade           |
 | `E`              | Use Medkit              |
 
----
-
-## 📸 Screenshots
 
 
-| In-Game | Game Over |
-|--------|-----------|
-| ![Gameplay](https://via.placeholder.com/400x250?text=Gameplay+Screenshot) | ![Game Over](https://via.placeholder.com/400x250?text=Game+Over+Screen) |
 
----
-
-🗃️ Project Structure
-```bash
-Copy
-Edit
-src/
-├── assets/              # Sprites, maps, explosions, UI
-├── components/
-│   └── ZombieArena.jsx  # Main game logic
-├── utils/
-│   └── pathfinding.js   # A* pathfinding
-└── App.jsx              # Entry point
-```
 
 
