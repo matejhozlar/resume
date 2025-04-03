@@ -40,6 +40,7 @@ const EXPLOSION_TOTAL_FRAMES = 64;
 const EXPLOSION_FRAME_DURATION = 5;
 const EXPLOSION_DRAW_SIZE = 256;
 const EXPLOSION_ATLAS_FRAME_SIZE = 512;
+const SPATIAL_GRID_SIZE = 64;
 const RELOAD_FRAMES = [
   reloadingRifle.reload1,
   reloadingRifle.reload2,
@@ -66,6 +67,12 @@ const lerpAngle = (a, b, t) => {
   const diff = ((b - a + Math.PI) % (2 * Math.PI)) - Math.PI;
   return a + diff * t;
 };
+
+function getGridKey(x, y) {
+  const gx = Math.floor(x / SPATIAL_GRID_SIZE);
+  const gy = Math.floor(y / SPATIAL_GRID_SIZE);
+  return `${gx},${gy}`;
+}
 
 function ZombieArena() {
   const pathCacheRef = useRef(new Map());
@@ -578,27 +585,54 @@ function ZombieArena() {
             b.y <= WORLD_HEIGHT &&
             isWalkable(b.x, b.y)
         );
+
+      const spatialGrid = new Map();
+
+      zombiesRef.current.forEach((zombie) => {
+        const key = getGridKey(zombie.x, zombie.y);
+        if (!spatialGrid.has(key)) spatialGrid.set(key, []);
+        spatialGrid.get(key).push(zombie);
+      });
       for (let i = bulletsRef.current.length - 1; i >= 0; i--) {
         const bullet = bulletsRef.current[i];
-        for (let j = zombiesRef.current.length - 1; j >= 0; j--) {
-          const zombie = zombiesRef.current[j];
-          const dx = bullet.x - zombie.x;
-          const dy = bullet.y - zombie.y;
-          const distance = Math.hypot(dx, dy);
-          const bulletRadius = 8;
-          const zombieRadius = 20;
-          if (distance < bulletRadius + zombieRadius) {
-            const weapon = weaponRef.current;
-            const damage = weapon === "rifle" ? RIFLE_DAMAGE : HANDGUN_DAMAGE;
-            zombie.health -= damage;
-            zombie.flashTimer = 10;
-            bulletsRef.current.splice(i, 1);
-            bulletHitsRef.current++;
-            if (zombie.health <= 0) {
-              zombiesRef.current.splice(j, 1);
-              zombiesKilledRef.current++;
+        const bx = bullet.x;
+        const by = bullet.y;
+        const bKeyX = Math.floor(bx / SPATIAL_GRID_SIZE);
+        const bKeyY = Math.floor(by / SPATIAL_GRID_SIZE);
+
+        for (let dx = -1; dx <= 1; dx++) {
+          for (let dy = -1; dy <= 1; dy++) {
+            const key = `${bKeyX + dx},${bKeyY + dy}`;
+            const cellZombies = spatialGrid.get(key);
+            if (!cellZombies) continue;
+
+            for (let j = cellZombies.length - 1; j >= 0; j--) {
+              const zombie = cellZombies[j];
+              const dx = bullet.x - zombie.x;
+              const dy = bullet.y - zombie.y;
+              const distance = Math.hypot(dx, dy);
+              const bulletRadius = 8;
+              const zombieRadius = 20;
+
+              if (distance < bulletRadius + zombieRadius) {
+                const damage =
+                  weaponRef.current === "rifle" ? RIFLE_DAMAGE : HANDGUN_DAMAGE;
+                zombie.health -= damage;
+                zombie.flashTimer = 10;
+                bulletsRef.current.splice(i, 1);
+                bulletHitsRef.current++;
+
+                if (zombie.health <= 0) {
+                  const index = zombiesRef.current.indexOf(zombie);
+                  if (index !== -1) {
+                    zombiesRef.current.splice(index, 1);
+                    zombiesKilledRef.current++;
+                  }
+                }
+
+                break;
+              }
             }
-            break;
           }
         }
       }
