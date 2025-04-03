@@ -54,11 +54,5 @@ Stay alive against ever-increasing waves of zombies. Loot, reload, heal, and exp
 
 ---
 
-## 🔧 Installation
 
-Clone the repo:
-
-```bash
-git clone https://github.com/your-username/zombie-arena.git
-cd zombie-arena
 
