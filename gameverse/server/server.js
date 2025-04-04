@@ -144,6 +144,56 @@ function ensureLoggedIn(req, res, next) {
   return res.status(401).json({ error: "Not authenticated." });
 }
 
+app.post("/gameverse/delete-account", ensureLoggedIn, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { password } = req.body;
+
+    const result = await db.query("SELECT password FROM users WHERE id = $1", [
+      userId,
+    ]);
+    const user = result.rows[0];
+
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) {
+      return res.status(401).json({ error: "Incorrect password." });
+    }
+
+    await db.query("DELETE FROM zombie_arena WHERE user_id = $1", [userId]);
+    await db.query("DELETE FROM users WHERE id = $1", [userId]);
+
+    req.logout(() => {
+      req.session.destroy();
+      return res.json({ success: "Account deleted successfully." });
+    });
+  } catch (err) {
+    console.error("Error deleting account:", err);
+    return res.status(500).json({ error: "Something went wrong." });
+  }
+});
+
+app.post("/gameverse/verify-password", ensureLoggedIn, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { password } = req.body;
+
+    const result = await db.query("SELECT password FROM users WHERE id = $1", [
+      userId,
+    ]);
+    const user = result.rows[0];
+
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) {
+      return res.status(401).json({ error: "Incorrect password." });
+    }
+
+    return res.json({ success: true });
+  } catch (err) {
+    console.error("Error verifying password:", err);
+    return res.status(500).json({ error: "Something went wrong." });
+  }
+});
+
 app.post("/gameverse/change-password", ensureLoggedIn, async (req, res) => {
   try {
     const { oldPassword, newPassword, confirmPassword } = req.body;
