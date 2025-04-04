@@ -19,6 +19,7 @@ import shootSoundRifle from "../assets/sprites/sounds/shootSoundRifle.js";
 import shootSoundHandgun from "../assets/sprites/sounds/shootSoundHandgun.js";
 import reloadSound from "../assets/sprites/sounds/reload.mp3";
 import backgroundMusic from "../assets/sprites/sounds/background_music/backgroundMusic.js";
+import grenadeExplosion from "../assets/sprites/sounds/grenadeExplosion.mp3";
 
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 600;
@@ -122,6 +123,7 @@ function ZombieArena() {
   const pathfindingGridRef = useRef([]);
   const isGridReadyRef = useRef(false);
   const reloadSounds = useRef(new Audio());
+  const grenadeExplosionSound = useRef(new Audio(grenadeExplosion));
   const reloadImages = useRef(
     RELOAD_FRAMES.map((src) => {
       const img = new Image();
@@ -1328,6 +1330,11 @@ function ZombieArena() {
               y: grenade.y,
               startTime: Date.now(),
             });
+
+            if (soundEnabled) {
+              grenadeExplosionSound.current.currentTime = 0;
+              grenadeExplosionSound.current.play();
+            }
 
             const grenadeIndex = grenadesRef.current.indexOf(grenade);
             if (grenadeIndex !== -1) {
