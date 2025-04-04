@@ -17,6 +17,7 @@ import shootRifle from "../assets/sprites/shooting/shootRifle.js";
 import shootHandgun from "../assets/sprites/shooting/shootHandgun.js";
 import shootSoundRifle from "../assets/sprites/sounds/shootSoundRifle.js";
 import shootSoundHandgun from "../assets/sprites/sounds/shootSoundHandgun.js";
+import reloadSound from "../assets/sprites/sounds/reload.mp3";
 
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 600;
@@ -117,6 +118,7 @@ function ZombieArena() {
   const bulletImageRef = useRef(new Image());
   const pathfindingGridRef = useRef([]);
   const isGridReadyRef = useRef(false);
+  const reloadSounds = useRef(new Audio());
   const reloadImages = useRef(
     RELOAD_FRAMES.map((src) => {
       const img = new Image();
@@ -227,6 +229,7 @@ function ZombieArena() {
     medkitImageRef.current.src = medkit;
     zombieSpriteRef.current.src = zombie;
     explosionsImageRef.current.src = explosionSprite;
+    reloadSounds.current.src = reloadSound;
 
     obstacleImageRef.current.src = mapImageObstacles;
     obstacleImageRef.current.onload = () => {
@@ -400,6 +403,9 @@ function ZombieArena() {
       ) {
         isReloadingRef.current = true;
         reloadStartTimeRef.current = Date.now();
+
+        reloadSounds.currentTime = 0;
+        reloadSounds.play();
       }
       if (key === "q") {
         weaponRef.current = weaponRef.current === "rifle" ? "handgun" : "rifle";
@@ -445,7 +451,7 @@ function ZombieArena() {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, []);
+  }, [reloadSounds]);
 
   useEffect(() => {
     const interval = setInterval(() => {
