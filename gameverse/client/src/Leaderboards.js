@@ -4,7 +4,7 @@ function Leaderboard() {
   const [leaderboard, setLeaderboard] = useState([]);
 
   const fetchLeaderboard = () => {
-    fetch("http://localhost:5000/ZombieArenaLeaderboard", {
+    fetch("/api/ZombieArenaLeaderboard", {
       credentials: "include",
     })
       .then((res) => res.json())

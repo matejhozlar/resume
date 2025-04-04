@@ -14,14 +14,18 @@ const app = express();
 const port = process.env.SERVER_PORT;
 const saltRounds = 10;
 
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cors({ origin: true, credentials: true }));
+
+app.set("trust proxy", 1);
 
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: {
+      secure: true,
+      sameSite: "lax",
       maxAge: 24 * 60 * 60 * 1000,
     },
   })
@@ -44,6 +48,14 @@ const db = new pg.Client({
 
 db.connect();
 
+app.get("/api/whoami", (req, res) => {
+  res.json({
+    user: req.user,
+    session: req.session,
+    isAuthenticated: req.isAuthenticated(),
+  });
+});
+
 app.get("/api", (req, res) => {
   res.json({ users: ["userOne", "userTwo", "userThree"] });
 });
@@ -59,7 +71,7 @@ app.get("/register", (req, res) => {
   res.render("register.ejs", { message: error, formData: formData });
 });
 
-app.get("/ZombieArenaLeaderboard", async (req, res) => {
+app.get("/api/ZombieArenaLeaderboard", async (req, res) => {
   try {
     const limit = req.query.limit ? parseInt(req.query.limit) : 10;
 
@@ -85,7 +97,7 @@ app.get("/ZombieArenaLeaderboard", async (req, res) => {
   }
 });
 
-app.post("/login", (req, res, next) => {
+app.post("/api/login", (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) return next(err);
     if (!user) {
@@ -102,7 +114,7 @@ app.post("/login", (req, res, next) => {
   })(req, res, next);
 });
 
-app.post("/register", async (req, res, next) => {
+app.post("/api/register", async (req, res, next) => {
   const { username, password, repeatedPassword } = req.body;
 
   if (password !== repeatedPassword) {
@@ -144,7 +156,7 @@ function ensureLoggedIn(req, res, next) {
   return res.status(401).json({ error: "Not authenticated." });
 }
 
-app.post("/gameverse/delete-account", ensureLoggedIn, async (req, res) => {
+app.post("/api/gameverse/delete-account", ensureLoggedIn, async (req, res) => {
   try {
     const userId = req.user.id;
     const { password } = req.body;
@@ -172,7 +184,7 @@ app.post("/gameverse/delete-account", ensureLoggedIn, async (req, res) => {
   }
 });
 
-app.post("/gameverse/verify-password", ensureLoggedIn, async (req, res) => {
+app.post("/api/gameverse/verify-password", ensureLoggedIn, async (req, res) => {
   try {
     const userId = req.user.id;
     const { password } = req.body;
@@ -194,7 +206,7 @@ app.post("/gameverse/verify-password", ensureLoggedIn, async (req, res) => {
   }
 });
 
-app.post("/gameverse/change-password", ensureLoggedIn, async (req, res) => {
+app.post("/api/gameverse/change-password", ensureLoggedIn, async (req, res) => {
   try {
     const { oldPassword, newPassword, confirmPassword } = req.body;
 
@@ -225,7 +237,7 @@ app.post("/gameverse/change-password", ensureLoggedIn, async (req, res) => {
   }
 });
 
-app.post("/gameverse/change-username", ensureLoggedIn, async (req, res) => {
+app.post("/api/gameverse/change-username", ensureLoggedIn, async (req, res) => {
   try {
     const { newUsername } = req.body;
     const userId = req.user.id;
@@ -276,7 +288,7 @@ app.post("/gameverse/change-username", ensureLoggedIn, async (req, res) => {
 });
 
 // ZombieArena Best Score
-app.post("/ZombieArenaScore", ensureLoggedIn, async (req, res) => {
+app.post("/api/ZombieArenaScore", ensureLoggedIn, async (req, res) => {
   try {
     const { wave, zombiesKilled, ammoUsed, accuracy } = req.body;
     const userId = req.user.id;
@@ -345,12 +357,19 @@ passport.use(
   })
 );
 
-passport.serializeUser((user, cb) => {
-  cb(null, user);
+passport.serializeUser((user, done) => {
+  done(null, user.id);
 });
 
-passport.deserializeUser((user, cb) => {
-  cb(null, user);
+passport.deserializeUser(async (id, done) => {
+  try {
+    const result = await db.query("SELECT * FROM users WHERE id = $1", [id]);
+    if (result.rows.length === 0) return done(null, false);
+
+    done(null, result.rows[0]);
+  } catch (err) {
+    done(err);
+  }
 });
 
 app.listen(port, () => {

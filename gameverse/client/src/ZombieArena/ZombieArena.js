@@ -547,7 +547,7 @@ function ZombieArena() {
           setGameOver(true);
           stopBackgroundMusic();
 
-          fetch("http://localhost:5000/ZombieArenaScore", {
+          fetch("/api/ZombieArenaScore", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
