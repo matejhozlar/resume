@@ -972,89 +972,64 @@ body {
   cursor: pointer;
 }
 
-/* zombie arena */
+/* character creation */
 
-.menu-overlay {
+.character-creator-wrapper {
+  padding: 40px;
+  text-align: center;
+  font-family: "Press Start 2P", cursive;
+}
+
+.creator-content {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  margin-top: 40px;
+  flex-wrap: wrap;
+}
+
+.character-preview {
+  border: 2px solid #8a5cf6;
+  padding: 20px;
+  background: #111;
+  border-radius: 10px;
+}
+
+.character-body {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin: 0 auto;
+  background-color: #000;
+}
+
+.character-layer {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(ellipse at center, #0a0a0a 0%, #000000 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 20;
+  width: 160px;
+  height: 160px;
+  image-rendering: pixelated;
 }
 
-.menu-box {
-  background: rgba(20, 20, 40, 0.95);
-  border: 2px solid #8e2de2;
-  box-shadow: 0 0 20px #8e2de2;
-  padding: 40px 60px;
-  border-radius: 16px;
-  text-align: center;
-  animation: fadeIn 0.5s ease-out;
-}
-
-.menu-title {
-  font-family: "Press Start 2P", monospace;
-  font-size: 24px;
-  color: #ffffff;
-  margin-bottom: 30px;
-  text-shadow: 0 0 10px #ff00ff;
-}
-
-.menu-options {
+.creator-controls {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
+  color: #8a5cf6;
 }
 
-.menu-button {
-  font-family: "Press Start 2P", monospace;
-  font-size: 14px;
-  padding: 15px 20px;
-  color: white;
-  background: #8a5cf6;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  box-shadow: 0 0 8px #8a5cf6;
-  transition: all 0.2s ease-in-out;
+.creator-controls label {
+  font-size: 12px;
 }
 
-.menu-button:hover {
-  background: black;
-  box-shadow: 0 0 16px white;
-  transform: translateY(-2px);
+.creator-controls select,
+.creator-controls input[type="color"] {
+  font-family: "Press Start 2P", cursive;
+  background: #000;
+  border: 2px solid #8a5cf6;
+  color: #fff;
+  padding: 10px;
 }
 
-.menu-button.glow {
-  animation: pulseGlow 2s infinite;
-}
-
-@keyframes pulseGlow {
-  0% {
-    box-shadow: 0 0 8px #ff00ff;
-  }
-  50% {
-    box-shadow: 0 0 16px #ff00ff;
-  }
-  100% {
-    box-shadow: 0 0 8px #ff00ff;
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* zombie arena */
+/* character creation */
