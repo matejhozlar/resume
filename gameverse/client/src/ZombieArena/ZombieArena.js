@@ -1455,10 +1455,10 @@ function ZombieArena() {
   }, [gameStarted, gameOver]);
 
   useEffect(() => {
-    if (!gameStarted) {
+    return () => {
       stopBackgroundMusic();
-    }
-  }, [gameStarted]);
+    };
+  }, []);
 
   return (
     <div className="game-container">
