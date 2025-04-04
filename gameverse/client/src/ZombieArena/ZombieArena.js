@@ -292,6 +292,21 @@ function ZombieArena() {
     frameIndex: 0,
   });
 
+  const shootHandgunFrames = useRef(
+    Object.values(shootHandgun).map((src) => {
+      const img = new Image();
+      img.src = src;
+      return img;
+    })
+  );
+
+  const shootingAnimationsHandgunRef = useRef({
+    active: false,
+    startTime: 0,
+    duration: 150,
+    frameIndex: 0,
+  });
+
   const tileSize = 16;
 
   const isTileWalkable = (tx, ty) => {
@@ -342,6 +357,13 @@ function ZombieArena() {
       };
     } else {
       handgunAmmoRef.current--;
+
+      shootingAnimationsHandgunRef.current = {
+        active: true,
+        startTime: Date.now(),
+        frameIndex: 0,
+        duration: 150,
+      };
     }
   };
 
@@ -1041,10 +1063,9 @@ function ZombieArena() {
       ctx.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
       ctx.rotate(player.angle);
 
-      if (
-        weaponRef.current === "rifle" &&
-        shootingAnimationRifleRef.current.active
-      ) {
+      const weap = weaponRef.current;
+
+      if (weap === "rifle" && shootingAnimationRifleRef.current.active) {
         const { startTime, duration } = shootingAnimationRifleRef.current;
         const elapsed = Date.now() - startTime;
         const totalFrames = shootRifleFrames.current.length;
@@ -1063,6 +1084,29 @@ function ZombieArena() {
 
         if (elapsed > duration) {
           shootingAnimationRifleRef.current.active = false;
+        }
+      } else if (
+        weap === "handgun" &&
+        shootingAnimationsHandgunRef.current.active
+      ) {
+        const { startTime, duration } = shootingAnimationsHandgunRef.current;
+        const elapsed = Date.now() - startTime;
+        const totalFrames = shootHandgunFrames.current.length;
+
+        const frameIndex = Math.floor((elapsed / duration) * totalFrames);
+        const frame =
+          shootHandgunFrames.current[Math.min(frameIndex, totalFrames - 1)];
+
+        ctx.drawImage(
+          frame,
+          -24,
+          -24,
+          SPRITE_SIZE * SCALE,
+          SPRITE_SIZE * SCALE
+        );
+
+        if (elapsed > duration) {
+          shootingAnimationsHandgunRef.current.active = false;
         }
       } else {
         ctx.drawImage(
@@ -1332,7 +1376,7 @@ function ZombieArena() {
                 Accuracy:{" "}
                 {ammoUsedRef.current > 0
                   ? (
-                      ((zombiesKilledRef.current * 3) / ammoUsedRef.current) *
+                      (bulletHitsRef.current / ammoUsedRef.current) *
                       100
                     ).toFixed(2)
                   : "0.00"}
