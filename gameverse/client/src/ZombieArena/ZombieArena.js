@@ -1487,12 +1487,31 @@ function ZombieArena() {
               </button>
             </div>
           ) : (
-            <button
-              onClick={() => setGameStarted(true)}
-              className="play-button"
-            >
-              Start
-            </button>
+            <div className="menu-overlay">
+              <div className="menu-box">
+                <h1 className="menu-title">🧟 Zombie Arena</h1>
+                <div className="menu-options">
+                  <button
+                    onClick={() => setGameStarted(true)}
+                    className="menu-button glow"
+                  >
+                    Start Game
+                  </button>
+                  <button
+                    onClick={() => alert("Shop coming soon!")}
+                    className="menu-button"
+                  >
+                    Shop
+                  </button>
+                  <button
+                    onClick={() => alert("Stats coming soon!")}
+                    className="menu-button"
+                  >
+                    Player Stats
+                  </button>
+                </div>
+              </div>
+            </div>
           )}
         </div>
       )}
