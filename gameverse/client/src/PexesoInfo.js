@@ -89,7 +89,7 @@ function TicTacToeInfo() {
           <button
             className="play-btn"
             onClick={() => {
-              window.location.href = "http://127.0.0.1:3001/games/simongame/";
+              window.location.href = "http://127.0.0.1:3001/games/pexeso/";
             }}
           >
             Play
@@ -98,7 +98,7 @@ function TicTacToeInfo() {
             className="game-btn"
             onClick={() =>
               window.open(
-                "https://github.com/matejhozlar/resume/tree/main/games/simongame",
+                "https://github.com/matejhozlar/resume/tree/main/games/pexeso",
                 "_blank"
               )
             }
