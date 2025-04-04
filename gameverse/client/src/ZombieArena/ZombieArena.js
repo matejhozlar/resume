@@ -215,6 +215,7 @@ function ZombieArena() {
 
     setGameOver(false);
     setGameStarted(false);
+    stopBackgroundMusic();
     setTimeout(() => {
       setGameStarted(true);
     }, 0);
@@ -406,6 +407,14 @@ function ZombieArena() {
     }
   };
 
+  const stopBackgroundMusic = () => {
+    musicTracks.current.forEach((track) => {
+      track.pause();
+      track.currentTime = 0;
+      track.onended = null;
+    });
+  };
+
   useEffect(() => {
     if (!gameStarted) return;
 
@@ -536,6 +545,7 @@ function ZombieArena() {
         if (!gameOver) {
           const accuracy = (bulletHitsRef.current / ammoUsedRef.current) * 100;
           setGameOver(true);
+          stopBackgroundMusic();
 
           fetch("http://localhost:5000/ZombieArenaScore", {
             method: "POST",
@@ -1443,6 +1453,12 @@ function ZombieArena() {
     requestAnimationFrame(loop);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameStarted, gameOver]);
+
+  useEffect(() => {
+    if (!gameStarted) {
+      stopBackgroundMusic();
+    }
+  }, [gameStarted]);
 
   return (
     <div className="game-container">
