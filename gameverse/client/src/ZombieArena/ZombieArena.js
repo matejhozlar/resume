@@ -13,6 +13,7 @@ import reloadingRifle from "../assets/sprites/reloading/reloadingRifle.js";
 import reloadingHandgun from "../assets/sprites/reloading/reloadingHandgun.js";
 import grenade from "../assets/sprites/bullet/grenade.png";
 import explosionSprite from "../assets/sprites/bullet/explosion.png";
+import shootRifle from "../assets/sprites/shooting/shootRifle.js";
 
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 600;
@@ -275,6 +276,21 @@ function ZombieArena() {
     })
   );
 
+  const shootRifleFrames = useRef(
+    Object.values(shootRifle).map((src) => {
+      const img = new Image();
+      img.src = src;
+      return img;
+    })
+  );
+
+  const shootingAnimationRifleRef = useRef({
+    active: false,
+    startTime: 0,
+    duration: 150,
+    frameIndex: 0,
+  });
+
   const tileSize = 16;
 
   const isTileWalkable = (tx, ty) => {
@@ -316,6 +332,13 @@ function ZombieArena() {
 
     if (weapon === "rifle") {
       currentAmmoRef.current--;
+
+      shootingAnimationRifleRef.current = {
+        active: true,
+        startTime: Date.now(),
+        frameIndex: 0,
+        duration: 150,
+      };
     } else {
       handgunAmmoRef.current--;
     }
@@ -1016,13 +1039,40 @@ function ZombieArena() {
       ctx.save();
       ctx.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
       ctx.rotate(player.angle);
-      ctx.drawImage(
-        spriteImageRef.current,
-        -24,
-        -24,
-        SPRITE_SIZE * SCALE,
-        SPRITE_SIZE * SCALE
-      );
+
+      if (
+        weaponRef.current === "rifle" &&
+        shootingAnimationRifleRef.current.active
+      ) {
+        const { startTime, duration } = shootingAnimationRifleRef.current;
+        const elapsed = Date.now() - startTime;
+        const totalFrames = shootRifleFrames.current.length;
+
+        const frameIndex = Math.floor((elapsed / duration) * totalFrames);
+        const frame =
+          shootRifleFrames.current[Math.min(frameIndex, totalFrames - 1)];
+
+        ctx.drawImage(
+          frame,
+          -24,
+          -24,
+          SPRITE_SIZE * SCALE,
+          SPRITE_SIZE * SCALE
+        );
+
+        if (elapsed > duration) {
+          shootingAnimationRifleRef.current.active = false;
+        }
+      } else {
+        ctx.drawImage(
+          spriteImageRef.current,
+          -24,
+          -24,
+          SPRITE_SIZE * SCALE,
+          SPRITE_SIZE * SCALE
+        );
+      }
+
       ctx.restore();
 
       const healthBarWidth = 50;
