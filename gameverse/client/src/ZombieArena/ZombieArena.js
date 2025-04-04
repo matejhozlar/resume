@@ -18,6 +18,7 @@ import shootHandgun from "../assets/sprites/shooting/shootHandgun.js";
 import shootSoundRifle from "../assets/sprites/sounds/shootSoundRifle.js";
 import shootSoundHandgun from "../assets/sprites/sounds/shootSoundHandgun.js";
 import reloadSound from "../assets/sprites/sounds/reload.mp3";
+import backgroundMusic from "../assets/sprites/sounds/background_music/backgroundMusic.js";
 
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 600;
@@ -134,6 +135,15 @@ function ZombieArena() {
   const handgunShootSounds = useRef(
     Object.values(shootSoundHandgun).map((src) => new Audio(src))
   );
+  const musicTracks = useRef(
+    Object.values(backgroundMusic).map((src) => {
+      const audio = new Audio(src);
+      audio.volume = 0.5;
+      audio.loop = false;
+      return audio;
+    })
+  );
+  const currentTrackIndex = useRef(null);
   const obstacleImageRef = useRef(new Image());
   const obstacleCanvasRef = useRef(document.createElement("canvas"));
   const obstacleCtxRef = useRef(null);
@@ -393,6 +403,37 @@ function ZombieArena() {
       }
     }
   };
+
+  useEffect(() => {
+    if (!gameStarted) return;
+
+    const tracks = musicTracks.current;
+
+    if (soundEnabled) {
+      const nextIndex = Math.floor(Math.random() * tracks.length);
+      currentTrackIndex.current = nextIndex;
+      const nextTrack = tracks[nextIndex];
+
+      nextTrack.currentTime = 0;
+      nextTrack.play();
+
+      nextTrack.onended = () => {
+        if (!soundEnabledRef.current) return;
+        const newIndex = Math.floor(Math.random() * tracks.length);
+        currentTrackIndex.current = newIndex;
+        const newTrack = tracks[newIndex];
+        newTrack.currentTime = 0;
+        newTrack.play();
+        newTrack.onended = nextTrack.onended;
+      };
+    } else {
+      tracks.forEach((track) => {
+        track.pause();
+        track.currentTime = 0;
+        track.onended = null;
+      });
+    }
+  }, [soundEnabled, gameStarted]);
 
   useEffect(() => {
     soundEnabledRef.current = soundEnabled;
