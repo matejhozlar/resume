@@ -15,6 +15,7 @@ import grenade from "../assets/sprites/bullet/grenade.png";
 import explosionSprite from "../assets/sprites/bullet/explosion.png";
 import shootRifle from "../assets/sprites/shooting/shootRifle.js";
 import shootHandgun from "../assets/sprites/shooting/shootHandgun.js";
+import shootSoundRifle from "../assets/sprites/sounds/shootSoundRifle.js";
 
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 600;
@@ -121,6 +122,9 @@ function ZombieArena() {
       img.src = src;
       return img;
     })
+  );
+  const rifleShootSounds = useRef(
+    Object.values(shootSoundRifle).map((src) => new Audio(src))
   );
   const obstacleImageRef = useRef(new Image());
   const obstacleCanvasRef = useRef(document.createElement("canvas"));
@@ -355,6 +359,11 @@ function ZombieArena() {
         frameIndex: 0,
         duration: 150,
       };
+
+      const sounds = rifleShootSounds.current;
+      const randomSound = sounds[Math.floor(Math.random() * sounds.length)];
+      randomSound.currentTime = 0;
+      randomSound.play();
     } else {
       handgunAmmoRef.current--;
 
