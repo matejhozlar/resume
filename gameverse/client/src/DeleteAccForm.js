@@ -91,7 +91,7 @@ function DeleteAccount() {
 
   return (
     <div className="login-container">
-      <h1 className="glitch">Delete Account</h1>
+      <h1>Delete Account</h1>
 
       {error && (
         <div className="alert alert-danger" role="alert">
