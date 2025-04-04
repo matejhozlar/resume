@@ -14,6 +14,7 @@ import reloadingHandgun from "../assets/sprites/reloading/reloadingHandgun.js";
 import grenade from "../assets/sprites/bullet/grenade.png";
 import explosionSprite from "../assets/sprites/bullet/explosion.png";
 import shootRifle from "../assets/sprites/shooting/shootRifle.js";
+import shootHandgun from "../assets/sprites/shooting/shootHandgun.js";
 
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 600;
