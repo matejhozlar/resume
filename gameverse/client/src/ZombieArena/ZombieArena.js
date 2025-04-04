@@ -80,6 +80,8 @@ function getGridKey(x, y) {
 }
 
 function ZombieArena() {
+  const soundEnabledRef = useRef(true);
+
   const pathCacheRef = useRef(new Map());
 
   const explosionsRef = useRef([]);
@@ -167,6 +169,7 @@ function ZombieArena() {
 
   const [gameStarted, setGameStarted] = useState(false);
   const [gameOver, setGameOver] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(true);
 
   const restartGame = () => {
     playerRef.current = {
@@ -369,8 +372,10 @@ function ZombieArena() {
 
       const sounds = rifleShootSounds.current;
       const randomSound = sounds[Math.floor(Math.random() * sounds.length)];
-      randomSound.currentTime = 0;
-      randomSound.play();
+      if (soundEnabledRef.current) {
+        randomSound.currentTime = 0;
+        randomSound.play();
+      }
     } else {
       handgunAmmoRef.current--;
 
@@ -382,10 +387,16 @@ function ZombieArena() {
       };
       const sounds = handgunShootSounds.current;
       const randomSound = sounds[Math.floor(Math.random() * sounds.length)];
-      randomSound.currentTime = 0;
-      randomSound.play();
+      if (soundEnabledRef.current) {
+        randomSound.currentTime = 0;
+        randomSound.play();
+      }
     }
   };
+
+  useEffect(() => {
+    soundEnabledRef.current = soundEnabled;
+  }, [soundEnabled]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -404,8 +415,10 @@ function ZombieArena() {
         isReloadingRef.current = true;
         reloadStartTimeRef.current = Date.now();
 
-        reloadSounds.currentTime = 0;
-        reloadSounds.play();
+        if (soundEnabledRef.current) {
+          reloadSounds.current.currentTime = 0;
+          reloadSounds.current.play();
+        }
       }
       if (key === "q") {
         weaponRef.current = weaponRef.current === "rifle" ? "handgun" : "rifle";
@@ -451,7 +464,7 @@ function ZombieArena() {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, [reloadSounds]);
+  }, [reloadSounds, soundEnabled]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -1424,8 +1437,18 @@ function ZombieArena() {
         ref={canvasRef}
         width={CANVAS_WIDTH}
         height={CANVAS_HEIGHT}
+        tabIndex={0}
         className={`game-canvas ${!gameStarted ? "blurred" : ""}`}
       ></canvas>
+      <button
+        onClick={() => {
+          setSoundEnabled((prev) => !prev);
+          canvasRef.current?.focus();
+        }}
+        className="sound-toggle-button"
+      >
+        {soundEnabled ? "🔊" : "🔇"}
+      </button>
     </div>
   );
 }

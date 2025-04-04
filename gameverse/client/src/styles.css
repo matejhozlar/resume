@@ -857,6 +857,10 @@ body {
   image-rendering: pixelated;
   cursor: crosshair;
 }
+.game-canvas:focus {
+  outline: none;
+  border-color: #8a5cf6;
+}
 
 .blurred {
   filter: blur(6px);
@@ -956,14 +960,14 @@ body {
 
 .sound-toggle-button {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  bottom: 15px;
+  right: 15px;
   z-index: 10;
-  padding: 6px 12px;
-  font-size: 14px;
-  background: rgba(0, 0, 0, 0.7);
+  background: #222;
   color: white;
   border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 16px;
   cursor: pointer;
-  border-radius: 4px;
 }
