@@ -142,6 +142,14 @@ function Sidebar({ onPageChange, isCollapsed, setIsCollapsed }) {
                 Change Your Username
               </button>
             </li>
+            <li>
+              <button
+                className="menu-btn"
+                onClick={() => onPageChange("deleteAcc")}
+              >
+                Delete Your Account
+              </button>
+            </li>
           </ul>
         </li>
 

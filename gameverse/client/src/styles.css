@@ -942,3 +942,14 @@ body {
 }
 
 /* Leaderboards */
+
+.deleteAccSubmit {
+  margin-left: 20px;
+  border-radius: 5px;
+}
+
+.danger-btn {
+  background-color: red !important;
+  margin-left: 20px;
+  border-radius: 5px;
+}

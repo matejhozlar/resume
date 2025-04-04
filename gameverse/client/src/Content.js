@@ -8,6 +8,7 @@ import Home from "./Home";
 import ZombieArenaInfo from "./ZombieArena/ZombieArenaInfo";
 import ZombieArena from "./ZombieArena/ZombieArena";
 import Leaderboard from "./Leaderboards";
+import DeleteAccForm from "./DeleteAccForm";
 
 function Content({ activePage, onPageChange }) {
   const renderContent = () => {
@@ -30,6 +31,8 @@ function Content({ activePage, onPageChange }) {
         return <Leaderboard />;
       case "home":
         return <Home />;
+      case "deleteAcc":
+        return <DeleteAccForm />;
       default:
         return <Home />;
     }
