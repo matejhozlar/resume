@@ -11,6 +11,7 @@ import Leaderboard from "./Leaderboards";
 import DeleteAccForm from "./DeleteAccForm";
 import CharacterCreation from "./CharCreation/CharacterCreation";
 import DisplayTest from "./DisplayTest";
+import PlayerProfile from "./PlayerProfile";
 
 function Content({ activePage, onPageChange }) {
   const renderContent = () => {
@@ -39,6 +40,8 @@ function Content({ activePage, onPageChange }) {
         return <CharacterCreation />;
       case "displayTest":
         return <DisplayTest />;
+      case "playerProfile":
+        return <PlayerProfile />;
       default:
         return <Home />;
     }

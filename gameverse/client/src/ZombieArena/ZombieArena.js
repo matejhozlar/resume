@@ -82,6 +82,8 @@ function getGridKey(x, y) {
 }
 
 function ZombieArena() {
+  const xpSubmittedRef = useRef(false);
+
   const soundEnabledRef = useRef(true);
 
   const pathCacheRef = useRef(new Map());
@@ -212,6 +214,7 @@ function ZombieArena() {
     ammoUsedRef.current = 0;
     grenadeCountRef.current = 0;
     bulletHitsRef.current = 0;
+    xpSubmittedRef.current = false;
 
     setGameOver(false);
     setGameStarted(false);
@@ -568,6 +571,31 @@ function ZombieArena() {
             })
             .catch((err) => console.error("Fetch error:", err));
         }
+
+        if (!xpSubmittedRef.current) {
+          xpSubmittedRef.current = true;
+
+          const xp = zombiesKilledRef.current;
+
+          fetch("http://localhost:5000/add-xp", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({
+              xp: xp,
+            }),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.success) {
+                console.log(`XP added! Gained ${xp} XP.`);
+              } else {
+                console.error("Failed to add XP:", data.error);
+              }
+            })
+            .catch((err) => console.error("XP fetch error:", err));
+        }
+
         ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
         ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);

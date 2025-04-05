@@ -113,6 +113,14 @@ function Sidebar({ onPageChange, isCollapsed, setIsCollapsed }) {
           </button>
         </li>
         <li className="menu-item">
+          <button
+            className="menu-btn toggle-btn no-arrow"
+            onClick={() => onPageChange("playerProfile")}
+          >
+            {isCollapsed ? "🪪" : "Player Profile"}
+          </button>
+        </li>
+        <li className="menu-item">
           <button className="menu-btn toggle-btn no-arrow" disabled>
             {isCollapsed ? "📓" : "Patch Notes (TBD)"}
           </button>

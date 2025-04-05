@@ -69,7 +69,8 @@ app.get("/ZombieArenaLeaderboard", async (req, res) => {
 
     const leaderboardQuery = `
       SELECT 
-        u.username, 
+        u.username,
+        t.name AS title,
         z.wave, 
         z.zombies_killed, 
         z.ammo_used, 
@@ -77,6 +78,8 @@ app.get("/ZombieArenaLeaderboard", async (req, res) => {
         z.updated_at
       FROM zombie_arena z
       JOIN users u ON z.user_id = u.id
+      LEFT JOIN user_titles ut ON ut.user_id = u.id AND ut.equipped = true
+      LEFT JOIN titles t ON ut.title_id = t.id
       ORDER BY z.zombies_killed DESC, z.wave DESC
       LIMIT $1
     `;
@@ -128,17 +131,37 @@ app.post("/register", async (req, res, next) => {
       [username, hash]
     );
 
-    console.log("User registered:", result.rows[0]);
+    const userId = result.rows[0].id;
+
+    await db.query(`INSERT INTO user_profiles (user_id) VALUES ($1)`, [userId]);
+
+    const titleInsert = await db.query(
+      `INSERT INTO titles (name, description, unlock_type, unlock_value)
+       VALUES ('Newbie', 'Default starter title', 'level', 0)
+       ON CONFLICT (name) DO NOTHING`
+    );
+
+    const titleRes = await db.query(
+      `SELECT id FROM titles WHERE name = 'Newbie'`
+    );
+    const titleId = titleRes.rows[0].id;
+
+    await db.query(
+      `INSERT INTO user_titles (user_id, title_id, equipped)
+       VALUES ($1, $2, true)
+       ON CONFLICT DO NOTHING`,
+      [userId, titleId]
+    );
 
     req.logIn(result.rows[0], (err) => {
       if (err) return next(err);
       return res.json({
         success: true,
-        user: { id: result.rows[0].id, username: result.rows[0].username },
+        user: { id: userId, username: result.rows[0].username },
       });
     });
   } catch (err) {
-    console.error(err);
+    console.error("Registration error:", err.stack || err);
     return res.status(500).json({ error: "Server error." });
   }
 });
@@ -340,6 +363,113 @@ app.post(
     res.json({ success: true, message: "Image uploaded!" });
   }
 );
+//player profile
+app.get("/api/user-profile/:id", async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    const profileQuery = `
+      SELECT 
+        u.username, 
+        up.level, 
+        up.xp, 
+        up.bio,
+        up.selected_title,
+        (
+          SELECT json_agg(t.name)
+          FROM user_titles ut
+          JOIN titles t ON t.id = ut.title_id
+          WHERE ut.user_id = $1
+        ) AS titles_unlocked
+      FROM users u
+      JOIN user_profiles up ON u.id = up.user_id
+      WHERE u.id = $1
+    `;
+
+    const result = await db.query(profileQuery, [userId]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "User not found." });
+    }
+
+    const row = result.rows[0];
+
+    return res.json({
+      username: row.username,
+      level: row.level,
+      xp: row.xp,
+      bio: row.bio,
+      title: row.selected_title || "Newbie",
+      titlesUnlocked: row.titles_unlocked || [],
+    });
+  } catch (err) {
+    console.error("Error fetching profile:", err);
+    return res.status(500).json({ error: "Server error." });
+  }
+});
+
+app.post("/add-xp", ensureLoggedIn, async (req, res) => {
+  const { xp } = req.body;
+  const userId = req.user.id;
+
+  try {
+    const result = await db.query(
+      "SELECT xp, level FROM user_profiles WHERE user_id = $1",
+      [userId]
+    );
+    let { xp: currentXp, level } = result.rows[0];
+
+    function xpForNextLevel(level) {
+      const base = 1000;
+      const linearGrowth = 200 * level;
+      const scaling = Math.floor(1000 * Math.pow(1.05, level));
+      return base + linearGrowth + scaling;
+    }
+
+    currentXp += xp;
+
+    let xpNeeded = xpForNextLevel(level);
+
+    while (currentXp >= xpNeeded) {
+      currentXp -= xpNeeded;
+      level += 1;
+      xpNeeded = xpForNextLevel(level);
+    }
+
+    await db.query(
+      "UPDATE user_profiles SET xp = $1, level = $2, updated_at = NOW() WHERE user_id = $3",
+      [currentXp, level, userId]
+    );
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Error adding XP:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+//setting up bio
+app.put("/api/user-profile/bio", ensureLoggedIn, async (req, res) => {
+  const userId = req.user.id;
+  const { bio } = req.body;
+
+  if (!bio || bio.length > 1000) {
+    return res
+      .status(400)
+      .json({ error: "Bio must be 1000 characters or less." });
+  }
+
+  try {
+    await db.query(
+      "UPDATE user_profiles SET bio = $1, updated_at = NOW() WHERE user_id = $2",
+      [bio, userId]
+    );
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to update bio." });
+  }
+});
 
 passport.use(
   new Strategy(async function verify(username, password, cb) {

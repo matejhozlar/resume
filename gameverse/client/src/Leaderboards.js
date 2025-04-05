@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
 
+const titleStyles = {
+  Newbie: "title-newbie",
+  Rookie: "title-rookie",
+  Survivor: "title-survivor",
+};
+
 function Leaderboard() {
   const [leaderboard, setLeaderboard] = useState([]);
 
@@ -33,18 +39,32 @@ function Leaderboard() {
           </tr>
         </thead>
         <tbody>
-          {leaderboard.map((entry, index) => (
-            <tr key={`${entry.username}-${index}`}>
-              <td className="rank-col">{index + 1}</td>
-              <td className="uniform-col">{entry.username}</td>
-              <td className="uniform-col">{entry.wave}</td>
-              <td className="uniform-col">{entry.zombies_killed}</td>
-              <td className="uniform-col">{entry.ammo_used}</td>
-              <td className="uniform-col">
-                {parseFloat(entry.accuracy).toFixed(2)}%
-              </td>
-            </tr>
-          ))}
+          {leaderboard.map((entry, index) => {
+            const titleClass =
+              entry.title && titleStyles[entry.title]
+                ? titleStyles[entry.title]
+                : "title-default";
+
+            return (
+              <tr key={`${entry.username}-${index}`}>
+                <td className="rank-col">{index + 1}</td>
+                <td className="uniform-col player-cell">
+                  {entry.title && (
+                    <span className={`title-badge ${titleClass}`}>
+                      {entry.title}
+                    </span>
+                  )}
+                  {entry.username}
+                </td>
+                <td className="uniform-col">{entry.wave}</td>
+                <td className="uniform-col">{entry.zombies_killed}</td>
+                <td className="uniform-col">{entry.ammo_used}</td>
+                <td className="uniform-col">
+                  {parseFloat(entry.accuracy).toFixed(2)}%
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>
