@@ -89,7 +89,10 @@ function Sidebar({ onPageChange, isCollapsed, setIsCollapsed }) {
 
         {/* STATIC ITEMS */}
         <li className="menu-item">
-          <button className="menu-btn toggle-btn no-arrow" disabled>
+          <button
+            className="menu-btn toggle-btn no-arrow"
+            onClick={() => onPageChange("displayTest")}
+          >
             {isCollapsed ? "🆚" : "Multiplayer (TBD)"}
           </button>
         </li>

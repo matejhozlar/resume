@@ -23,6 +23,8 @@ function LoginForm({ onLogin, onSwitchToRegister }) {
     const data = await response.json();
 
     if (data.success) {
+      localStorage.setItem("userId", data.user.id);
+      localStorage.setItem("username", data.user.username);
       onLogin(data.user);
     } else {
       setError(data.error || "Login failed.");

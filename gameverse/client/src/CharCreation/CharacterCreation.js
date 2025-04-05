@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import eyeOptions from "../assets/CharCreation/eyes/eyes";
 import baseBody from "../assets/CharCreation/body/body.png";
 import glasses from "../assets/CharCreation/glasses/glasses.js";
@@ -10,6 +10,7 @@ import arrow from "../assets/CharCreation/arrow/arrow.png";
 import arrow1 from "../assets/CharCreation/arrow/arrow1.png";
 import background from "../assets/CharCreation/background/background.png";
 import pets from "../assets/CharCreation/pets/pets.js";
+import html2canvas from "html2canvas";
 
 const OptionSelector = ({ label, options, selected, setSelected }) => {
   const currentIndex = options.indexOf(selected);
@@ -47,6 +48,8 @@ const OptionSelector = ({ label, options, selected, setSelected }) => {
 };
 
 const CharacterCreator = () => {
+  const previewRef = useRef();
+
   const petsKey = ["none", ...Object.keys(pets)];
   const [selectedPet, setSelectedPet] = useState("none");
 
@@ -68,18 +71,37 @@ const CharacterCreator = () => {
   const glassesKeys = ["none", ...Object.keys(glasses)];
   const [selectedGlasses, setSelectedGlasses] = useState("none");
 
-  const handleSave = () => {
-    const data = {
-      eyeColor: selectedEyes,
-      glasses: selectedGlasses,
-      hairstyle: selectedHair,
-      shirt: selectedShirt,
-      pants: selectedPants,
-      shoes: selectedShoes,
-      pet: selectedPet,
-    };
-    console.log("Saving character:", data);
-    alert("Character saved!");
+  const handleSave = async () => {
+    if (!previewRef.current) return;
+
+    try {
+      const canvas = await html2canvas(previewRef.current, {
+        backgroundColor: null,
+        useCORS: true,
+      });
+      const blob = await new Promise((resolve) =>
+        canvas.toBlob(resolve, "image/png")
+      );
+
+      const formData = new FormData();
+      formData.append("avatar", blob, "avatar.png");
+
+      const res = await fetch("http://localhost:5000/save-character-image", {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      });
+
+      const result = await res.json();
+      if (result.success) {
+        alert("Avatar image saved!");
+      } else {
+        alert("Failed to save image.");
+      }
+    } catch (err) {
+      console.error("Error saving avatar:", err);
+      alert("Something went wrong.");
+    }
   };
 
   return (
@@ -139,7 +161,7 @@ const CharacterCreator = () => {
 
         {/* RIGHT PANEL: PREVIEW */}
         <div className="creator-preview-panel">
-          <div className="character-body preview-character">
+          <div className="character-body preview-character" ref={previewRef}>
             <img
               src={background}
               alt="Background"

@@ -8,6 +8,9 @@ import { Strategy } from "passport-local";
 import passport from "passport";
 import bcrypt from "bcrypt";
 import cors from "cors";
+import multer from "multer";
+import path from "path";
+import fs from "fs";
 
 env.config();
 const app = express();
@@ -30,6 +33,7 @@ app.use(
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
+app.use("/avatars", express.static("public/avatars"));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -304,6 +308,38 @@ app.post("/ZombieArenaScore", ensureLoggedIn, async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 });
+
+//save character image
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const uploadPath = "public/avatars";
+    fs.mkdirSync(uploadPath, { recursive: true });
+    cb(null, uploadPath);
+  },
+  filename: function (req, file, cb) {
+    cb(null, `${req.user.id}.png`);
+  },
+});
+
+const upload = multer({ storage });
+
+app.post(
+  "/save-character-image",
+  ensureLoggedIn,
+  upload.single("avatar"),
+  (req, res) => {
+    res.json({ success: true, message: "Image uploaded!" });
+  }
+);
+
+app.post(
+  "/save-character-image",
+  ensureLoggedIn,
+  upload.single("avatar"),
+  (req, res) => {
+    res.json({ success: true, message: "Image uploaded!" });
+  }
+);
 
 passport.use(
   new Strategy(async function verify(username, password, cb) {
