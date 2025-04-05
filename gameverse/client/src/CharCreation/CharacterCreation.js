@@ -50,6 +50,9 @@ const OptionSelector = ({ label, options, selected, setSelected }) => {
 const CharacterCreator = () => {
   const previewRef = useRef();
 
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
   const petsKey = ["none", ...Object.keys(pets)];
   const [selectedPet, setSelectedPet] = useState("none");
 
@@ -74,6 +77,9 @@ const CharacterCreator = () => {
   const handleSave = async () => {
     if (!previewRef.current) return;
 
+    setSuccessMessage("");
+    setErrorMessage("");
+
     try {
       const canvas = await html2canvas(previewRef.current, {
         backgroundColor: null,
@@ -94,13 +100,13 @@ const CharacterCreator = () => {
 
       const result = await res.json();
       if (result.success) {
-        alert("Avatar image saved!");
+        setSuccessMessage("Avatar image saved!");
       } else {
-        alert("Failed to save image.");
+        setErrorMessage("Failed to save image.");
       }
     } catch (err) {
       console.error("Error saving avatar:", err);
-      alert("Something went wrong.");
+      setErrorMessage("Something went wrong.");
     }
   };
 
@@ -154,6 +160,16 @@ const CharacterCreator = () => {
             setSelected={setSelectedPet}
           />
 
+          {successMessage && (
+            <div className="alert alert-success mt-3" role="alert">
+              {successMessage}
+            </div>
+          )}
+          {errorMessage && (
+            <div className="alert alert-danger mt-3" role="alert">
+              {errorMessage}
+            </div>
+          )}
           <button className="custom-btn save-btn" onClick={handleSave}>
             Save Character
           </button>
