@@ -1116,4 +1116,21 @@ body {
   transform: scale(1.3);
 }
 
+.character-layer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  image-rendering: pixelated;
+}
+
+.background-layer {
+  z-index: 0;
+}
+
+.preview-character img:not(.background-layer) {
+  z-index: 1;
+}
+
 /* character creation */

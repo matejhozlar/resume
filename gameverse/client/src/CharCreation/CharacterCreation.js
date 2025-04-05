@@ -8,6 +8,7 @@ import pants from "../assets/CharCreation/pants/pants.js";
 import shoes from "../assets/CharCreation/shoes/shoes.js";
 import arrow from "../assets/CharCreation/arrow/arrow.png";
 import arrow1 from "../assets/CharCreation/arrow/arrow1.png";
+import background from "../assets/CharCreation/background/background.png";
 
 const OptionSelector = ({ label, options, selected, setSelected }) => {
   const currentIndex = options.indexOf(selected);
@@ -128,6 +129,11 @@ const CharacterCreator = () => {
         {/* RIGHT PANEL: PREVIEW */}
         <div className="creator-preview-panel">
           <div className="character-body preview-character">
+            <img
+              src={background}
+              alt="Background"
+              className="character-layer background-layer"
+            />
             <img src={baseBody} alt="Base Body" className="character-layer" />
             {selectedEyes !== "none" && (
               <img
