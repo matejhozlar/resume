@@ -9,7 +9,7 @@ import ZombieArenaInfo from "./ZombieArena/ZombieArenaInfo";
 import ZombieArena from "./ZombieArena/ZombieArena";
 import Leaderboard from "./Leaderboards";
 import DeleteAccForm from "./DeleteAccForm";
-import CharacterCreation from "./CharacterCreation";
+import CharacterCreation from "./CharCreation/CharacterCreation";
 
 function Content({ activePage, onPageChange }) {
   const renderContent = () => {
