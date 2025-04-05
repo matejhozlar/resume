@@ -4,6 +4,7 @@ const pants = {
   pants3: require("./pants_3.png"),
   pants4: require("./pants_4.png"),
   pants5: require("./pants_5.png"),
+  pants6: require("./pants_6.png"),
 };
 
 export default pants;
