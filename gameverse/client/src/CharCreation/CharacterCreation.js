@@ -9,6 +9,7 @@ import shoes from "../assets/CharCreation/shoes/shoes.js";
 import arrow from "../assets/CharCreation/arrow/arrow.png";
 import arrow1 from "../assets/CharCreation/arrow/arrow1.png";
 import background from "../assets/CharCreation/background/background.png";
+import pets from "../assets/CharCreation/pets/pets.js";
 
 const OptionSelector = ({ label, options, selected, setSelected }) => {
   const currentIndex = options.indexOf(selected);
@@ -46,6 +47,9 @@ const OptionSelector = ({ label, options, selected, setSelected }) => {
 };
 
 const CharacterCreator = () => {
+  const petsKey = ["none", ...Object.keys(pets)];
+  const [selectedPet, setSelectedPet] = useState("none");
+
   const shoesKeys = ["none", ...Object.keys(shoes)];
   const [selectedShoes, setSelectedShoes] = useState("none");
 
@@ -72,6 +76,7 @@ const CharacterCreator = () => {
       shirt: selectedShirt,
       pants: selectedPants,
       shoes: selectedShoes,
+      pet: selectedPet,
     };
     console.log("Saving character:", data);
     alert("Character saved!");
@@ -119,6 +124,12 @@ const CharacterCreator = () => {
             options={shoesKeys}
             selected={selectedShoes}
             setSelected={setSelectedShoes}
+          />
+          <OptionSelector
+            label="Pet"
+            options={petsKey}
+            selected={selectedPet}
+            setSelected={setSelectedPet}
           />
 
           <button className="custom-btn save-btn" onClick={handleSave}>
@@ -175,6 +186,13 @@ const CharacterCreator = () => {
                 src={shoes[selectedShoes]}
                 alt="Shoes"
                 className="character-layer"
+              />
+            )}
+            {selectedPet !== "none" && (
+              <img
+                src={pets[selectedPet]}
+                alt="Pet"
+                className="character-layer pet-layer"
               />
             )}
           </div>
