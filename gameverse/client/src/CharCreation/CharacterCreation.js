@@ -6,6 +6,43 @@ import hairstyles from "../assets/CharCreation/hairstyles/hairstyles.js";
 import shirts from "../assets/CharCreation/shirts/shirts.js";
 import pants from "../assets/CharCreation/pants/pants.js";
 import shoes from "../assets/CharCreation/shoes/shoes.js";
+import arrow from "../assets/CharCreation/arrow/arrow.png";
+import arrow1 from "../assets/CharCreation/arrow/arrow1.png";
+
+const OptionSelector = ({ label, options, selected, setSelected }) => {
+  const currentIndex = options.indexOf(selected);
+
+  const handlePrev = () => {
+    const newIndex = (currentIndex - 1 + options.length) % options.length;
+    setSelected(options[newIndex]);
+  };
+
+  const handleNext = () => {
+    const newIndex = (currentIndex + 1) % options.length;
+    setSelected(options[newIndex]);
+  };
+
+  return (
+    <div className="option-selector">
+      <label>{label}</label>
+      <div className="option-row">
+        <div className="arrow-hitbox" onClick={handlePrev}>
+          <img src={arrow1} alt="Prev" className="arrow" />
+        </div>
+
+        <span className="option-label">
+          {selected === "none"
+            ? "None"
+            : selected.charAt(0).toUpperCase() + selected.slice(1)}
+        </span>
+
+        <div className="arrow-hitbox" onClick={handleNext}>
+          <img src={arrow} alt="Next" className="arrow right" />
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const CharacterCreator = () => {
   const shoesKeys = ["none", ...Object.keys(shoes)];
@@ -46,89 +83,42 @@ const CharacterCreator = () => {
         <div className="creator-options-panel">
           <h2>Character Creation</h2>
 
-          <label>Eye Color</label>
-          <select
-            value={selectedEyes}
-            onChange={(e) => setSelectedEyes(e.target.value)}
-          >
-            {eyeKeys.map((key) => (
-              <option key={key} value={key}>
-                {key === "none"
-                  ? "None"
-                  : key.charAt(0).toUpperCase() + key.slice(1)}
-              </option>
-            ))}
-          </select>
-
-          <label>Glasses</label>
-          <select
-            value={selectedGlasses}
-            onChange={(e) => setSelectedGlasses(e.target.value)}
-          >
-            {glassesKeys.map((key) => (
-              <option key={key} value={key}>
-                {key === "none"
-                  ? "None"
-                  : key.charAt(0).toUpperCase() + key.slice(1)}
-              </option>
-            ))}
-          </select>
-
-          <label>Hairstyle</label>
-          <select
-            value={selectedHair}
-            onChange={(e) => setSelectedHair(e.target.value)}
-          >
-            {hairKeys.map((key) => (
-              <option key={key} value={key}>
-                {key === "none"
-                  ? "None"
-                  : key.charAt(0).toUpperCase() + key.slice(1)}
-              </option>
-            ))}
-          </select>
-
-          <label>Shirt</label>
-          <select
-            value={selectedShirt}
-            onChange={(e) => setSelectedShirt(e.target.value)}
-          >
-            {shirtKeys.map((key) => (
-              <option key={key} value={key}>
-                {key === "none"
-                  ? "None"
-                  : key.charAt(0).toUpperCase() + key.slice(1)}
-              </option>
-            ))}
-          </select>
-
-          <label>Pants</label>
-          <select
-            value={selectedPants}
-            onChange={(e) => setSelectedPants(e.target.value)}
-          >
-            {pantsKeys.map((key) => (
-              <option key={key} value={key}>
-                {key === "none"
-                  ? "None"
-                  : key.charAt(0).toUpperCase() + key.slice(1)}
-              </option>
-            ))}
-          </select>
-
-          <label>Shoes</label>
-          <select
-            value={selectedShoes}
-            onChange={(e) => setSelectedShoes(e.target.value)}
-          >
-            {shoesKeys.map((key) => (
-              <option key={key} value={key}>
-                {key === "none"
-                  ? "None"
-                  : key.charAt(0).toUpperCase() + key.slice(1)}
-              </option>
-            ))}
-          </select>
+          <OptionSelector
+            label="Eye Color"
+            options={eyeKeys}
+            selected={selectedEyes}
+            setSelected={setSelectedEyes}
+          />
+          <OptionSelector
+            label="Glasses"
+            options={glassesKeys}
+            selected={selectedGlasses}
+            setSelected={setSelectedGlasses}
+          />
+          <OptionSelector
+            label="Hairstyle"
+            options={hairKeys}
+            selected={selectedHair}
+            setSelected={setSelectedHair}
+          />
+          <OptionSelector
+            label="Shirt"
+            options={shirtKeys}
+            selected={selectedShirt}
+            setSelected={setSelectedShirt}
+          />
+          <OptionSelector
+            label="Pants"
+            options={pantsKeys}
+            selected={selectedPants}
+            setSelected={setSelectedPants}
+          />
+          <OptionSelector
+            label="Shoes"
+            options={shoesKeys}
+            selected={selectedShoes}
+            setSelected={setSelectedShoes}
+          />
 
           <button className="custom-btn save-btn" onClick={handleSave}>
             Save Character
