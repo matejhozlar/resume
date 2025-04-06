@@ -26,7 +26,7 @@ function Leaderboard() {
         <thead>
           <tr>
             <th className="rank-col">Rank</th>
-            <th className="uniform-col">Username</th>
+            <th className="username-col">Username</th>
             <th className="uniform-col">Wave</th>
             <th className="uniform-col">Kills</th>
             <th className="uniform-col">Ammo Used</th>
@@ -43,13 +43,15 @@ function Leaderboard() {
             return (
               <tr key={`${entry.username}-${index}`}>
                 <td className="rank-col">{index + 1}</td>
-                <td className="uniform-col player-cell">
-                  {entry.title && (
-                    <span className={`title-badge ${titleClass}`}>
-                      {entry.title}
-                    </span>
-                  )}
-                  {entry.username}
+                <td className="username-col player-cell">
+                  <div className="player-info">
+                    {entry.title && (
+                      <span className={`title-badge ${titleClass}`}>
+                        {entry.title}
+                      </span>
+                    )}
+                    <div className="username">{entry.username}</div>
+                  </div>
                 </td>
                 <td className="uniform-col">{entry.wave}</td>
                 <td className="uniform-col">{entry.zombies_killed}</td>

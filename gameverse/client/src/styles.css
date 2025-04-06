@@ -869,11 +869,50 @@ body {
 
 /* Leaderboards */
 
+.username-col {
+  min-width: 220px;
+  width: 300px;
+  max-width: 300px;
+}
+
+.player-cell {
+  vertical-align: middle;
+  text-align: center;
+  padding: 0;
+}
+
+.player-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 6px;
+  word-break: break-word;
+  padding: 6px 0;
+}
+
+.username {
+  font-weight: bold;
+  font-size: 14px;
+  color: white;
+  line-height: 1.1;
+  text-shadow: 1px 1px 2px black;
+}
+
+.username {
+  font-weight: bold;
+  font-size: 14px;
+  color: white;
+  text-shadow: 1px 1px 2px black;
+  line-height: 1.1;
+}
+
 .leaderboard-table {
   margin: 0 auto;
   border-collapse: collapse;
-  width: 100%;
-  max-width: 900px;
+  width: 1200px;
+  table-layout: fixed;
   font-size: 14px;
 }
 
@@ -942,7 +981,7 @@ body {
 }
 
 .uniform-col {
-  width: calc((900px - 60px) / 5);
+  width: calc((1200px - 60px - 300px) / 4);
 }
 
 /* Leaderboards */
