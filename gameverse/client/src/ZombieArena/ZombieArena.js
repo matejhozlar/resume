@@ -575,7 +575,7 @@ function ZombieArena() {
         if (!xpSubmittedRef.current) {
           xpSubmittedRef.current = true;
 
-          const xp = zombiesKilledRef.current;
+          const xp = zombiesKilledRef.current * 5 + waveRef.current * 10;
 
           fetch("http://localhost:5000/add-xp", {
             method: "POST",
