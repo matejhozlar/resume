@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from "react";
-
-const titleStyles = {
-  Newbie: "title-newbie",
-  Rookie: "title-rookie",
-  Survivor: "title-survivor",
-};
+import titleStyles from "./titleStyles";
 
 function Leaderboard() {
   const [leaderboard, setLeaderboard] = useState([]);

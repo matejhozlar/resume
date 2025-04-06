@@ -1236,21 +1236,243 @@ body {
   border: 2px solid #8a5cf6;
 }
 
+/* level 0-20 */
+
 .title-newbie {
   color: greenyellow;
   border-color: gray;
 }
 
 .title-rookie {
-  color: red;
-  border-color: red;
-  text-shadow: 0 0 5px red;
+  color: lightblue;
+  border-color: #5c9ded;
 }
 
-.title-survivor {
-  color: limegreen;
-  border-color: limegreen;
-  font-style: italic;
+.title-player {
+  color: orange;
+  border-color: #e39600;
+}
+
+.title-contender {
+  color: gold;
+  border-color: #c7a300;
+}
+
+.title-gamer {
+  color: violet;
+  border-color: #9b59b6;
+}
+
+/* level 21-50 */
+
+.title-challenger {
+  color: white;
+  background: #3b3b98;
+  border-color: #575fcf;
+}
+
+.title-strategist {
+  color: #fff;
+  background: #2c2c54;
+  border-color: #8e44ad;
+}
+
+.title-tactician {
+  color: #f1c40f;
+  background: #34495e;
+  border-color: #f39c12;
+}
+
+.title-prodigy {
+  color: #ecf0f1;
+  background: #1abc9c;
+  border-color: #16a085;
+}
+
+.title-game-master {
+  color: #f9ca24;
+  background: #2f3640;
+  border-color: #e1b12c;
+}
+
+.title-arcade-ace {
+  color: #f8f8f2;
+  background: #e84118;
+  border-color: #c23616;
+}
+
+/* level 51-70 */
+
+.title-puzzle-wizard {
+  color: #ffffff;
+  background: #6c5ce7;
+  border-color: #a29bfe;
+  box-shadow: 0 0 8px #a29bfe;
+}
+
+.title-digital-duelist {
+  color: #00ffea;
+  background: #130f40;
+  border-color: #00ffea;
+  box-shadow: 0 0 10px #00ffea;
+}
+
+.title-pixel-warrior {
+  color: #ff6b81;
+  background: #2d3436;
+  border-color: #ff4757;
+  box-shadow: 0 0 10px #ff6b81;
+}
+
+.title-champion {
+  color: #ffffff;
+  background: #1e272e;
+  border-color: #ffd32a;
+  box-shadow: 0 0 12px #ffd32a;
+}
+
+.title-veteran {
+  color: #00ff9d;
+  background: #192a56;
+  border-color: #00ffb3;
+  box-shadow: 0 0 12px #00ff9d;
+}
+
+/* level 71-100 */
+
+.title-grandmaster {
+  color: #fffa65;
+  background: #2f3640;
+  border-color: #fbc531;
+  box-shadow: 0 0 14px #fbc531;
+  transition: transform 0.2s;
+}
+
+.title-gameverse-legend {
+  color: #ffffff;
+  background: linear-gradient(135deg, #6c5ce7, #fd79a8);
+  border-color: #a29bfe;
+  box-shadow: 0 0 10px #a29bfe;
+  transition: transform 0.2s ease-in-out;
+}
+
+.title-cosmic-controller {
+  color: #00f0ff;
+  background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
+  border-color: #00f0ff;
+  box-shadow: 0 0 15px #00f0ff;
+}
+
+.title-reality-bender {
+  color: #ffffff;
+  background: linear-gradient(to right, #8e2de2, #4a00e0);
+  border-color: #a29bfe;
+  box-shadow: 0 0 10px #a29bfe, 0 0 15px #6c5ce7;
+  animation: pulse-soft 2s ease-in-out infinite alternate;
+}
+
+.title-supreme-player {
+  color: #fff;
+  background: linear-gradient(to right, #0f0f0f, #1a1a1a);
+  border: 2px solid #fff700;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-weight: bold;
+  text-shadow: 0 0 4px #fff700, 0 0 8px #ff0;
+  box-shadow: 0 0 12px #fff700, 0 0 24px #ffd700, 0 0 48px #ffea00;
+  position: relative;
+  overflow: hidden;
+  animation: supreme-flicker 3s infinite ease-in-out;
+}
+
+/* Shine trail animation */
+.title-supreme-player::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 250%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.25),
+    transparent
+  );
+  animation: supreme-shimmer 2s infinite linear;
+}
+
+/* Sparkles */
+.title-supreme-player::before {
+  content: "✨";
+  position: absolute;
+  font-size: 10px;
+  top: 0;
+  right: 10%;
+  animation: sparkle-pulse 1.5s infinite alternate ease-in-out;
+  opacity: 0.8;
+}
+
+@keyframes pulse-glow-titles {
+  from {
+    box-shadow: 0 0 12px #ff6b81, 0 0 18px #ff4757;
+  }
+  to {
+    box-shadow: 0 0 18px #ff6b81, 0 0 30px #ff4757;
+  }
+}
+
+@keyframes flicker-titles {
+  0%,
+  100% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+  50% {
+    opacity: 0.85;
+    filter: brightness(1.3);
+  }
+}
+
+@keyframes pulse-soft {
+  from {
+    box-shadow: 0 0 10px #a29bfe, 0 0 15px #6c5ce7;
+  }
+  to {
+    box-shadow: 0 0 15px #a29bfe, 0 0 25px #9b59b6;
+  }
+}
+
+@keyframes supreme-flicker {
+  0%,
+  100% {
+    box-shadow: 0 0 12px #fff700, 0 0 24px #ffd700, 0 0 48px #ffea00;
+    opacity: 1;
+  }
+  50% {
+    box-shadow: 0 0 16px #ffea00, 0 0 32px #fff700, 0 0 60px #ffd700;
+    opacity: 0.95;
+  }
+}
+
+@keyframes supreme-shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes sparkle-pulse {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-4px) scale(1.3);
+    opacity: 1;
+  }
 }
 
 /* TITLES */

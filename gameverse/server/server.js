@@ -417,33 +417,47 @@ app.post("/add-xp", ensureLoggedIn, async (req, res) => {
       "SELECT xp, level FROM user_profiles WHERE user_id = $1",
       [userId]
     );
-    let { xp: currentXp, level } = result.rows[0];
+    let { xp: currentXp, level: currentLevel } = result.rows[0];
 
     function xpForNextLevel(level) {
-      const base = 1000;
-      const linearGrowth = 200 * level;
-      const scaling = Math.floor(1000 * Math.pow(1.05, level));
-      return base + linearGrowth + scaling;
+      return 1000 + 200 * level;
     }
 
-    currentXp += xp;
+    let totalXp = currentXp + xp;
 
-    let xpNeeded = xpForNextLevel(level);
-
-    while (currentXp >= xpNeeded) {
-      currentXp -= xpNeeded;
-      level += 1;
-      xpNeeded = xpForNextLevel(level);
+    let level = 0;
+    let remainingXp = totalXp;
+    while (remainingXp >= xpForNextLevel(level)) {
+      remainingXp -= xpForNextLevel(level);
+      level++;
     }
 
     await db.query(
       "UPDATE user_profiles SET xp = $1, level = $2, updated_at = NOW() WHERE user_id = $3",
-      [currentXp, level, userId]
+      [totalXp, level, userId]
     );
 
-    res.json({ success: true });
+    if (level > currentLevel) {
+      const titlesRes = await db.query(
+        `SELECT id FROM titles
+         WHERE unlock_type = 'level' AND unlock_value <= $1
+         EXCEPT
+         SELECT title_id FROM user_titles WHERE user_id = $2`,
+        [level, userId]
+      );
+
+      const newTitleRows = titlesRes.rows;
+      for (const row of newTitleRows) {
+        await db.query(
+          `INSERT INTO user_titles (user_id, title_id) VALUES ($1, $2)`,
+          [userId, row.id]
+        );
+      }
+    }
+
+    res.json({ success: true, newLevel: level });
   } catch (err) {
-    console.error("Error adding XP:", err);
+    console.error("Error adding XP or unlocking titles:", err);
     res.status(500).json({ error: "Server error" });
   }
 });

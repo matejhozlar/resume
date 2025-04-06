@@ -1,0 +1,25 @@
+const titleStyles = {
+  Newbie: "title-newbie",
+  Rookie: "title-rookie",
+  Player: "title-player",
+  Contender: "title-contender",
+  Gamer: "title-gamer",
+  Challenger: "title-challenger",
+  Strategist: "title-strategist",
+  Tactician: "title-tactician",
+  Prodigy: "title-prodigy",
+  "Game Master": "title-game-master",
+  "Arcade Ace": "title-arcade-ace",
+  "Puzzle Wizard": "title-puzzle-wizard",
+  "Digital Duelist": "title-digital-duelist",
+  "Pixel Warrior": "title-pixel-warrior",
+  Champion: "title-champion",
+  Veteran: "title-veteran",
+  Grandmaster: "title-grandmaster",
+  "Gameverse Legend": "title-gameverse-legend",
+  "Cosmic Controller": "title-cosmic-controller",
+  "Reality Bender": "title-reality-bender",
+  "Supreme Player": "title-supreme-player",
+};
+
+export default titleStyles;

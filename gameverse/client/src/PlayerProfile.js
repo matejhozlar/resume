@@ -1,17 +1,8 @@
 import React, { useEffect, useState } from "react";
-
-const titleStyles = {
-  Newbie: "title-newbie",
-  Rookie: "title-rookie",
-  Survivor: "title-survivor",
-};
+import titleStyles from "./titleStyles";
 
 function xpForNextLevel(level) {
-  if (level === 0) return 1000;
-  const base = 1000;
-  const linearGrowth = 200 * level;
-  const scaling = Math.floor(1000 * Math.pow(1.05, level));
-  return base + linearGrowth + scaling;
+  return 1000 + 200 * level;
 }
 
 function getTotalXpForLevel(level) {
@@ -37,6 +28,21 @@ function PlayerProfile() {
   const [bioInput, setBioInput] = useState(userData.bio || "");
 
   useEffect(() => {
+    const triggerXPCheck = async () => {
+      await fetch("http://localhost:5000/add-xp", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ xp: 0 }),
+      });
+    };
+
+    triggerXPCheck();
+  }, []);
+
+  useEffect(() => {
     async function fetchData() {
       const res = await fetch(
         `http://localhost:5000/api/user-profile/${userId}`,
@@ -54,6 +60,9 @@ function PlayerProfile() {
     img.src = `http://localhost:5000/avatars/${userId}.png`;
     img.onload = () => setAvatarExists(true);
     img.onerror = () => setAvatarExists(false);
+
+    const interval = setInterval(fetchData, 5000);
+    return () => clearInterval(interval);
   }, [userId]);
 
   useEffect(() => {
@@ -122,18 +131,29 @@ function PlayerProfile() {
           <p>
             <strong>Level:</strong> {level}
           </p>
-          <p>
-            <strong>XP:</strong> {xp - getTotalXpForLevel(level)} /{" "}
-            {xpForNextLevel(level)} (Next level in{" "}
-            {xpForNextLevel(level) - (xp - getTotalXpForLevel(level))} XP)
-          </p>
+          {(() => {
+            const xpThisLevel = xp - getTotalXpForLevel(level);
+            const xpNeeded = xpForNextLevel(level);
+            const clampedXp = Math.min(xpThisLevel, xpNeeded);
+            const xpToNext = Math.max(0, xpNeeded - xpThisLevel);
+
+            return (
+              <p>
+                <strong>XP:</strong> {clampedXp} / {xpNeeded} (Next level in{" "}
+                {xpToNext} XP)
+              </p>
+            );
+          })()}
 
           <div className="xp-bar-wrapper">
             <div
               className="xp-bar"
               style={{
                 width: `${
-                  ((xp - getTotalXpForLevel(level)) /
+                  (Math.min(
+                    xp - getTotalXpForLevel(level),
+                    xpForNextLevel(level)
+                  ) /
                     (xpForNextLevel(level) || 1)) *
                   100
                 }%`,
