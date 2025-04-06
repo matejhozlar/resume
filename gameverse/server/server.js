@@ -355,15 +355,6 @@ app.post(
     res.json({ success: true, message: "Image uploaded!" });
   }
 );
-
-app.post(
-  "/save-character-image",
-  ensureLoggedIn,
-  upload.single("avatar"),
-  (req, res) => {
-    res.json({ success: true, message: "Image uploaded!" });
-  }
-);
 //player profile
 app.get("/api/user-profile/:id", async (req, res) => {
   const userId = req.params.id;
