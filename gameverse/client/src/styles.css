@@ -908,6 +908,11 @@ body {
   line-height: 1.1;
 }
 
+.player-info-link {
+  text-decoration: none;
+  color: inherit;
+}
+
 .leaderboard-table {
   margin: 0 auto;
   border-collapse: collapse;

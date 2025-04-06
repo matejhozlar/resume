@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import preview1 from "../assets/images/zombiearena-preview1.png";
 import preview2 from "../assets/images/zombiearena-preview2.png";
 
 function ZombieArenaInfo({ onPageChange }) {
   const [zoomedImage, setZoomedImage] = useState(null);
+  const navigate = useNavigate();
 
   const handleImageClick = (src) => {
     setZoomedImage(src);
@@ -105,7 +107,7 @@ function ZombieArenaInfo({ onPageChange }) {
           <button
             className="play-btn"
             onClick={() => {
-              onPageChange("zombiearena-play");
+              navigate("/zombiearena/play");
             }}
           >
             Play

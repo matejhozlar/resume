@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import titleStyles from "./titleStyles";
 
 function xpForNextLevel(level) {
@@ -14,7 +15,12 @@ function getTotalXpForLevel(level) {
 }
 
 function PlayerProfile() {
-  const userId = localStorage.getItem("userId");
+  const { id: routeUserId } = useParams();
+  const loggedInUserId = localStorage.getItem("userId");
+  const isOwnProfile = !routeUserId || routeUserId === loggedInUserId;
+
+  const userIdToFetch = routeUserId || loggedInUserId;
+
   const [userData, setUserData] = useState({
     username: "",
     title: "",
@@ -28,42 +34,29 @@ function PlayerProfile() {
   const [bioInput, setBioInput] = useState(userData.bio || "");
 
   useEffect(() => {
-    const triggerXPCheck = async () => {
-      await fetch("http://localhost:5000/add-xp", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ xp: 0 }),
-      });
-    };
+    if (!userIdToFetch) return;
 
-    triggerXPCheck();
-  }, []);
-
-  useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
       const res = await fetch(
-        `http://localhost:5000/api/user-profile/${userId}`,
+        `http://localhost:5000/api/user-profile/${userIdToFetch}`,
         {
           credentials: "include",
         }
       );
       const data = await res.json();
       setUserData(data);
-    }
+    };
 
     fetchData();
 
     const img = new Image();
-    img.src = `http://localhost:5000/avatars/${userId}.png`;
+    img.src = `http://localhost:5000/avatars/${userIdToFetch}.png`;
     img.onload = () => setAvatarExists(true);
     img.onerror = () => setAvatarExists(false);
 
     const interval = setInterval(fetchData, 5000);
     return () => clearInterval(interval);
-  }, [userId]);
+  }, [userIdToFetch]);
 
   useEffect(() => {
     setBioInput(userData.bio || "");
@@ -103,15 +96,15 @@ function PlayerProfile() {
         <div className="avatar-preview">
           {avatarExists ? (
             <img
-              src={`http://localhost:5000/avatars/${userId}.png`}
+              src={`http://localhost:5000/avatars/${userIdToFetch}.png`}
               alt="User Avatar"
               width={320}
               height={320}
             />
           ) : (
             <p className="no-avatar-text">
-              No avatar yet. Create your character in{" "}
-              <strong>"Character Creation"</strong>.
+              No avatar yet. {isOwnProfile ? "Create your character in " : ""}
+              {isOwnProfile && <strong>"Character Creation"</strong>}
             </p>
           )}
         </div>
@@ -164,7 +157,7 @@ function PlayerProfile() {
           <h3 className="titles" style={{ marginTop: "20px" }}>
             Bio
           </h3>
-          {editingBio ? (
+          {isOwnProfile && editingBio ? (
             <div className="bio-edit-wrapper">
               <textarea
                 className="bio-textarea"
@@ -192,13 +185,15 @@ function PlayerProfile() {
           ) : (
             <>
               <p className="profile-bio">{bio || "No bio set."}</p>
-              <button
-                className="custom-btn"
-                onClick={() => setEditingBio(true)}
-                style={{ marginTop: "10px", marginBottom: "20px" }}
-              >
-                Edit Bio
-              </button>
+              {isOwnProfile && (
+                <button
+                  className="custom-btn"
+                  onClick={() => setEditingBio(true)}
+                  style={{ marginTop: "10px", marginBottom: "20px" }}
+                >
+                  Edit Bio
+                </button>
+              )}
             </>
           )}
 
@@ -210,14 +205,18 @@ function PlayerProfile() {
                 className={`title-badge ${
                   titleStyles[unlockedTitle] || "title-default"
                 } ${unlockedTitle === title ? "equipped-title" : ""}`}
-                style={{ cursor: "pointer" }}
+                style={{
+                  cursor: isOwnProfile ? "pointer" : "default",
+                }}
                 title={
                   unlockedTitle === title
                     ? "Currently equipped"
-                    : "Click to equip this title"
+                    : isOwnProfile
+                    ? "Click to equip this title"
+                    : ""
                 }
                 onClick={async () => {
-                  if (unlockedTitle === title) return; // already equipped
+                  if (!isOwnProfile || unlockedTitle === title) return;
 
                   const res = await fetch(
                     "http://localhost:5000/user-profile/title",

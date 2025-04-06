@@ -69,6 +69,7 @@ app.get("/ZombieArenaLeaderboard", async (req, res) => {
 
     const leaderboardQuery = `
       SELECT 
+        u.id AS user_id,
         u.username,
         t.name AS title,
         z.wave, 

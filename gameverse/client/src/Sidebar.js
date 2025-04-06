@@ -1,28 +1,24 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-function Sidebar({ onPageChange, isCollapsed, setIsCollapsed }) {
+function Sidebar({ isCollapsed, setIsCollapsed }) {
+  const navigate = useNavigate();
   const [openMenu, setOpenMenu] = useState({
     games: false,
     settings: false,
   });
 
-  // Whenever the sidebar is collapsed, close all submenus
+  // Close submenus when collapsed
   useEffect(() => {
     if (isCollapsed) {
-      setOpenMenu({
-        games: false,
-        settings: false,
-      });
+      setOpenMenu({ games: false, settings: false });
     }
   }, [isCollapsed]);
 
   const toggleMenu = (menu) => {
-    // If the entire sidebar is collapsed, un-collapse it before toggling the submenu
     if (isCollapsed) {
       setIsCollapsed(false);
     }
-
-    // Toggle the specific submenu
     setOpenMenu((prev) => ({
       ...prev,
       [menu]: !prev[menu],
@@ -35,11 +31,12 @@ function Sidebar({ onPageChange, isCollapsed, setIsCollapsed }) {
         <li className="menu-item">
           <button
             className="menu-btn toggle-btn no-arrow"
-            onClick={() => onPageChange("home")}
+            onClick={() => navigate("/")}
           >
             {isCollapsed ? "H" : "Home"}
           </button>
         </li>
+
         {/* GAMES */}
         <li className={`menu-item has-submenu ${openMenu.games ? "open" : ""}`}>
           <button
@@ -55,31 +52,25 @@ function Sidebar({ onPageChange, isCollapsed, setIsCollapsed }) {
             <li>
               <button
                 className="menu-btn"
-                onClick={() => onPageChange("tic-tac-toe")}
+                onClick={() => navigate("/tic-tac-toe")}
               >
                 Tic-Tac-Toe
               </button>
             </li>
             <li>
-              <button
-                className="menu-btn"
-                onClick={() => onPageChange("simon")}
-              >
+              <button className="menu-btn" onClick={() => navigate("/simon")}>
                 Simon Game
               </button>
             </li>
             <li>
-              <button
-                className="menu-btn"
-                onClick={() => onPageChange("pexeso")}
-              >
+              <button className="menu-btn" onClick={() => navigate("/pexeso")}>
                 Pexeso
               </button>
             </li>
             <li>
               <button
                 className="menu-btn"
-                onClick={() => onPageChange("zombiearena")}
+                onClick={() => navigate("/zombiearena")}
               >
                 Zombie Arena
               </button>
@@ -91,7 +82,7 @@ function Sidebar({ onPageChange, isCollapsed, setIsCollapsed }) {
         <li className="menu-item">
           <button
             className="menu-btn toggle-btn no-arrow"
-            onClick={() => onPageChange("displayTest")}
+            onClick={() => navigate("/multiplayer")}
           >
             {isCollapsed ? "🆚" : "Multiplayer (TBD)"}
           </button>
@@ -99,7 +90,7 @@ function Sidebar({ onPageChange, isCollapsed, setIsCollapsed }) {
         <li className="menu-item">
           <button
             className="menu-btn toggle-btn no-arrow"
-            onClick={() => onPageChange("leaderboard")}
+            onClick={() => navigate("/leaderboard")}
           >
             {isCollapsed ? "🏆" : "Leaderboards"}
           </button>
@@ -107,7 +98,7 @@ function Sidebar({ onPageChange, isCollapsed, setIsCollapsed }) {
         <li className="menu-item">
           <button
             className="menu-btn toggle-btn no-arrow"
-            onClick={() => onPageChange("characterCreation")}
+            onClick={() => navigate("/character-creation")}
           >
             {isCollapsed ? "👤" : "Char Creation"}
           </button>
@@ -115,7 +106,7 @@ function Sidebar({ onPageChange, isCollapsed, setIsCollapsed }) {
         <li className="menu-item">
           <button
             className="menu-btn toggle-btn no-arrow"
-            onClick={() => onPageChange("playerProfile")}
+            onClick={() => navigate("/profile")}
           >
             {isCollapsed ? "🪪" : "Player Profile"}
           </button>
@@ -143,7 +134,7 @@ function Sidebar({ onPageChange, isCollapsed, setIsCollapsed }) {
             <li>
               <button
                 className="menu-btn"
-                onClick={() => onPageChange("account")}
+                onClick={() => navigate("/settings/account")}
               >
                 Change Your Password
               </button>
@@ -151,7 +142,7 @@ function Sidebar({ onPageChange, isCollapsed, setIsCollapsed }) {
             <li>
               <button
                 className="menu-btn"
-                onClick={() => onPageChange("username")}
+                onClick={() => navigate("/settings/username")}
               >
                 Change Your Username
               </button>
@@ -159,7 +150,7 @@ function Sidebar({ onPageChange, isCollapsed, setIsCollapsed }) {
             <li>
               <button
                 className="menu-btn"
-                onClick={() => onPageChange("deleteAcc")}
+                onClick={() => navigate("/settings/delete-account")}
               >
                 Delete Your Account
               </button>
@@ -167,7 +158,7 @@ function Sidebar({ onPageChange, isCollapsed, setIsCollapsed }) {
           </ul>
         </li>
 
-        {/* EXIT */}
+        {/* LOGOUT */}
         <li>
           <a className="menu-btn" href="/">
             {isCollapsed ? "🚪" : "Log Out"}

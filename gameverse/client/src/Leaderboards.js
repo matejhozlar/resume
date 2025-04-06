@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import titleStyles from "./titleStyles";
 
 function Leaderboard() {
@@ -44,14 +45,19 @@ function Leaderboard() {
               <tr key={`${entry.username}-${index}`}>
                 <td className="rank-col">{index + 1}</td>
                 <td className="username-col player-cell">
-                  <div className="player-info">
-                    {entry.title && (
-                      <span className={`title-badge ${titleClass}`}>
-                        {entry.title}
-                      </span>
-                    )}
-                    <div className="username">{entry.username}</div>
-                  </div>
+                  <Link
+                    to={`/profile/${entry.user_id}`}
+                    className="player-info-link"
+                  >
+                    <div className="player-info">
+                      {entry.title && (
+                        <span className={`title-badge ${titleClass}`}>
+                          {entry.title}
+                        </span>
+                      )}
+                      <div className="username">{entry.username}</div>
+                    </div>
+                  </Link>
                 </td>
                 <td className="uniform-col">{entry.wave}</td>
                 <td className="uniform-col">{entry.zombies_killed}</td>
