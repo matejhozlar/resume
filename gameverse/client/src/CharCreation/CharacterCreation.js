@@ -8,7 +8,7 @@ import pants from "../assets/CharCreation/pants/pants.js";
 import shoes from "../assets/CharCreation/shoes/shoes.js";
 import arrow from "../assets/CharCreation/arrow/arrow.png";
 import arrow1 from "../assets/CharCreation/arrow/arrow1.png";
-import background from "../assets/CharCreation/background/background.png";
+import background from "../assets/CharCreation/background/background_1.png";
 import pets from "../assets/CharCreation/pets/pets.js";
 import html2canvas from "html2canvas";
 
