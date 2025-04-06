@@ -8,7 +8,7 @@ import pants from "../assets/CharCreation/pants/pants.js";
 import shoes from "../assets/CharCreation/shoes/shoes.js";
 import arrow from "../assets/CharCreation/arrow/arrow.png";
 import arrow1 from "../assets/CharCreation/arrow/arrow1.png";
-import background from "../assets/CharCreation/background/background_1.png";
+import backgrounds from "../assets/CharCreation/background/backgrounds.js";
 import pets from "../assets/CharCreation/pets/pets.js";
 import html2canvas from "html2canvas";
 
@@ -49,6 +49,11 @@ const OptionSelector = ({ label, options, selected, setSelected }) => {
 
 const CharacterCreator = () => {
   const previewRef = useRef();
+
+  const [customBackground, setCustomBackground] = useState(null);
+
+  const backgroundKeys = ["none", ...Object.keys(backgrounds), "custom"];
+  const [selectedBackground, setSelectedBackground] = useState("none");
 
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -110,6 +115,28 @@ const CharacterCreator = () => {
     }
   };
 
+  const handleBackgroundUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (event) {
+      const img = new Image();
+      img.onload = function () {
+        const canvas = document.createElement("canvas");
+        canvas.width = 320;
+        canvas.height = 320;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, 320, 320);
+        const resizedDataUrl = canvas.toDataURL("image/png");
+        setCustomBackground(resizedDataUrl);
+        setSelectedBackground("custom");
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+
   return (
     <div className="character-creator-wrapper new-style">
       <div className="character-creator-box">
@@ -117,6 +144,26 @@ const CharacterCreator = () => {
         <div className="creator-options-panel">
           <h2>Character Creation</h2>
 
+          <OptionSelector
+            label="Background"
+            options={backgroundKeys}
+            selected={selectedBackground}
+            setSelected={setSelectedBackground}
+          />
+
+          {selectedBackground === "custom" && (
+            <div className="custom-background-upload">
+              <label htmlFor="bg-upload" className="upload-label">
+                Upload Custom Background:
+              </label>
+              <input
+                type="file"
+                id="bg-upload"
+                accept="image/*"
+                onChange={handleBackgroundUpload}
+              />
+            </div>
+          )}
           <OptionSelector
             label="Eye Color"
             options={eyeKeys}
@@ -178,11 +225,17 @@ const CharacterCreator = () => {
         {/* RIGHT PANEL: PREVIEW */}
         <div className="creator-preview-panel">
           <div className="character-body preview-character" ref={previewRef}>
-            <img
-              src={background}
-              alt="Background"
-              className="character-layer background-layer"
-            />
+            {selectedBackground !== "none" && (
+              <img
+                src={
+                  selectedBackground === "custom"
+                    ? customBackground
+                    : backgrounds[selectedBackground]
+                }
+                alt="Background"
+                className="character-layer background-layer"
+              />
+            )}
             <img src={baseBody} alt="Base Body" className="character-layer" />
             {selectedEyes !== "none" && (
               <img
