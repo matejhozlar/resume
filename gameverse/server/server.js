@@ -485,6 +485,51 @@ app.put("/api/user-profile/bio", ensureLoggedIn, async (req, res) => {
   }
 });
 
+// Change equipped title
+app.post("/user-profile/title", ensureLoggedIn, async (req, res) => {
+  const userId = req.user.id;
+  const { titleName } = req.body;
+
+  if (!titleName) {
+    return res.status(400).json({ error: "No title provided." });
+  }
+
+  try {
+    const result = await db.query(
+      `SELECT t.id FROM titles t
+       JOIN user_titles ut ON t.id = ut.title_id
+       WHERE t.name = $1 AND ut.user_id = $2`,
+      [titleName, userId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(403).json({ error: "Title not unlocked by user." });
+    }
+
+    const titleId = result.rows[0].id;
+
+    await db.query(
+      `UPDATE user_titles SET equipped = false WHERE user_id = $1`,
+      [userId]
+    );
+
+    await db.query(
+      `UPDATE user_titles SET equipped = true WHERE user_id = $1 AND title_id = $2`,
+      [userId, titleId]
+    );
+
+    await db.query(
+      `UPDATE user_profiles SET selected_title = $1, updated_at = NOW() WHERE user_id = $2`,
+      [titleName, userId]
+    );
+
+    return res.json({ success: true, newTitle: titleName });
+  } catch (err) {
+    console.error("Error setting equipped title:", err);
+    return res.status(500).json({ error: "Internal server error." });
+  }
+});
+
 passport.use(
   new Strategy(async function verify(username, password, cb) {
     try {

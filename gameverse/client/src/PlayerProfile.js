@@ -204,14 +204,42 @@ function PlayerProfile() {
 
           <h3 className="titles">Unlocked Titles</h3>
           <div className="unlocked-titles">
-            {(titlesUnlocked || []).map((title) => (
+            {(titlesUnlocked || []).map((unlockedTitle) => (
               <div
-                key={title}
+                key={unlockedTitle}
                 className={`title-badge ${
-                  titleStyles[title] || "title-default"
-                }`}
+                  titleStyles[unlockedTitle] || "title-default"
+                } ${unlockedTitle === title ? "equipped-title" : ""}`}
+                style={{ cursor: "pointer" }}
+                title={
+                  unlockedTitle === title
+                    ? "Currently equipped"
+                    : "Click to equip this title"
+                }
+                onClick={async () => {
+                  if (unlockedTitle === title) return; // already equipped
+
+                  const res = await fetch(
+                    "http://localhost:5000/user-profile/title",
+                    {
+                      method: "POST",
+                      credentials: "include",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({ titleName: unlockedTitle }),
+                    }
+                  );
+
+                  const data = await res.json();
+                  if (data.success) {
+                    setUserData((prev) => ({ ...prev, title: unlockedTitle }));
+                  } else {
+                    alert(data.error || "Failed to equip title");
+                  }
+                }}
               >
-                {title}
+                {unlockedTitle}
               </div>
             ))}
           </div>
