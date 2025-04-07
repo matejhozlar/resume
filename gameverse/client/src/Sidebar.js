@@ -111,11 +111,6 @@ function Sidebar({ isCollapsed, setIsCollapsed }) {
             {isCollapsed ? "🪪" : "Player Profile"}
           </button>
         </li>
-        <li className="menu-item">
-          <button className="menu-btn toggle-btn no-arrow" disabled>
-            {isCollapsed ? "📓" : "Patch Notes (TBD)"}
-          </button>
-        </li>
 
         {/* SETTINGS */}
         <li
