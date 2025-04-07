@@ -454,14 +454,6 @@ label {
 
 /* TicTacToeInfo */
 
-.game-info-wrapper {
-  color: white;
-  padding: 40px;
-  text-align: center;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
 .game-title {
   font-size: 32px;
   margin-bottom: 30px;

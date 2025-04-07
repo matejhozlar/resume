@@ -18,6 +18,7 @@ import ChangeUsernameForm from "./ChangeUsernameForm";
 import DeleteAccForm from "./DeleteAccForm";
 import DisplayTest from "./DisplayTest";
 import PlayerProfile from "./PlayerProfile";
+import BootScreen from "./BootScreen";
 
 import "./styles.css";
 
@@ -26,6 +27,7 @@ function App() {
   const [isRegistering, setIsRegistering] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [showBoot, setShowBoot] = useState(false);
 
   const toggleSidebar = () => {
     setIsCollapsed((prev) => !prev);
@@ -40,6 +42,7 @@ function App() {
         const data = await res.json();
         if (data.authenticated) {
           setUser(data.user);
+          setShowBoot(true);
         }
       } catch (err) {
         console.error("Failed to check auth:", err);
@@ -51,7 +54,7 @@ function App() {
     checkAuth();
   }, []);
 
-  if (loading) return <div className="loading-screen">Loading...</div>;
+  if (loading) return <div>Loading...</div>;
 
   if (!user) {
     return isRegistering ? (
@@ -64,11 +67,18 @@ function App() {
     ) : (
       <LoginForm
         onLogin={(loggedInUser) => {
-          if (loggedInUser) setUser(loggedInUser);
+          if (loggedInUser) {
+            setUser(loggedInUser);
+            setShowBoot(true);
+          }
         }}
         onSwitchToRegister={() => setIsRegistering(true)}
       />
     );
+  }
+
+  if (showBoot) {
+    return <BootScreen onFinish={() => setShowBoot(false)} />;
   }
 
   return (
