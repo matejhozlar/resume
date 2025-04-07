@@ -32,8 +32,11 @@ function RegisterForm({ onRegister }) {
     const data = await res.json();
 
     if (data.success) {
-      setSuccess("Account created! You can now log in.");
-      onRegister?.(data.user);
+      setSuccess("Account created! Redirecting to login...");
+      setTimeout(() => {
+        setSuccess("");
+        onRegister(null);
+      }, 3000);
     } else {
       setError(data.error || "Something went wrong.");
     }

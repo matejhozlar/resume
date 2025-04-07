@@ -26,6 +26,8 @@ app.use(
     saveUninitialized: true,
     cookie: {
       maxAge: 24 * 60 * 60 * 1000,
+      secure: false,
+      sameSite: "lax",
     },
   })
 );
@@ -61,6 +63,14 @@ app.get("/register", (req, res) => {
   const error = req.flash("error");
   const formData = req.flash("formData")[0] || {};
   res.render("register.ejs", { message: error, formData: formData });
+});
+
+app.get("/auth/status", (req, res) => {
+  if (req.isAuthenticated()) {
+    res.json({ authenticated: true, user: req.user });
+  } else {
+    res.json({ authenticated: false });
+  }
 });
 
 app.get("/ZombieArenaLeaderboard", async (req, res) => {
@@ -154,12 +164,9 @@ app.post("/register", async (req, res, next) => {
       [userId, titleId]
     );
 
-    req.logIn(result.rows[0], (err) => {
-      if (err) return next(err);
-      return res.json({
-        success: true,
-        user: { id: userId, username: result.rows[0].username },
-      });
+    return res.json({
+      success: true,
+      message: "Registration successful. Please log in.",
     });
   } catch (err) {
     console.error("Registration error:", err.stack || err);

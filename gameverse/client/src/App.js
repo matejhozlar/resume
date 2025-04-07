@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
@@ -25,10 +25,33 @@ function App() {
   const [user, setUser] = useState(null);
   const [isRegistering, setIsRegistering] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const toggleSidebar = () => {
     setIsCollapsed((prev) => !prev);
   };
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/auth/status", {
+          credentials: "include",
+        });
+        const data = await res.json();
+        if (data.authenticated) {
+          setUser(data.user);
+        }
+      } catch (err) {
+        console.error("Failed to check auth:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+  if (loading) return <div className="loading-screen">Loading...</div>;
 
   if (!user) {
     return isRegistering ? (
