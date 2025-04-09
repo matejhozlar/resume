@@ -278,9 +278,10 @@ app.post("/gameverse/change-password", ensureLoggedIn, async (req, res) => {
   }
 });
 
+// change username
 app.post("/gameverse/change-username", ensureLoggedIn, async (req, res) => {
   try {
-    const { newUsername } = req.body;
+    const { newUsername, validateOnly } = req.body;
     const userId = req.user.id;
 
     if (!newUsername || newUsername.trim() === "") {
@@ -291,8 +292,13 @@ app.post("/gameverse/change-username", ensureLoggedIn, async (req, res) => {
       "SELECT * FROM users WHERE username = $1",
       [newUsername]
     );
+
     if (existingUser.rows.length > 0) {
       return res.json({ error: "This username is already taken." });
+    }
+
+    if (validateOnly) {
+      return res.json({ success: true });
     }
 
     const result = await db.query(
@@ -320,7 +326,7 @@ app.post("/gameverse/change-username", ensureLoggedIn, async (req, res) => {
     );
 
     req.user.username = newUsername;
-    console.log("Username succesfully changed for user:", req.user);
+    console.log("Username successfully changed for user:", req.user);
     return res.json({ success: "Username updated successfully." });
   } catch (err) {
     console.error("Error changing username:", err);
