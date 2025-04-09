@@ -5,7 +5,7 @@ import "./BootScreen.css";
 const bootLines = [
   "[✓] Loading assets...",
   "[✓] Initializing shaders...",
-  "[✓] Establishing connection to the arcade...",
+  "[✓] Establishing connection to Gamverse...",
   "[✓] Ready.",
   "> WELCOME TO GAMEVERSE",
 ];
@@ -64,7 +64,7 @@ function BootScreen({ onFinish }) {
         ))}
       </div>
 
-      <div className="skip-hint">Press any key or click to skip</div>
+      <div className="skip-hint">Press any key to skip</div>
     </div>
   );
 }

@@ -23,7 +23,6 @@ function DeleteAccount() {
       return;
     }
 
-    // 🔐 Server-side password verification
     try {
       const response = await fetch("/gameverse/verify-password", {
         method: "POST",
@@ -42,7 +41,6 @@ function DeleteAccount() {
         return;
       }
 
-      // ✅ Password verified — move to confirmation step
       setError("");
       setSuccess("");
       setStep(2);
