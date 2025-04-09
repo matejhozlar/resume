@@ -17,17 +17,19 @@ const app = express();
 const port = process.env.SERVER_PORT;
 const saltRounds = 10;
 
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cors({ origin: true, credentials: true }));
+
+app.set("trust proxy", 1);
 
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: {
-      maxAge: 24 * 60 * 60 * 1000,
-      secure: false,
+      secure: true,
       sameSite: "lax",
+      maxAge: 24 * 60 * 60 * 1000,
     },
   })
 );
@@ -35,7 +37,7 @@ app.use(
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
-app.use("/avatars", express.static("public/avatars"));
+app.use("/api/avatars", express.static("public/avatars"));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -49,6 +51,14 @@ const db = new pg.Client({
 });
 
 db.connect();
+
+app.get("/api/whoami", (req, res) => {
+  res.json({
+    user: req.user,
+    session: req.session,
+    isAuthenticated: req.isAuthenticated(),
+  });
+});
 
 app.get("/api", (req, res) => {
   res.json({ users: ["userOne", "userTwo", "userThree"] });
@@ -587,12 +597,19 @@ passport.use(
   })
 );
 
-passport.serializeUser((user, cb) => {
-  cb(null, user);
+passport.serializeUser((user, done) => {
+  done(null, user.id);
 });
 
-passport.deserializeUser((user, cb) => {
-  cb(null, user);
+passport.deserializeUser(async (id, done) => {
+  try {
+    const result = await db.query("SELECT * FROM users WHERE id = $1", [id]);
+    if (result.rows.length === 0) return done(null, false);
+
+    done(null, result.rows[0]);
+  } catch (err) {
+    done(err);
+  }
 });
 
 app.listen(port, () => {
