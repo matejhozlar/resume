@@ -12,8 +12,6 @@ const bootLines = [
 
 function BootScreen({ onFinish }) {
   const [visibleLines, setVisibleLines] = useState([]);
-  // eslint-disable-next-line no-unused-vars
-  const [done, setDone] = useState(false);
 
   useEffect(() => {
     let i = 0;
@@ -23,12 +21,24 @@ function BootScreen({ onFinish }) {
       if (i >= bootLines.length) {
         clearInterval(interval);
         setTimeout(() => {
-          setDone(true);
           onFinish?.();
-        }, 1200);
+        }, 2000);
       }
-    }, 600);
-    return () => clearInterval(interval);
+    }, 1000);
+
+    const skip = () => {
+      clearInterval(interval);
+      onFinish?.();
+    };
+
+    window.addEventListener("keydown", skip);
+    window.addEventListener("mousedown", skip);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("keydown", skip);
+      window.removeEventListener("mousedown", skip);
+    };
   }, [onFinish]);
 
   return (
@@ -53,6 +63,8 @@ function BootScreen({ onFinish }) {
           </motion.p>
         ))}
       </div>
+
+      <div className="skip-hint">Press any key or click to skip</div>
     </div>
   );
 }

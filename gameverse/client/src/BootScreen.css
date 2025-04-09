@@ -59,3 +59,14 @@
 .boot-sequence p {
   margin: 10px 0;
 }
+
+.skip-hint {
+  position: absolute;
+  bottom: 12px;
+  right: 16px;
+  font-size: 10px;
+  color: #00ff9c;
+  opacity: 0.5;
+  pointer-events: none;
+  animation: flicker 1.8s infinite alternate;
+}
