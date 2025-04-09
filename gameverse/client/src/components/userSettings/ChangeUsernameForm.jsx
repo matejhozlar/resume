@@ -14,7 +14,7 @@ function ChangeUsernameForm() {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include", // to send session cookies
+      credentials: "include",
       body: JSON.stringify({ newUsername }),
     });
 
