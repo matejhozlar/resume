@@ -9,7 +9,7 @@ function ChangeUsernameForm() {
     const form = new FormData(e.target);
     const newUsername = form.get("newUsername");
 
-    const response = await fetch("/gameverse/change-username", {
+    const response = await fetch("/api/gameverse/change-username", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

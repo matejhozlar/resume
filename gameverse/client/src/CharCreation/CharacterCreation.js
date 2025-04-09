@@ -97,7 +97,7 @@ const CharacterCreator = () => {
       const formData = new FormData();
       formData.append("avatar", blob, "avatar.png");
 
-      const res = await fetch("http://localhost:5000/save-character-image", {
+      const res = await fetch("/api/save-character-image", {
         method: "POST",
         credentials: "include",
         body: formData,

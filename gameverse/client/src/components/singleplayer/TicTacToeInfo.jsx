@@ -78,7 +78,7 @@ function TicTacToeInfo() {
           <button
             className="play-btn"
             onClick={() => {
-              window.location.href = "http://127.0.0.1:3001/games/tic-tac-toe/";
+              window.location.href = "http://matejhoz.com/games/tic-tac-toe/";
             }}
           >
             Play

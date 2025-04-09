@@ -25,7 +25,7 @@ function DeleteAccount() {
 
     // 🔐 Server-side password verification
     try {
-      const response = await fetch("/gameverse/verify-password", {
+      const response = await fetch("/api/gameverse/verify-password", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -62,7 +62,7 @@ function DeleteAccount() {
     }
 
     try {
-      const response = await fetch("/gameverse/delete-account", {
+      const response = await fetch("/api/gameverse/delete-account", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

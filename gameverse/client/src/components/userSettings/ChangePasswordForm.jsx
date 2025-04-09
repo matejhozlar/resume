@@ -13,17 +13,14 @@ function ChangePasswordForm() {
       confirmPassword: formData.get("confirmPassword"),
     };
 
-    const response = await fetch(
-      "http://localhost:5000/gameverse/change-password",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-        credentials: "include",
-      }
-    );
+    const response = await fetch("/api/gameverse/change-password", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+      credentials: "include",
+    });
 
     const result = await response.json();
 
