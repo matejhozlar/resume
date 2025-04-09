@@ -93,7 +93,7 @@ function PlayerProfile() {
         <div className="avatar-preview">
           {avatarExists ? (
             <img
-              src={`http://gameverse.matejhoz.com/avatars/${userIdToFetch}.png`}
+              src={`http://gameverse.matejhoz.com/api/avatars/${userIdToFetch}.png`}
               alt="User Avatar"
               width={320}
               height={320}

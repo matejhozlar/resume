@@ -21,12 +21,9 @@ function Home() {
     if (!userId) return;
 
     const fetchProfile = async () => {
-      const res = await fetch(
-        `http://gameverse.matejhoz.com/api/user-profile/${userId}`,
-        {
-          credentials: "include",
-        }
-      );
+      const res = await fetch(`/api/user-profile/${userId}`, {
+        credentials: "include",
+      });
       const data = await res.json();
       setProfile(data);
     };
