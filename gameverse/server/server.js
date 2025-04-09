@@ -182,7 +182,7 @@ app.post("/register", async (req, res, next) => {
       [userId, titleId]
     );
 
-    console.log(`New user with ID: {${userId}}\n username: {${username}}`);
+    console.log(`New user registered: {\n\tid: ${userId} \n}`);
     return res.json({
       success: true,
       message: "Registration successful. Please log in.",
