@@ -154,7 +154,7 @@ function ChangeUsernameForm() {
           />
 
           <button type="submit" className="changePassword-btn">
-            Verify
+            Submit
           </button>
         </form>
       )}
