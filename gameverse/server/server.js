@@ -131,7 +131,7 @@ app.get("/api/ZombieArenaLeaderboard", async (req, res) => {
   }
 });
 
-app.post("/login", (req, res, next) => {
+app.post("/api/login", (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) return next(err);
     if (!user) {
