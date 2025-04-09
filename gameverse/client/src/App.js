@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from "react";
-import Sidebar from "./Sidebar";
-import LoginForm from "./LoginForm";
-import RegisterForm from "./RegisterForm";
-import Header from "./Layout";
+import Sidebar from "./components/sidebar/Sidebar.jsx";
+import LoginForm from "./components/auth/LoginForm.jsx";
+import RegisterForm from "./components/auth/RegisterForm.jsx";
+import Header from "./components/header/Layout.jsx";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Home from "./Home";
-import TicTacToeInfo from "./TicTacToeInfo";
-import SimonGameInfo from "./SimonGameInfo";
-import PexesoInfo from "./PexesoInfo";
+import Home from "./components/home/Home.jsx";
+import TicTacToeInfo from "./components/singleplayer/TicTacToeInfo.jsx";
+import SimonGameInfo from "./components/singleplayer/SimonGameInfo.jsx";
+import PexesoInfo from "./components/singleplayer/PexesoInfo.jsx";
 import ZombieArenaInfo from "./ZombieArena/ZombieArenaInfo";
 import ZombieArena from "./ZombieArena/ZombieArena";
-import Leaderboard from "./Leaderboards";
-import CharacterCreation from "./CharCreation/CharacterCreation";
-import ChangePasswordForm from "./ChangePasswordForm";
-import ChangeUsernameForm from "./ChangeUsernameForm";
-import DeleteAccForm from "./DeleteAccForm";
+import Leaderboard from "./components/leaderboards/Leaderboards.jsx";
+import CharacterCreation from "./CharCreation/CharacterCreation.js";
+import ChangePasswordForm from "./components/userSettings/ChangePasswordForm.jsx";
+import ChangeUsernameForm from "./components/userSettings/ChangeUsernameForm.jsx";
+import DeleteAccForm from "./components/userSettings/DeleteAccForm.jsx";
 import DisplayTest from "./DisplayTest";
-import PlayerProfile from "./PlayerProfile";
-import BootScreen from "./BootScreen";
+import PlayerProfile from "./components/playerProfile/PlayerProfile.jsx";
+import BootScreen from "./components/BootScreen/BootScreen.jsx";
 
 import "./styles.css";
 
@@ -86,7 +86,11 @@ function App() {
       <div className="app-wrapper">
         <Header isCollapsed={isCollapsed} toggleSidebar={toggleSidebar} />
         <div className="main-container">
-          <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+          <Sidebar
+            isCollapsed={isCollapsed}
+            setIsCollapsed={setIsCollapsed}
+            onLogout={() => setUser(null)}
+          />
 
           <div className="content">
             <Routes>

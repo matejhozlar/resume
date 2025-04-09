@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import titleStyles from "./titleStyles";
+import titleStyles from "../../titleStyles";
 
 function Leaderboard() {
   const [leaderboard, setLeaderboard] = useState([]);

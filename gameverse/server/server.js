@@ -73,6 +73,24 @@ app.get("/auth/status", (req, res) => {
   }
 });
 
+app.post("/logout", (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      console.error("Logout error:", err);
+      return res.status(500).json({ error: "Failed to logout." });
+    }
+
+    req.session.destroy((err) => {
+      if (err) {
+        console.error("Session destroy error:", err);
+        return res.status(500).json({ error: "Failed to destroy session." });
+      }
+      res.clearCookie("connect.sid");
+      return res.json({ success: true });
+    });
+  });
+});
+
 app.get("/ZombieArenaLeaderboard", async (req, res) => {
   try {
     const limit = req.query.limit ? parseInt(req.query.limit) : 10;

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import preview1 from "./assets/images/pexeso-preview1.png";
-import preview2 from "./assets/images/pexeso-preview2.png";
+import preview1 from "../../assets/images/tictactoe-preview1.png";
+import preview2 from "../../assets/images/tictactoe-preview2.png";
 
 function TicTacToeInfo() {
   const [zoomedImage, setZoomedImage] = useState(null);
@@ -19,48 +19,37 @@ function TicTacToeInfo() {
     <>
       <div className="game-info-wrapper">
         <p className="alert alert-danger">
-          {" "}
           This game is not tracked in the leaderboards
         </p>
-        <h1 className="game-title titles">Pexeso</h1>
+        <h1 className="game-title titles">Tic Tac Toe</h1>
 
         <div className="game-content">
           <div className="description-section">
             <p>
-              Pexeso is a memory card game where players must find matching
-              pairs of cards. The game starts with all cards face down, and
-              players must remember the position of each card to find the
-              matching pairs. Avaiable board-sizes: 2x2, 4x4, 6x6, 8x8.
+              Tic-Tac-Toe is a two-player game played on a grid. The goal is to
+              get 3 of your marks in a row—horizontally, vertically, or
+              diagonally—before your opponent.
             </p>
             <h4 className="titles">Rules</h4>
             <p>
-              Singleplayer version of the game offers 4 difficulty levels: Easy,
-              Medium, Hard and Insane. The player must find all matching pairs
-              to win the game.
+              Players take turns placing their mark (X or O) on an empty cell.
+              The first player to get 3 of their marks in a row wins the game.
             </p>
-            <h4 className="titles">Difficulties</h4>
+            <h4 className="titles">AI Difficulties</h4>
             <p>
-              The game offers 4 difficulty levels:
+              The game offers 3 AI difficulties: Easy, Medium, and Hard.
               <ul>
-                <li>Easy: Relaxing, with no timer.</li>
-                <li>Medium: Balanced timer.</li>
-                <li>Hard: 20-second interval shuffles.</li>
-                <li>
-                  Insane: 10-second interval shuffles with a timer + instant
-                  card flip-back
-                </li>
+                <li>Easy: AI makes random moves.</li>
+                <li>Medium: AI blocks the player from winning.</li>
+                <li>Hard: AI plays to win.</li>
               </ul>
             </p>
             <div className="tags">
-              <span className="tag">🕹️ 1 player</span>
-              <span className="tag">🧠 Memory</span>
+              <span className="tag">👫 1-2 Players</span>
+              <span className="tag">👥 Local Multiplayer</span>
+              <span className="tag">🤖 AI Difficulty</span>
+              <span className="tag">⚙️ Custom Rules</span>
               <span className="tag">🎵 Music</span>
-              <span className="tag">🃏 Cards</span>
-              <span className="tag">🧩 Puzzle</span>
-              <span className="tag">⏱️ Timed</span>
-              <span className="tag">👨‍🎓 Brain Training</span>
-              <span className="tag">🎯 Focus</span>
-              <span className="tag">👾 Retro</span>
             </div>
           </div>
 
@@ -89,7 +78,7 @@ function TicTacToeInfo() {
           <button
             className="play-btn"
             onClick={() => {
-              window.location.href = "http://127.0.0.1:3001/games/pexeso/";
+              window.location.href = "http://127.0.0.1:3001/games/tic-tac-toe/";
             }}
           >
             Play
@@ -98,7 +87,7 @@ function TicTacToeInfo() {
             className="game-btn"
             onClick={() =>
               window.open(
-                "https://github.com/matejhozlar/resume/tree/main/games/pexeso",
+                "https://github.com/matejhozlar/resume/tree/main/games/tic-tac-toe",
                 "_blank"
               )
             }

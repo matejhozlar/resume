@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import preview1 from "./assets/images/simongame-preview1.png";
-import preview2 from "./assets/images/simongame-preview2.png";
+import preview1 from "../../assets/images/pexeso-preview1.png";
+import preview2 from "../../assets/images/pexeso-preview2.png";
 
 function TicTacToeInfo() {
   const [zoomedImage, setZoomedImage] = useState(null);
@@ -19,28 +19,48 @@ function TicTacToeInfo() {
     <>
       <div className="game-info-wrapper">
         <p className="alert alert-danger">
+          {" "}
           This game is not tracked in the leaderboards
         </p>
-        <h1 className="game-title titles">Simon Game</h1>
+        <h1 className="game-title titles">Pexeso</h1>
 
         <div className="game-content">
           <div className="description-section">
             <p>
-              Simon Game is a memory game where players must repeat a sequence
-              of colors and sounds. The game starts with a single color and
-              sound, and the sequence grows longer as the game progresses.
+              Pexeso is a memory card game where players must find matching
+              pairs of cards. The game starts with all cards face down, and
+              players must remember the position of each card to find the
+              matching pairs. Avaiable board-sizes: 2x2, 4x4, 6x6, 8x8.
             </p>
             <h4 className="titles">Rules</h4>
             <p>
-              Players must repeat the sequence of colors and sounds by clicking
-              the corresponding buttons. The game ends when a player makes a
-              mistake.
+              Singleplayer version of the game offers 4 difficulty levels: Easy,
+              Medium, Hard and Insane. The player must find all matching pairs
+              to win the game.
+            </p>
+            <h4 className="titles">Difficulties</h4>
+            <p>
+              The game offers 4 difficulty levels:
+              <ul>
+                <li>Easy: Relaxing, with no timer.</li>
+                <li>Medium: Balanced timer.</li>
+                <li>Hard: 20-second interval shuffles.</li>
+                <li>
+                  Insane: 10-second interval shuffles with a timer + instant
+                  card flip-back
+                </li>
+              </ul>
             </p>
             <div className="tags">
               <span className="tag">🕹️ 1 player</span>
               <span className="tag">🧠 Memory</span>
-              <span className="tag">🎵 Sound</span>
-              <span className="tag">🎮 Classic</span>
+              <span className="tag">🎵 Music</span>
+              <span className="tag">🃏 Cards</span>
+              <span className="tag">🧩 Puzzle</span>
+              <span className="tag">⏱️ Timed</span>
+              <span className="tag">👨‍🎓 Brain Training</span>
+              <span className="tag">🎯 Focus</span>
+              <span className="tag">👾 Retro</span>
             </div>
           </div>
 
@@ -69,7 +89,7 @@ function TicTacToeInfo() {
           <button
             className="play-btn"
             onClick={() => {
-              window.location.href = "http://127.0.0.1:3001/games/simongame/";
+              window.location.href = "http://127.0.0.1:3001/games/pexeso/";
             }}
           >
             Play
@@ -78,7 +98,7 @@ function TicTacToeInfo() {
             className="game-btn"
             onClick={() =>
               window.open(
-                "https://github.com/matejhozlar/resume/tree/main/games/simongame",
+                "https://github.com/matejhozlar/resume/tree/main/games/pexeso",
                 "_blank"
               )
             }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import titleStyles from "./titleStyles";
+import titleStyles from "../../titleStyles";
 
 function xpForNextLevel(level) {
   return 1000 + 200 * level;

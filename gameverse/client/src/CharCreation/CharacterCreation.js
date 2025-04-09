@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import eyeOptions from "../assets/CharCreation/eyes/eyes";
+import eyeOptions from "../assets/CharCreation/eyes/eyes.js";
 import baseBody from "../assets/CharCreation/body/body.png";
 import glasses from "../assets/CharCreation/glasses/glasses.js";
 import hairstyles from "../assets/CharCreation/hairstyles/hairstyles.js";

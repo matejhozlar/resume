@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Sidebar({ isCollapsed, setIsCollapsed }) {
+function Sidebar({ isCollapsed, setIsCollapsed, onLogout }) {
   const navigate = useNavigate();
   const [openMenu, setOpenMenu] = useState({
     games: false,
     settings: false,
   });
 
-  // Close submenus when collapsed
   useEffect(() => {
     if (isCollapsed) {
       setOpenMenu({ games: false, settings: false });
@@ -23,6 +22,23 @@ function Sidebar({ isCollapsed, setIsCollapsed }) {
       ...prev,
       [menu]: !prev[menu],
     }));
+  };
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        onLogout();
+      } else {
+        console.error("Failed to log out.");
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
   return (
@@ -154,10 +170,13 @@ function Sidebar({ isCollapsed, setIsCollapsed }) {
         </li>
 
         {/* LOGOUT */}
-        <li>
-          <a className="menu-btn" href="/">
+        <li className="menu-item">
+          <button
+            className="menu-btn toggle-btn no-arrow"
+            onClick={handleLogout}
+          >
             {isCollapsed ? "🚪" : "Log Out"}
-          </a>
+          </button>
         </li>
       </ul>
     </nav>
