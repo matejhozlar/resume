@@ -570,9 +570,7 @@ passport.use(
             return cb(err);
           } else {
             if (valid) {
-              console.log(
-                `User logged in: username=${username}, hashedPassword=${user.password}`
-              );
+              console.log(`User logged in: username=${username}`);
               return cb(null, user);
             } else {
               return cb(null, false, {
