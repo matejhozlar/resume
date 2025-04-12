@@ -1018,7 +1018,7 @@ body {
 }
 
 .character-creator-wrapper.new-style {
-  padding: 40px;
+  padding: 0 40px 40px 40px;
   text-align: center;
   font-family: "Press Start 2P", cursive;
   display: flex;
@@ -1118,7 +1118,9 @@ body {
 }
 
 .character-creator-title {
-  margin-top: 20px;
+  margin-top: 35px;
+  color: #8a5cf6;
+  font-size: 40px;
 }
 
 .save-btn:hover {
