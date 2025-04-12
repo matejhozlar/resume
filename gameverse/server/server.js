@@ -11,6 +11,13 @@ import cors from "cors";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import rateLimit from "express-rate-limit";
+
+const loginLimiter = rateLimit({
+  windowsMs: 15 * 60 * 1000,
+  max: 10,
+  message: "Too many login attempts. Please try again later.",
+});
 
 env.config();
 const app = express();
@@ -121,7 +128,7 @@ app.get("/ZombieArenaLeaderboard", async (req, res) => {
   }
 });
 
-app.post("/login", (req, res, next) => {
+app.post("/login", loginLimiter, (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) return next(err);
     if (!user) {
