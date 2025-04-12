@@ -147,7 +147,7 @@ function Sidebar({ isCollapsed, setIsCollapsed, onLogout }) {
                 className="menu-btn"
                 onClick={() => navigate("/settings/account")}
               >
-                Change Your Password
+                Change Password
               </button>
             </li>
             <li>
@@ -155,7 +155,7 @@ function Sidebar({ isCollapsed, setIsCollapsed, onLogout }) {
                 className="menu-btn"
                 onClick={() => navigate("/settings/username")}
               >
-                Change Your Username
+                Change Username
               </button>
             </li>
             <li>
@@ -163,7 +163,7 @@ function Sidebar({ isCollapsed, setIsCollapsed, onLogout }) {
                 className="menu-btn"
                 onClick={() => navigate("/settings/delete-account")}
               >
-                Delete Your Account
+                Delete Account
               </button>
             </li>
           </ul>
