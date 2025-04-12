@@ -434,22 +434,22 @@ a.menu-btn {
 
 /* cursors */
 body {
-  cursor: url("./assets/cursors/pixel-arrow-48x48.png") 2 2, default !important;
+  cursor: url("./assets/cursors/pixel-arrow-48x48.png") 20 2, default !important;
 }
 html {
-  cursor: url("./assets/cursors/pixel-arrow-48x48.png") 2 2, default !important;
+  cursor: url("./assets/cursors/pixel-arrow-48x48.png") 20 2, default !important;
 }
 
 a,
 button,
 label {
-  cursor: url("./assets/cursors/pixel-hand-pointer-48x48.png"), auto !important;
+  cursor: url("./assets/cursors/pixel-hand-pointer-48x48.png") 10 0, pointer !important;
 }
 
 .sidebar a,
 .sidebar .toggle-btn,
 .preview-card {
-  cursor: url("./assets/cursors/pixel-hand-pointer-48x48.png"), auto !important;
+  cursor: url("./assets/cursors/pixel-hand-pointer-48x48.png") 10 0, pointer !important;
 }
 
 /* TicTacToeInfo */
@@ -624,7 +624,7 @@ label {
   justify-content: center;
   align-items: center;
   animation: fadeIn 0.3s ease;
-  cursor: url("./assets/cursors/pixel-hand-pointer-48x48.png"), auto !important;
+  cursor: url("./assets/cursors/pixel-hand-pointer-48x48.png") 10 0, pointer !important;
 }
 
 .zoomed-image {
@@ -634,7 +634,7 @@ label {
   border-radius: 10px;
   box-shadow: 0 0 20px #8a5cf6;
   animation: zoomIn 0.3s ease;
-  cursor: url("./assets/cursors/pixel-hand-pointer-48x48.png"), auto !important;
+  cursor: url("./assets/cursors/pixel-hand-pointer-48x48.png") 10 0, pointer !important;
 }
 
 @keyframes zoomIn {
@@ -1302,7 +1302,7 @@ input[type="file"]::-webkit-file-upload-button {
   border-radius: 8px;
   font-size: 12px;
   display: inline-block;
-  font-family: "Press Start 2P", cursive;
+  cursor: url("./assets/cursors/pixel-hand-pointer-48x48.png") 10 0, pointer !important;
   border: 2px solid #8a5cf6;
 }
 
