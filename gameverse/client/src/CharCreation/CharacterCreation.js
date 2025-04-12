@@ -138,154 +138,156 @@ const CharacterCreator = () => {
   };
 
   return (
-    <div className="character-creator-wrapper new-style">
-      <div className="character-creator-box">
-        {/* LEFT PANEL: OPTIONS */}
-        <div className="creator-options-panel">
-          <h2>Character Creation</h2>
+    <div>
+      <h2 className="character-creator-title">Character Creation</h2>
+      <div className="character-creator-wrapper new-style">
+        <div className="character-creator-box">
+          {/* LEFT PANEL: OPTIONS */}
+          <div className="creator-options-panel">
+            <OptionSelector
+              label="Background"
+              options={backgroundKeys}
+              selected={selectedBackground}
+              setSelected={setSelectedBackground}
+            />
 
-          <OptionSelector
-            label="Background"
-            options={backgroundKeys}
-            selected={selectedBackground}
-            setSelected={setSelectedBackground}
-          />
+            {selectedBackground === "custom" && (
+              <div className="custom-background-upload">
+                <label htmlFor="bg-upload" className="upload-label">
+                  Upload Custom Background:
+                </label>
+                <input
+                  type="file"
+                  id="bg-upload"
+                  accept="image/*"
+                  onChange={handleBackgroundUpload}
+                />
+              </div>
+            )}
+            <OptionSelector
+              label="Eye Color"
+              options={eyeKeys}
+              selected={selectedEyes}
+              setSelected={setSelectedEyes}
+            />
+            <OptionSelector
+              label="Glasses"
+              options={glassesKeys}
+              selected={selectedGlasses}
+              setSelected={setSelectedGlasses}
+            />
+            <OptionSelector
+              label="Hairstyle"
+              options={hairKeys}
+              selected={selectedHair}
+              setSelected={setSelectedHair}
+            />
+            <OptionSelector
+              label="Shirt"
+              options={shirtKeys}
+              selected={selectedShirt}
+              setSelected={setSelectedShirt}
+            />
+            <OptionSelector
+              label="Pants"
+              options={pantsKeys}
+              selected={selectedPants}
+              setSelected={setSelectedPants}
+            />
+            <OptionSelector
+              label="Shoes"
+              options={shoesKeys}
+              selected={selectedShoes}
+              setSelected={setSelectedShoes}
+            />
+            <OptionSelector
+              label="Pet"
+              options={petsKey}
+              selected={selectedPet}
+              setSelected={setSelectedPet}
+            />
 
-          {selectedBackground === "custom" && (
-            <div className="custom-background-upload">
-              <label htmlFor="bg-upload" className="upload-label">
-                Upload Custom Background:
-              </label>
-              <input
-                type="file"
-                id="bg-upload"
-                accept="image/*"
-                onChange={handleBackgroundUpload}
-              />
+            {successMessage && (
+              <div className="alert alert-success mt-3 save-alert" role="alert">
+                {successMessage}
+              </div>
+            )}
+            {errorMessage && (
+              <div className="alert alert-danger mt-3 save-alert" role="alert">
+                {errorMessage}
+              </div>
+            )}
+            <button className="custom-btn save-btn" onClick={handleSave}>
+              Save Character
+            </button>
+          </div>
+
+          {/* RIGHT PANEL: PREVIEW */}
+          <div className="creator-preview-panel">
+            <div className="character-body preview-character" ref={previewRef}>
+              {selectedBackground !== "none" && (
+                <img
+                  src={
+                    selectedBackground === "custom"
+                      ? customBackground
+                      : backgrounds[selectedBackground]
+                  }
+                  alt="Background"
+                  className="character-layer background-layer"
+                />
+              )}
+              <img src={baseBody} alt="Base Body" className="character-layer" />
+              {selectedEyes !== "none" && (
+                <img
+                  src={eyeOptions[selectedEyes]}
+                  alt="Eyes"
+                  className="character-layer"
+                />
+              )}
+              {selectedPants !== "none" && (
+                <img
+                  src={pants[selectedPants]}
+                  alt="Pants"
+                  className="character-layer"
+                />
+              )}
+
+              {selectedHair !== "none" && (
+                <img
+                  src={hairstyles[selectedHair]}
+                  alt="Hairstyle"
+                  className="character-layer"
+                />
+              )}
+              {selectedGlasses !== "none" && (
+                <img
+                  src={glasses[selectedGlasses]}
+                  alt="Glasses"
+                  className="character-layer"
+                />
+              )}
+              {selectedShirt !== "none" && (
+                <img
+                  src={shirts[selectedShirt]}
+                  alt="Shirt"
+                  className="character-layer"
+                />
+              )}
+              {selectedShoes !== "none" && (
+                <img
+                  src={shoes[selectedShoes]}
+                  alt="Shoes"
+                  className="character-layer"
+                />
+              )}
+              {selectedPet !== "none" && (
+                <img
+                  src={pets[selectedPet]}
+                  alt="Pet"
+                  className="character-layer pet-layer"
+                />
+              )}
             </div>
-          )}
-          <OptionSelector
-            label="Eye Color"
-            options={eyeKeys}
-            selected={selectedEyes}
-            setSelected={setSelectedEyes}
-          />
-          <OptionSelector
-            label="Glasses"
-            options={glassesKeys}
-            selected={selectedGlasses}
-            setSelected={setSelectedGlasses}
-          />
-          <OptionSelector
-            label="Hairstyle"
-            options={hairKeys}
-            selected={selectedHair}
-            setSelected={setSelectedHair}
-          />
-          <OptionSelector
-            label="Shirt"
-            options={shirtKeys}
-            selected={selectedShirt}
-            setSelected={setSelectedShirt}
-          />
-          <OptionSelector
-            label="Pants"
-            options={pantsKeys}
-            selected={selectedPants}
-            setSelected={setSelectedPants}
-          />
-          <OptionSelector
-            label="Shoes"
-            options={shoesKeys}
-            selected={selectedShoes}
-            setSelected={setSelectedShoes}
-          />
-          <OptionSelector
-            label="Pet"
-            options={petsKey}
-            selected={selectedPet}
-            setSelected={setSelectedPet}
-          />
-
-          {successMessage && (
-            <div className="alert alert-success mt-3" role="alert">
-              {successMessage}
-            </div>
-          )}
-          {errorMessage && (
-            <div className="alert alert-danger mt-3" role="alert">
-              {errorMessage}
-            </div>
-          )}
-          <button className="custom-btn save-btn" onClick={handleSave}>
-            Save Character
-          </button>
-        </div>
-
-        {/* RIGHT PANEL: PREVIEW */}
-        <div className="creator-preview-panel">
-          <div className="character-body preview-character" ref={previewRef}>
-            {selectedBackground !== "none" && (
-              <img
-                src={
-                  selectedBackground === "custom"
-                    ? customBackground
-                    : backgrounds[selectedBackground]
-                }
-                alt="Background"
-                className="character-layer background-layer"
-              />
-            )}
-            <img src={baseBody} alt="Base Body" className="character-layer" />
-            {selectedEyes !== "none" && (
-              <img
-                src={eyeOptions[selectedEyes]}
-                alt="Eyes"
-                className="character-layer"
-              />
-            )}
-            {selectedGlasses !== "none" && (
-              <img
-                src={glasses[selectedGlasses]}
-                alt="Glasses"
-                className="character-layer"
-              />
-            )}
-            {selectedHair !== "none" && (
-              <img
-                src={hairstyles[selectedHair]}
-                alt="Hairstyle"
-                className="character-layer"
-              />
-            )}
-            {selectedShirt !== "none" && (
-              <img
-                src={shirts[selectedShirt]}
-                alt="Shirt"
-                className="character-layer"
-              />
-            )}
-            {selectedPants !== "none" && (
-              <img
-                src={pants[selectedPants]}
-                alt="Pants"
-                className="character-layer"
-              />
-            )}
-            {selectedShoes !== "none" && (
-              <img
-                src={shoes[selectedShoes]}
-                alt="Shoes"
-                className="character-layer"
-              />
-            )}
-            {selectedPet !== "none" && (
-              <img
-                src={pets[selectedPet]}
-                alt="Pet"
-                className="character-layer pet-layer"
-              />
-            )}
           </div>
         </div>
       </div>
