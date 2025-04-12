@@ -1592,3 +1592,26 @@ input[type="file"]::-webkit-file-upload-button {
 }
 
 /* Home.js */
+
+/* Targeting all scrollbars */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Scrollbar track (background) */
+::-webkit-scrollbar-track {
+  background: #1f1f1f;
+  border-radius: 5px;
+}
+
+/* Scrollbar thumb (the part you drag) */
+::-webkit-scrollbar-thumb {
+  background: #000;
+  border: 3px solid #8a5cf6;
+  border-radius: 5px;
+}
+
+/* On hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #000;
+}
