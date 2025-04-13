@@ -576,3 +576,7 @@ html {
 .image-hover-wrapper:hover .pixelated-img {
   opacity: 0;
 }
+
+.image-hover-wrapper-m {
+  margin-left: 10px;
+}
