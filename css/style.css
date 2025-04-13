@@ -541,29 +541,26 @@ html {
 .image-hover-wrapper {
   position: relative;
   display: inline-block;
-  width: 100%; /* Allows responsiveness */
-  max-width: 400px; /* Adjust to your desired image size */
+  width: 100%;
+  max-width: 400px;
   margin-left: 50px;
   height: auto;
 }
 
-/* Shared styles for both images */
 .image-hover-wrapper img {
   width: 100%;
   height: auto;
   display: block;
   transition: opacity 0.4s ease;
-  border-radius: 8px; /* Optional for rounded corners */
+  border-radius: 8px;
 }
 
-/* Pixelated image default */
 .pixelated-img {
   position: relative;
   z-index: 2;
   opacity: 1;
 }
 
-/* Real image initially hidden */
 .real-img {
   position: absolute;
   top: 0;
@@ -572,7 +569,6 @@ html {
   opacity: 0;
 }
 
-/* On hover: reveal real image, hide pixelated one */
 .image-hover-wrapper:hover .real-img {
   opacity: 1;
 }
