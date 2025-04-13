@@ -82,7 +82,7 @@ app.get("/register", (req, res) => {
   res.render("register.ejs", { message: error, formData: formData });
 });
 
-app.get("/auth/status", (req, res) => {
+app.get("/api/auth/status", (req, res) => {
   if (req.isAuthenticated()) {
     res.json({ authenticated: true, user: req.user });
   } else {
@@ -90,7 +90,7 @@ app.get("/auth/status", (req, res) => {
   }
 });
 
-app.post("/logout", (req, res) => {
+app.post("/api/logout", (req, res) => {
   req.logout((err) => {
     if (err) {
       console.error("Logout error:", err);
@@ -108,7 +108,7 @@ app.post("/logout", (req, res) => {
   });
 });
 
-app.get("/ZombieArenaLeaderboard", async (req, res) => {
+app.get("/api/ZombieArenaLeaderboard", async (req, res) => {
   try {
     const limit = req.query.limit ? parseInt(req.query.limit) : 10;
 
@@ -138,7 +138,7 @@ app.get("/ZombieArenaLeaderboard", async (req, res) => {
   }
 });
 
-app.post("/login", loginLimiter, (req, res, next) => {
+app.post("/api/login", loginLimiter, (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) return next(err);
     if (!user) {
@@ -155,7 +155,7 @@ app.post("/login", loginLimiter, (req, res, next) => {
   })(req, res, next);
 });
 
-app.post("/register", async (req, res, next) => {
+app.post("/api/register", async (req, res, next) => {
   const { username, password, repeatedPassword } = req.body;
 
   if (password !== repeatedPassword) {
@@ -215,7 +215,7 @@ function ensureLoggedIn(req, res, next) {
   return res.status(401).json({ error: "Not authenticated." });
 }
 
-app.post("/gameverse/delete-account", ensureLoggedIn, async (req, res) => {
+app.post("/api/gameverse/delete-account", ensureLoggedIn, async (req, res) => {
   try {
     const userId = req.user.id;
     const { password } = req.body;
@@ -243,7 +243,7 @@ app.post("/gameverse/delete-account", ensureLoggedIn, async (req, res) => {
   }
 });
 
-app.post("/gameverse/verify-password", ensureLoggedIn, async (req, res) => {
+app.post("/api/gameverse/verify-password", ensureLoggedIn, async (req, res) => {
   try {
     const userId = req.user.id;
     const { password } = req.body;
@@ -265,7 +265,7 @@ app.post("/gameverse/verify-password", ensureLoggedIn, async (req, res) => {
   }
 });
 
-app.post("/gameverse/change-password", ensureLoggedIn, async (req, res) => {
+app.post("/api/gameverse/change-password", ensureLoggedIn, async (req, res) => {
   try {
     const { oldPassword, newPassword, confirmPassword } = req.body;
 
@@ -297,7 +297,7 @@ app.post("/gameverse/change-password", ensureLoggedIn, async (req, res) => {
 });
 
 // change username
-app.post("/gameverse/change-username", ensureLoggedIn, async (req, res) => {
+app.post("/api/gameverse/change-username", ensureLoggedIn, async (req, res) => {
   try {
     const { newUsername, validateOnly } = req.body;
     const userId = req.user.id;
@@ -353,7 +353,7 @@ app.post("/gameverse/change-username", ensureLoggedIn, async (req, res) => {
 });
 
 // ZombieArena Best Score
-app.post("/ZombieArenaScore", ensureLoggedIn, async (req, res) => {
+app.post("/api/ZombieArenaScore", ensureLoggedIn, async (req, res) => {
   try {
     const { wave, zombiesKilled, ammoUsed, accuracy } = req.body;
     const userId = req.user.id;
@@ -397,7 +397,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 app.post(
-  "/save-character-image",
+  "/api/save-character-image",
   ensureLoggedIn,
   upload.single("avatar"),
   (req, res) => {
@@ -449,7 +449,7 @@ app.get("/api/user-profile/:id", async (req, res) => {
   }
 });
 
-app.post("/add-xp", ensureLoggedIn, async (req, res) => {
+app.post("/api/add-xp", ensureLoggedIn, async (req, res) => {
   const { xp } = req.body;
   const userId = req.user.id;
 
@@ -527,7 +527,7 @@ app.put("/api/user-profile/bio", ensureLoggedIn, async (req, res) => {
 });
 
 // Change equipped title
-app.post("/user-profile/title", ensureLoggedIn, async (req, res) => {
+app.post("/api/user-profile/title", ensureLoggedIn, async (req, res) => {
   const userId = req.user.id;
   const { titleName } = req.body;
 
