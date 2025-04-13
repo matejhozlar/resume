@@ -21,20 +21,15 @@ function Home() {
     if (!userId) return;
 
     const fetchProfile = async () => {
-      const res = await fetch(
-        `http://localhost:5000/api/user-profile/${userId}`,
-        {
-          credentials: "include",
-        }
-      );
+      const res = await fetch(`/api/user-profile/${userId}`, {
+        credentials: "include",
+      });
       const data = await res.json();
       setProfile(data);
     };
 
     const fetchScore = async () => {
-      const res = await fetch(
-        `http://localhost:5000/ZombieArenaLeaderboard?limit=100`
-      );
+      const res = await fetch(`/api/ZombieArenaLeaderboard?limit=100`);
       const data = await res.json();
       const userScore = data.find(
         (entry) => entry.user_id === parseInt(userId)

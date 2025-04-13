@@ -37,12 +37,9 @@ function PlayerProfile() {
     if (!userIdToFetch) return;
 
     const fetchData = async () => {
-      const res = await fetch(
-        `http://localhost:5000/api/user-profile/${userIdToFetch}`,
-        {
-          credentials: "include",
-        }
-      );
+      const res = await fetch(`/api/user-profile/${userIdToFetch}`, {
+        credentials: "include",
+      });
       const data = await res.json();
       setUserData(data);
     };
@@ -50,7 +47,7 @@ function PlayerProfile() {
     fetchData();
 
     const img = new Image();
-    img.src = `http://localhost:5000/avatars/${userIdToFetch}.png`;
+    img.src = `http://gameverse.matejhoz.com/api/avatars/${userIdToFetch}.png`;
     img.onload = () => setAvatarExists(true);
     img.onerror = () => setAvatarExists(false);
 
@@ -67,7 +64,7 @@ function PlayerProfile() {
       return alert("Bio must be under 1000 characters");
 
     try {
-      const res = await fetch(`http://localhost:5000/api/user-profile/bio`, {
+      const res = await fetch(`/api/user-profile/bio`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -96,7 +93,7 @@ function PlayerProfile() {
         <div className="avatar-preview">
           {avatarExists ? (
             <img
-              src={`http://localhost:5000/avatars/${userIdToFetch}.png`}
+              src={`http://gameverse.matejhoz.com/api/avatars/${userIdToFetch}.png`}
               alt="User Avatar"
               width={320}
               height={320}
@@ -218,17 +215,14 @@ function PlayerProfile() {
                 onClick={async () => {
                   if (!isOwnProfile || unlockedTitle === title) return;
 
-                  const res = await fetch(
-                    "http://localhost:5000/user-profile/title",
-                    {
-                      method: "POST",
-                      credentials: "include",
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({ titleName: unlockedTitle }),
-                    }
-                  );
+                  const res = await fetch("/api/user-profile/title", {
+                    method: "POST",
+                    credentials: "include",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ titleName: unlockedTitle }),
+                  });
 
                   const data = await res.json();
                   if (data.success) {

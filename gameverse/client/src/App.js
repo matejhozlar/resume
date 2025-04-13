@@ -36,7 +36,7 @@ function App() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await fetch("http://localhost:5000/auth/status", {
+        const res = await fetch("/api/auth/status", {
           credentials: "include",
         });
         const data = await res.json();

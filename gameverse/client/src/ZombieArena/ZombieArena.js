@@ -550,7 +550,7 @@ function ZombieArena() {
           setGameOver(true);
           stopBackgroundMusic();
 
-          fetch("http://localhost:5000/ZombieArenaScore", {
+          fetch("/api/ZombieArenaScore", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
@@ -577,7 +577,7 @@ function ZombieArena() {
 
           const xp = zombiesKilledRef.current * 5 + waveRef.current * 10;
 
-          fetch("http://localhost:5000/add-xp", {
+          fetch("/api/add-xp", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",

@@ -25,7 +25,7 @@ function ChangeUsernameForm() {
     }
 
     try {
-      const response = await fetch("/gameverse/verify-password", {
+      const response = await fetch("/api/gameverse/verify-password", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -60,7 +60,7 @@ function ChangeUsernameForm() {
     }
 
     try {
-      const response = await fetch("/gameverse/change-username", {
+      const response = await fetch("/api/gameverse/change-username", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -99,7 +99,7 @@ function ChangeUsernameForm() {
     }
 
     try {
-      const response = await fetch("/gameverse/change-username", {
+      const response = await fetch("/api/gameverse/change-username", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
