@@ -1,0 +1,9 @@
+{
+  "name": "resume",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter client dev",
+    "build": "pnpm --filter client build",
+    "preview": "pnpm --filter client preview"
+  }
+}
