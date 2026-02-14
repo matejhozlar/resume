@@ -1,7 +1,7 @@
 import { m } from "framer-motion"
 import { Badge } from "@/components/ui/badge"
 import { TechIcon } from "@/components/TechIcon"
-import { resume } from "@/data/resume"
+import { useLocale } from "@/hooks/useLocale"
 
 const container = {
   hidden: {},
@@ -18,11 +18,13 @@ const item = {
 }
 
 export function Skills() {
+  const { t, data } = useLocale()
+
   return (
     <section>
-      <h2 className="text-xl font-semibold tracking-tight">Skills</h2>
+      <h2 className="text-xl font-semibold tracking-tight">{t.sections.skills}</h2>
       <div className="mt-3 space-y-3">
-        {Object.entries(resume.skills).map(([category, items]) => (
+        {Object.entries(data.skills).map(([category, items]) => (
           <div key={category}>
             <h3 className="text-sm font-medium text-muted-foreground mb-1.5">{category}</h3>
             <m.div

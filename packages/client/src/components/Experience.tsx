@@ -1,12 +1,14 @@
-import { resume } from "@/data/resume"
+import { useLocale } from "@/hooks/useLocale"
 import { TechIcon } from "@/components/TechIcon"
 
 export function Experience() {
+  const { t, data } = useLocale()
+
   return (
     <section>
-      <h2 className="text-xl font-semibold tracking-tight">Experience</h2>
+      <h2 className="text-xl font-semibold tracking-tight">{t.sections.experience}</h2>
       <div className="mt-4 space-y-6">
-        {resume.experience.map((job) => (
+        {data.experience.map((job) => (
           <div
             key={`${job.company}-${job.period}`}
             className="border-l-2 border-border pl-4 transition-colors duration-300 hover:border-foreground/30"

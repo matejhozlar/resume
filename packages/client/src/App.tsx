@@ -6,7 +6,9 @@ import { About } from "@/components/About"
 import { Experience } from "@/components/Experience"
 import { Projects } from "@/components/Projects"
 import { Skills } from "@/components/Skills"
-import { resume } from "@/data/resume"
+import { LocaleProvider } from "@/i18n/LocaleContext"
+import { useLocale } from "@/hooks/useLocale"
+import { LocaleSwitcher } from "@/components/LocaleSwitcher"
 
 const fadeIn = {
   hidden: { opacity: 0, y: 12 },
@@ -14,16 +16,15 @@ const fadeIn = {
 }
 
 const sections = [
-  { id: "intro", Component: Header },
-  { id: "about", label: "About", Component: About },
-  { id: "experience", label: "Experience", Component: Experience },
-  { id: "projects", label: "Projects", Component: Projects },
-  { id: "skills", label: "Skills", Component: Skills },
+  { id: "intro" as const, Component: Header },
+  { id: "about" as const, Component: About },
+  { id: "experience" as const, Component: Experience },
+  { id: "projects" as const, Component: Projects },
+  { id: "skills" as const, Component: Skills },
 ]
 
-const navLinks = sections.filter((s) => s.label)
-
-function App() {
+function AppInner() {
+  const { t, data } = useLocale()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [dark, setDark] = useState(() => {
     const saved = localStorage.getItem("theme")
@@ -35,13 +36,17 @@ function App() {
     localStorage.setItem("theme", dark ? "dark" : "light")
   }, [dark])
 
+  const navLinks = sections
+    .filter((s) => s.id !== "intro")
+    .map((s) => ({ ...s, label: t.nav[s.id as keyof typeof t.nav] }))
+
   return (
     <LazyMotion features={domAnimation}>
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-background focus:text-foreground focus:rounded-md focus:outline-ring"
       >
-        Skip to content
+        {t.actions.skipToContent}
       </a>
 
       {/* Navigation */}
@@ -63,16 +68,17 @@ function App() {
                 {link.label}
               </a>
             ))}
+            <LocaleSwitcher />
             <button
               onClick={() => setDark(!dark)}
-              aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
+              aria-label={dark ? t.aria.switchToLight : t.aria.switchToDark}
               className="cursor-pointer rounded-full p-1.5 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
             >
               {dark ? <Sun className="size-4" /> : <Moon className="size-4" />}
             </button>
             <button
               onClick={() => setSidebarOpen(true)}
-              aria-label="Open menu"
+              aria-label={t.aria.openMenu}
               className="sm:hidden cursor-pointer rounded-full p-1.5 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
             >
               <Menu className="size-4" />
@@ -100,10 +106,11 @@ function App() {
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               className="fixed top-0 right-0 bottom-0 z-50 w-64 border-l border-border bg-background p-6 sm:hidden"
             >
-              <div className="flex justify-end">
+              <div className="flex items-center justify-between">
+                <LocaleSwitcher />
                 <button
                   onClick={() => setSidebarOpen(false)}
-                  aria-label="Close menu"
+                  aria-label={t.aria.closeMenu}
                   className="cursor-pointer rounded-full p-1.5 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                 >
                   <X className="size-4" />
@@ -146,30 +153,30 @@ function App() {
       {/* Footer */}
       <footer className="border-t border-border">
         <div className="max-w-3xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-          <span>&copy; {new Date().getFullYear()} {resume.name}</span>
+          <span>&copy; {new Date().getFullYear()} {data.name}</span>
           <div className="flex items-center gap-4">
             <a
-              href={`mailto:${resume.email}`}
+              href={`mailto:${data.email}`}
               className="hover:text-foreground transition-colors"
-              aria-label="Email"
+              aria-label={t.aria.email}
             >
               <Mail className="size-4" />
             </a>
             <a
-              href={resume.github}
+              href={data.github}
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-foreground transition-colors"
-              aria-label="GitHub"
+              aria-label={t.aria.github}
             >
               <Github className="size-4" />
             </a>
             <a
-              href={resume.linkedin}
+              href={data.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-foreground transition-colors"
-              aria-label="LinkedIn"
+              aria-label={t.aria.linkedin}
             >
               <Linkedin className="size-4" />
             </a>
@@ -177,6 +184,14 @@ function App() {
         </div>
       </footer>
     </LazyMotion>
+  )
+}
+
+function App() {
+  return (
+    <LocaleProvider>
+      <AppInner />
+    </LocaleProvider>
   )
 }
 

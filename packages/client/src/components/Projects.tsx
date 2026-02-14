@@ -1,14 +1,16 @@
 import { ExternalLink, Github } from "lucide-react"
 import { TechIcon } from "@/components/TechIcon"
-import { resume } from "@/data/resume"
+import { useLocale } from "@/hooks/useLocale"
 
 export function Projects() {
+  const { t, data } = useLocale()
+
   return (
     <section>
-      <h2 className="text-xl font-semibold tracking-tight">Projects</h2>
+      <h2 className="text-xl font-semibold tracking-tight">{t.sections.projects}</h2>
 
       <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {resume.projects.map((project) => (
+        {data.projects.map((project) => (
           <div
             key={project.name}
             className="relative h-64 rounded-xl overflow-hidden border border-border transition-all duration-300 hover:border-foreground/20 hover:shadow-[0_0_20px_rgba(255,255,255,0.08)]"
