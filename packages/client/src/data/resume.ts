@@ -1,106 +1,159 @@
 export interface Job {
-  title: string
-  company: string
-  period: string
-  bullets: string[]
+  title: string;
+  company: string;
+  period: string;
+  bullets: string[];
+  tags?: string[];
+  logo?: string;
+  url?: string;
 }
 
 export interface Project {
-  name: string
-  description: string
-  tags: string[]
-  url?: string
-  repo?: string
+  name: string;
+  description: string;
+  tags: string[];
+  image: string;
+  url?: string;
+  repo?: string;
+  badge?: {
+    image: string;
+    url: string;
+  };
 }
 
 export interface ResumeData {
-  name: string
-  role: string
-  email: string
-  github: string
-  linkedin: string
-  about: string
-  projects: Project[]
-  experience: Job[]
-  education: {
-    degree: string
-    school: string
-    period: string
-  }
-  skills: Record<string, string[]>
+  name: string;
+  role: string;
+  location: string;
+  email: string;
+  github: string;
+  linkedin: string;
+  about: string;
+  projects: Project[];
+  experience: Job[];
+  skills: Record<string, string[]>;
 }
 
 export const resume: ResumeData = {
-  name: "Matej Doe",
+  name: "Matej Hozlár",
   role: "Full-Stack Developer",
-  email: "matej@example.com",
-  github: "https://github.com/matej",
-  linkedin: "https://linkedin.com/in/matej",
+  location: "Prague, Czech Republic",
+  email: "hozlarmatej0@gmail.com",
+  github: "https://github.com/matejhozlar",
+  linkedin: "https://www.linkedin.com/in/matej-hozl%C3%A1r-6175b5353/",
   about:
     "Passionate full-stack developer with experience building modern web applications. I enjoy crafting clean, performant user interfaces and designing robust backend systems. Always learning, always shipping.",
   projects: [
     {
-      name: "DevBoard",
+      name: "AFKStatus",
       description:
-        "A real-time Kanban board for developer teams with drag-and-drop, WebSocket sync, and GitHub integration.",
-      tags: ["React", "Node.js", "PostgreSQL", "WebSockets"],
-      url: "https://devboard.example.com",
-      repo: "https://github.com/matej/devboard",
+        "Lightweight server-side Minecraft mod for NeoForge that automatically tracks player activity and marks users as AFK. Features configurable timeouts, auto-kicking, scoreboard integration and a blacklist system.",
+      tags: ["Java"],
+      image: "/assets/projects/afkstatus.webp",
+      badge: {
+        image:
+          "https://img.shields.io/curseforge/dt/1318335?logo=curseforge&label=Downloads&color=F16436&labelColor=2D2D2D&style=flat-square",
+        url: "https://www.curseforge.com/minecraft/mc-mods/afkstatus",
+      },
+      repo: "https://github.com/matejhozlar/afk-status",
     },
     {
-      name: "PixelGen",
+      name: "Createrington",
       description:
-        "CLI tool that generates pixel art sprites from text prompts using a local diffusion model. Ships as a single binary.",
-      tags: ["Rust", "Stable Diffusion", "CLI"],
-      repo: "https://github.com/matej/pixelgen",
+        "Full-stack community portal that unifies a Minecraft server, Discord and a web client into one seamless experience. Includes real-time cross-platform chat, playtime tracking with automatic role assignment and a simulated memecoin market.",
+      tags: ["React", "JavaScript", "PostgreSQL", "WebSockets"],
+      image: "/assets/projects/createrington.webp",
+      url: "https://create-rington.com",
+      repo: "https://github.com/matejhozlar/mc-page",
     },
     {
-      name: "Cashflow",
+      name: "Createrington Refactored",
       description:
-        "Personal finance tracker with bank account syncing, budgeting, and interactive charts. Built as a progressive web app.",
-      tags: ["Next.js", "Tailwind CSS", "Plaid API", "D3.js"],
-      url: "https://cashflow.example.com",
+        "Ongoing ground-up rewrite of the original Createrington portal. Migrated to TypeScript with a tRPC API layer, cleaner architecture and a more polished, production-ready codebase.",
+      tags: ["React", "TypeScript", "PostgreSQL", "WebSockets"],
+      image: "/assets/projects/createrington_new.webp",
+      repo: "https://github.com/matejhozlar/createrington",
+    },
+    {
+      name: "Crypto Docs",
+      description:
+        "Automatic updates to crypto/stock investor portfolios. Available for all platforms.",
+      tags: ["Python", "JavaScript", "HTML", "Electron"],
+      image: "/assets/projects/crypto.webp",
+      repo: "https://github.com/matejhozlar/crypto-auto-docs",
     },
   ],
   experience: [
     {
-      title: "Senior Frontend Engineer",
-      company: "Acme Corp",
-      period: "2022 – Present",
+      title: "Full-stack Developer",
+      company: "Honeywell",
+      period: "Mar 2025 – Jan 2026 ",
+      logo: "/assets/companies/honeywell.webp",
       bullets: [
-        "Led migration from legacy jQuery codebase to React + TypeScript, improving developer velocity by 40%.",
-        "Built a real-time dashboard serving 10k+ daily active users with WebSocket integration.",
-        "Mentored a team of 4 junior engineers through code reviews and pair programming sessions.",
+        "Developed multiple full-stack applications for both internal teams and external clients",
+        "Built a manuals management platform enabling clients to organize and access technical documentation",
+        "Created vehicle configuration tools used to streamline fleet setup and maintenance workflows",
+      ],
+      tags: [
+        "React",
+        "TypeScript",
+        "Node.js",
+        "PostgreSQL",
+        "Azure",
+        "Git",
+        "Jira",
+        "Figma",
       ],
     },
     {
-      title: "Full-Stack Developer",
-      company: "StartupXYZ",
-      period: "2019 – 2022",
+      title: "Crypto Research Analyst",
+      company: "BLAUHILL CAPITAL j.s.a.",
+      period: "Apr 2024 – Present",
+      logo: "/assets/companies/altfins.webp",
+      url: "https://altfins.com",
       bullets: [
-        "Designed and implemented RESTful APIs with Node.js and PostgreSQL, handling 1M+ requests/day.",
-        "Developed a component library used across 3 product teams, reducing UI inconsistencies by 60%.",
-        "Introduced CI/CD pipelines with GitHub Actions, cutting deployment time from hours to minutes.",
+        "Authored in-depth cryptocurrency research and market analysis published on altfins.com",
       ],
+      tags: ["Python"],
     },
     {
-      title: "Junior Developer",
-      company: "WebAgency",
-      period: "2017 – 2019",
+      title: "Freelance Developer",
+      company: "Self-employed",
+      period: "Apr 2024 – Present",
+      bullets: [],
+    },
+    {
+      title: "Network Administrator",
+      company: "Recount-edit s.r.o.",
+      period: "2022 – 2025",
+      logo: "/assets/companies/recountedit.webp",
       bullets: [
-        "Built responsive marketing sites and landing pages for clients across various industries.",
-        "Implemented A/B testing infrastructure that increased client conversion rates by 25%.",
+        "Configured and maintained the company's IT network infrastructure",
       ],
+      tags: ["Python"],
     },
   ],
-  education: {
-    degree: "B.Sc. Computer Science",
-    school: "University of Technology",
-    period: "2013 – 2017",
-  },
   skills: {
-    Frontend: ["React", "TypeScript", "Tailwind CSS", "Next.js", "Framer Motion"],
-    Backend: ["Node.js", "PostgreSQL", "Redis", "GraphQL", "REST APIs"],
-    Tools: ["Git", "Docker", "GitHub Actions", "Vite", "Figma"],
+    Languages: [
+      "TypeScript",
+      "JavaScript",
+      "Python",
+      "Java",
+      "C",
+      "C++",
+      "HTML",
+      "CSS",
+    ],
+    Frameworks: [
+      "React",
+      "Node.js",
+      "Express",
+      "tRPC",
+      "Tailwind CSS",
+      "PostgreSQL",
+      "MySQL",
+      "MQTT",
+    ],
+    Tools: ["Git", "Docker", "Azure", "Oracle", "Jira", "Figma", "Vite"],
   },
-}
+};

@@ -17,8 +17,9 @@ export function Header() {
         />
       </div>
       <div>
-        <h1 className="text-4xl font-bold tracking-tight">{resume.name}</h1>
+        <h1 className="text-4xl font-bold tracking-tight leading-normal">{resume.name}</h1>
         <p className="mt-1 text-lg text-muted-foreground">{resume.role}</p>
+        <p className="mt-0.5 text-sm text-muted-foreground/70">{resume.location}</p>
         <div className="mt-4 flex flex-wrap gap-4 text-sm text-muted-foreground">
           <a href={`mailto:${resume.email}`} className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors">
             <Mail className="size-4" />
