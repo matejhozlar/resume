@@ -23,12 +23,12 @@ export function Skills() {
   return (
     <section>
       <h2 className="text-xl font-semibold tracking-tight">{t.sections.skills}</h2>
-      <div className="mt-3 space-y-3">
+      <div className="mt-3 grid grid-cols-2 max-[550px]:grid-cols-1 gap-3">
         {Object.entries(data.skills).map(([category, items]) => (
-          <div key={category}>
-            <h3 className="text-sm font-medium text-muted-foreground mb-1.5">{category}</h3>
+          <div key={category} className="rounded-lg border border-border/50 bg-muted/30 p-3">
+            <h3 className="text-sm font-medium text-muted-foreground mb-2">{category}</h3>
             <m.div
-              className="flex flex-wrap gap-2"
+              className="flex flex-wrap gap-1.5"
               variants={container}
               initial="hidden"
               whileInView="visible"
@@ -36,7 +36,7 @@ export function Skills() {
             >
               {items.map((skill) => (
                 <m.span key={skill} variants={item}>
-                  <Badge variant="secondary" className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs">
+                  <Badge variant="secondary" className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs hover:bg-secondary/80 transition-colors">
                     <TechIcon name={skill} className="size-3.5 shrink-0" />
                     {skill}
                   </Badge>
