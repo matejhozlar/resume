@@ -29,7 +29,6 @@ const en: UiStrings = {
   },
 };
 
-// SK and CS scaffolded as English copies — fill in real translations later
 const sk: UiStrings = {
   nav: {
     about: "O mne",

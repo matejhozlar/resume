@@ -44,8 +44,6 @@ export interface ResumeData {
   skills: Record<string, string[]>;
 }
 
-/* ── Shared (locale-independent) data ── */
-
 const resumeShared = {
   name: "Matej Hozlár",
   email: "hozlarmatej0@gmail.com",
@@ -120,8 +118,6 @@ const resumeShared = {
     },
   ],
 };
-
-/* ── Per-locale translated fields ── */
 
 const enResume: TranslatedResumeFields = {
   role: "Full-Stack Developer",
@@ -359,8 +355,6 @@ const translatedResume: Record<Locale, TranslatedResumeFields> = {
   sk: skResume,
   cs: csResume,
 };
-
-/* ── Merge shared + translated → ResumeData ── */
 
 export function getResolvedResume(locale: Locale): ResumeData {
   const t = translatedResume[locale];
