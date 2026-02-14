@@ -1,31 +1,23 @@
-import { useState, useRef, useEffect } from "react"
+import { useState } from "react"
 import { Download, Loader2, ChevronDown } from "lucide-react"
 import { useLocale } from "@/hooks/useLocale"
 import { LOCALES, type Locale } from "@/i18n/types"
 import { uiStrings } from "@/i18n/translations"
 import { getResolvedResume } from "@/data/resume"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export function DownloadCVButton() {
   const { locale, t } = useLocale()
   const [generating, setGenerating] = useState(false)
-  const [dropdownOpen, setDropdownOpen] = useState(false)
-  const ref = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (!dropdownOpen) return
-    function handleClick(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setDropdownOpen(false)
-      }
-    }
-    document.addEventListener("mousedown", handleClick)
-    return () => document.removeEventListener("mousedown", handleClick)
-  }, [dropdownOpen])
 
   async function downloadPDF(targetLocale: Locale) {
     if (generating) return
     setGenerating(true)
-    setDropdownOpen(false)
 
     try {
       const [{ pdf }, { ResumePDF }] = await Promise.all([
@@ -53,7 +45,7 @@ export function DownloadCVButton() {
   }
 
   return (
-    <div ref={ref} className="relative inline-flex items-center">
+    <div className="inline-flex items-center">
       <button
         onClick={() => downloadPDF(locale)}
         disabled={generating}
@@ -66,32 +58,31 @@ export function DownloadCVButton() {
         )}
         {t.actions.downloadCV}
       </button>
-      <button
-        onClick={() => setDropdownOpen(!dropdownOpen)}
-        disabled={generating}
-        className="ml-0.5 px-1 text-muted-foreground hover:text-foreground transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-wait"
-        aria-label="Choose language for CV download"
-      >
-        <ChevronDown className="size-3" />
-      </button>
 
-      {dropdownOpen && (
-        <div className="absolute top-full right-0 mt-1 rounded-md border border-border bg-background shadow-lg py-1 z-10">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button
+            disabled={generating}
+            className="ml-0.5 px-1 text-muted-foreground hover:text-foreground transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-wait"
+            aria-label="Choose language for CV download"
+          >
+            <ChevronDown className="size-3" />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
           {LOCALES.map((l) => (
-            <button
+            <DropdownMenuItem
               key={l}
               onClick={() => downloadPDF(l)}
-              className={`block w-full text-left px-3 py-1 text-sm cursor-pointer hover:bg-muted transition-colors ${
-                l === locale
-                  ? "text-foreground font-medium"
-                  : "text-muted-foreground"
-              }`}
+              className={
+                l === locale ? "font-medium" : "text-muted-foreground"
+              }
             >
               {l.toUpperCase()}
-            </button>
+            </DropdownMenuItem>
           ))}
-        </div>
-      )}
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   )
 }
