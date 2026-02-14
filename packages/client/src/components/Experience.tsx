@@ -25,7 +25,13 @@ export function Experience() {
 
       <div className="relative mt-6">
         {/* Timeline line */}
-        <div className="absolute left-[15px] top-4 bottom-4 w-px bg-border" />
+        <m.div
+          className="absolute left-[15px] top-4 bottom-4 w-px bg-border origin-top"
+          initial={{ scaleY: 0 }}
+          whileInView={{ scaleY: 1 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        />
 
         <m.div
           className="space-y-8"
