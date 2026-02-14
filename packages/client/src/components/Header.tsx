@@ -21,21 +21,22 @@ export function Header() {
       </div>
       <div>
         <h1 className="text-3xl font-bold tracking-tight leading-normal">
-          {data.name} <span className="text-lg text-muted-foreground font-normal">| {data.role}</span>
+          {data.name} <span className="max-[550px]:hidden text-lg text-muted-foreground font-normal">| {data.role}</span>
         </h1>
+        <p className="min-[551px]:hidden text-lg text-muted-foreground font-normal">{data.role}</p>
         <p className="mt-0.5 text-sm text-muted-foreground/70">{data.location}</p>
         <div className="mt-4 flex flex-wrap gap-4 text-sm text-muted-foreground">
           <a href={`mailto:${data.email}`} className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors">
             <Mail className="size-4" />
-            {data.email}
+            <span className="max-[550px]:hidden">{data.email}</span>
           </a>
           <a href={data.github} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors">
             <Github className="size-4" />
-            GitHub
+            <span className="max-[550px]:hidden">GitHub</span>
           </a>
           <a href={data.linkedin} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors">
             <Linkedin className="size-4" />
-            LinkedIn
+            <span className="max-[550px]:hidden">LinkedIn</span>
           </a>
           <DownloadCVButton />
         </div>
