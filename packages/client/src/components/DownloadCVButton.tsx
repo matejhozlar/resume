@@ -45,44 +45,34 @@ export function DownloadCVButton() {
   }
 
   return (
-    <div className="inline-flex items-center">
-      <button
-        onClick={() => downloadPDF(locale)}
-        disabled={generating}
-        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-wait"
-      >
-        {generating ? (
-          <Loader2 className="size-4 animate-spin" />
-        ) : (
-          <Download className="size-4" />
-        )}
-        {t.actions.downloadCV}
-      </button>
-
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <button
-            disabled={generating}
-            className="ml-0.5 px-1 text-muted-foreground hover:text-foreground transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-wait"
-            aria-label="Choose language for CV download"
+    <DropdownMenu modal={false}>
+      <DropdownMenuTrigger asChild>
+        <button
+          disabled={generating}
+          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-wait"
+        >
+          {generating ? (
+            <Loader2 className="size-4 animate-spin" />
+          ) : (
+            <Download className="size-4" />
+          )}
+          {t.actions.downloadCV}
+          <ChevronDown className="size-3" />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        {LOCALES.map((l) => (
+          <DropdownMenuItem
+            key={l}
+            onClick={() => downloadPDF(l)}
+            className={
+              l === locale ? "font-medium" : "text-muted-foreground"
+            }
           >
-            <ChevronDown className="size-3" />
-          </button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          {LOCALES.map((l) => (
-            <DropdownMenuItem
-              key={l}
-              onClick={() => downloadPDF(l)}
-              className={
-                l === locale ? "font-medium" : "text-muted-foreground"
-              }
-            >
-              {l.toUpperCase()}
-            </DropdownMenuItem>
-          ))}
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
+            {l.toUpperCase()}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }

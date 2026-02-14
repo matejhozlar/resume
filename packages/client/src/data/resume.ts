@@ -53,7 +53,7 @@ const resumeShared = {
   linkedin: "https://www.linkedin.com/in/matej-hozl%C3%A1r-6175b5353/",
   experience: [
     {
-      company: "BLAUHILL CAPITAL j.s.a.",
+      company: "BLAUHILL CAPITAL",
       period: "Apr 2024 – Present",
       logo: "/assets/companies/altfins.webp",
       url: "https://altfins.com",
@@ -75,7 +75,7 @@ const resumeShared = {
       ],
     },
     {
-      company: "Recount-edit s.r.o.",
+      company: "Recount-edit",
       period: "2022 – 2025",
       logo: "/assets/companies/recountedit.webp",
       tags: ["Python"],
@@ -133,6 +133,8 @@ const enResume: TranslatedResumeFields = {
       title: "Crypto Research Analyst",
       bullets: [
         "Authored in-depth cryptocurrency research and market analysis published on altfins.com",
+        "Built internal apps for automated portfolio tracking and management",
+        "Developed AI-driven automation tools to streamline research and reporting workflows",
       ],
     },
     {
