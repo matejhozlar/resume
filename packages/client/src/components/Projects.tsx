@@ -110,7 +110,7 @@ function ProjectCard({ project }: { project: { name: string; description: string
         {/* Bottom — title, description, tags */}
         <div className="flex flex-col gap-1.5">
           <h3 className="text-base font-semibold text-white">{project.name}</h3>
-          <p className="text-xs text-gray-300 leading-relaxed">
+          <p className="text-xs text-gray-300 leading-relaxed transition-all duration-300 lg:max-h-0 lg:opacity-0 lg:overflow-hidden lg:group-hover:max-h-24 lg:group-hover:opacity-100">
             {project.description}
           </p>
           <div className="flex flex-wrap gap-1 pt-0.5">
