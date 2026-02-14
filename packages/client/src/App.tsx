@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { LazyMotion, domAnimation, m, AnimatePresence } from "framer-motion"
 import { Sun, Moon, Github, Linkedin, Mail, Menu, X } from "lucide-react"
 import { Header } from "@/components/Header"
@@ -30,7 +30,6 @@ function AppInner() {
     const saved = localStorage.getItem("theme")
     return saved ? saved === "dark" : true
   })
-
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark)
     localStorage.setItem("theme", dark ? "dark" : "light")
@@ -155,35 +154,65 @@ function AppInner() {
         <div className="max-w-3xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
           <span>&copy; {new Date().getFullYear()} {data.name}</span>
           <div className="flex items-center gap-4">
-            <a
+            <MagneticIcon
               href={`mailto:${data.email}`}
-              className="hover:text-foreground transition-colors"
               aria-label={t.aria.email}
             >
               <Mail className="size-4" />
-            </a>
-            <a
+            </MagneticIcon>
+            <MagneticIcon
               href={data.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-foreground transition-colors"
               aria-label={t.aria.github}
             >
               <Github className="size-4" />
-            </a>
-            <a
+            </MagneticIcon>
+            <MagneticIcon
               href={data.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-foreground transition-colors"
               aria-label={t.aria.linkedin}
             >
               <Linkedin className="size-4" />
-            </a>
+            </MagneticIcon>
           </div>
         </div>
       </footer>
     </LazyMotion>
+  )
+}
+
+function MagneticIcon({ children, ...props }: React.ComponentProps<"a">) {
+  const ref = useRef<HTMLAnchorElement>(null)
+
+  function handleMouseMove(e: React.MouseEvent) {
+    const el = ref.current
+    if (!el) return
+    const rect = el.getBoundingClientRect()
+    const x = e.clientX - rect.left - rect.width / 2
+    const y = e.clientY - rect.top - rect.height / 2
+    el.style.transition = "transform 0.15s ease-out"
+    el.style.transform = `translate(${x * 0.35}px, ${y * 0.35}px)`
+  }
+
+  function handleMouseLeave() {
+    const el = ref.current
+    if (!el) return
+    el.style.transition = "transform 0.3s ease-out"
+    el.style.transform = ""
+  }
+
+  return (
+    <a
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="inline-block hover:text-foreground transition-colors"
+      {...props}
+    >
+      {children}
+    </a>
   )
 }
 
