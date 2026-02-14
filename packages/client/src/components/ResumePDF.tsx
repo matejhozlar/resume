@@ -160,6 +160,9 @@ export function ResumePDF({ data, sectionTitles, photoDataUrl }: ResumePDFProps)
               <Link src={data.linkedin} style={styles.link}>
                 LinkedIn
               </Link>
+              <Link src="https://matejhoz.com" style={styles.link}>
+                matejhoz.com
+              </Link>
             </View>
           </View>
         </View>
