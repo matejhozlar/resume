@@ -170,7 +170,7 @@ const enResume: TranslatedResumeFields = {
     },
     {
       description:
-        "Automatic updates to crypto/stock investor portfolios. Available for all platforms.",
+        "Cross-platform automation suite combining Python scripts with an Electron desktop app to keep cryptocurrency portfolio spreadsheets current. Fetches live token prices and TVL data via CoinGecko and DefiLlama APIs, generates performance tables and supports both CLI and GUI workflows.",
     },
   ],
   skills: {
@@ -252,7 +252,7 @@ const skResume: TranslatedResumeFields = {
     },
     {
       description:
-        "Automatické aktualizácie portfólií krypto/akciových investorov. Dostupné pre všetky platformy.",
+        "Multiplatformová automatizačná sada kombinujúca Python skripty s Electron desktopovou aplikáciou na udržiavanie kryptomenových portfóliových tabuliek aktuálnych. Získava živé ceny tokenov a TVL dáta cez CoinGecko a DefiLlama API, generuje výkonnostné tabuľky a podporuje CLI aj GUI pracovné postupy.",
     },
   ],
   skills: {
@@ -334,7 +334,7 @@ const csResume: TranslatedResumeFields = {
     },
     {
       description:
-        "Automatické aktualizace portfolií krypto/akciových investorů. Dostupné pro všechny platformy.",
+        "Multiplatformní automatizační sada kombinující Python skripty s Electron desktopovou aplikací pro udržování kryptoměnových portfoliových tabulek aktuálních. Získává živé ceny tokenů a TVL data přes CoinGecko a DefiLlama API, generuje výkonnostní tabulky a podporuje CLI i GUI pracovní postupy.",
     },
   ],
   skills: {
