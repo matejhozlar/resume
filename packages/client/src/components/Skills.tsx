@@ -36,7 +36,7 @@ export function Skills() {
             >
               {items.map((skill) => (
                 <m.span key={skill} variants={item}>
-                  <Badge variant="secondary" className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs hover:bg-secondary/80 transition-colors">
+                  <Badge variant="secondary" className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs hover:bg-secondary/80 transition-colors select-none">
                     <TechIcon name={skill} className="size-3.5 shrink-0" />
                     {skill}
                   </Badge>

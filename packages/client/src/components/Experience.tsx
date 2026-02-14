@@ -45,6 +45,7 @@ export function Experience() {
               key={`${job.company}-${job.period}`}
               variants={item}
               className="relative flex gap-5 group"
+              whileHover={{ y: -2 }}
             >
               {/* Timeline marker */}
               <div className="relative z-10 flex-none pt-0.5">
@@ -63,7 +64,7 @@ export function Experience() {
               </div>
 
               {/* Content */}
-              <div className="flex-1 min-w-0 pb-1">
+              <div className="flex-1 min-w-0 pb-1 rounded-lg px-3 py-2 -mx-3 -my-2 transition-shadow duration-300 group-hover:shadow-[0_2px_12px_rgba(255,255,255,0.06)]">
                 <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-0.5">
                   <h3 className="font-medium">
                     {job.title}
@@ -99,7 +100,7 @@ export function Experience() {
                     {job.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="inline-flex items-center gap-1 rounded-md bg-secondary px-2 py-0.5 text-xs text-muted-foreground"
+                        className="inline-flex items-center gap-1 rounded-md bg-secondary px-2 py-0.5 text-xs text-muted-foreground select-none"
                       >
                         <TechIcon name={tag} className="size-3" />
                         {tag}

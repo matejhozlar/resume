@@ -79,5 +79,5 @@ export function TechIcon({
   const entry = iconMap[name];
   if (!entry) return null;
   const { icon: Icon, color } = entry;
-  return <Icon className={className} style={{ color }} />;
+  return <Icon className={className} style={{ color, userSelect: "none" }} draggable={false} />;
 }

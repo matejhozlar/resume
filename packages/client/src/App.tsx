@@ -30,10 +30,28 @@ function AppInner() {
     const saved = localStorage.getItem("theme")
     return saved ? saved === "dark" : true
   })
+  const [cursor, setCursor] = useState({ x: 0, y: 0, visible: false })
+
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark)
     localStorage.setItem("theme", dark ? "dark" : "light")
   }, [dark])
+
+  // Global cursor glow
+  useEffect(() => {
+    function handleMouseMove(e: MouseEvent) {
+      setCursor({ x: e.clientX, y: e.clientY, visible: true })
+    }
+    function handleMouseLeave() {
+      setCursor((c) => ({ ...c, visible: false }))
+    }
+    window.addEventListener("mousemove", handleMouseMove, { passive: true })
+    document.documentElement.addEventListener("mouseleave", handleMouseLeave)
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove)
+      document.documentElement.removeEventListener("mouseleave", handleMouseLeave)
+    }
+  }, [])
 
   const navLinks = sections
     .filter((s) => s.id !== "intro")
@@ -47,6 +65,15 @@ function AppInner() {
       >
         {t.actions.skipToContent}
       </a>
+
+      {/* Cursor glow */}
+      <div
+        className="pointer-events-none fixed inset-0 z-[999] transition-opacity duration-300 hidden lg:block"
+        style={{
+          opacity: cursor.visible ? 1 : 0,
+          background: `radial-gradient(600px circle at ${cursor.x}px ${cursor.y}px, rgba(255,255,255,0.03), transparent 60%)`,
+        }}
+      />
 
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
@@ -135,7 +162,15 @@ function AppInner() {
       <main id="main" className="max-w-3xl mx-auto px-6 pt-24 pb-16 space-y-12">
         {sections.map(({ id, Component }, i) => (
           <div key={id} id={id} className="scroll-mt-20">
-            {i > 0 && <hr className="section-separator mb-12" />}
+            {i > 0 && (
+              <m.hr
+                className="section-separator mb-12"
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+              />
+            )}
             <m.div
               variants={fadeIn}
               initial="hidden"

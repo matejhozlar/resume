@@ -117,7 +117,7 @@ function ProjectCard({ project }: { project: { name: string; description: string
             {project.tags.map((tag) => (
               <span
                 key={tag}
-                className="inline-flex items-center gap-1 rounded-md bg-white/10 px-2 py-0.5 text-[11px] font-medium text-white/80"
+                className="inline-flex items-center gap-1 rounded-md bg-white/10 px-2 py-0.5 text-[11px] font-medium text-white/80 select-none"
               >
                 <TechIcon name={tag} className="size-3 shrink-0" />
                 {tag}
