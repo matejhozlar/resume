@@ -42,7 +42,7 @@ export const resume: ResumeData = {
   github: "https://github.com/matejhozlar",
   linkedin: "https://www.linkedin.com/in/matej-hozl%C3%A1r-6175b5353/",
   about:
-    "Passionate full-stack developer with experience building modern web applications. I enjoy crafting clean, performant user interfaces and designing robust backend systems. Always learning, always shipping.",
+    "Hi, I'm Matej, a full-stack developer based in Prague, Czech Republic. I enjoy building tools and platforms that people genuinely find useful. My side project Createrington has grown into a small community of users who actively help shape its direction and keep me motivated to improve.",
   projects: [
     {
       name: "AFKStatus",
@@ -84,10 +84,21 @@ export const resume: ResumeData = {
     },
   ],
   experience: [
+{
+      title: "Crypto Research Analyst",
+      company: "BLAUHILL CAPITAL j.s.a.",
+      period: "Apr 2024 – Present",
+      logo: "/assets/companies/altfins.webp",
+      url: "https://altfins.com",
+      bullets: [
+        "Authored in-depth cryptocurrency research and market analysis published on altfins.com",
+      ],
+      tags: ["Python"],
+    },
     {
       title: "Full-stack Developer",
       company: "Honeywell",
-      period: "Mar 2025 – Jan 2026 ",
+      period: "Mar 2025 – Jan 2026",
       logo: "/assets/companies/honeywell.webp",
       bullets: [
         "Developed multiple full-stack applications for both internal teams and external clients",
@@ -104,23 +115,6 @@ export const resume: ResumeData = {
         "Jira",
         "Figma",
       ],
-    },
-    {
-      title: "Crypto Research Analyst",
-      company: "BLAUHILL CAPITAL j.s.a.",
-      period: "Apr 2024 – Present",
-      logo: "/assets/companies/altfins.webp",
-      url: "https://altfins.com",
-      bullets: [
-        "Authored in-depth cryptocurrency research and market analysis published on altfins.com",
-      ],
-      tags: ["Python"],
-    },
-    {
-      title: "Freelance Developer",
-      company: "Self-employed",
-      period: "Apr 2024 – Present",
-      bullets: [],
     },
     {
       title: "Network Administrator",

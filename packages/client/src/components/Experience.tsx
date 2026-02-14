@@ -20,7 +20,8 @@ export function Experience() {
                     <img
                       src={job.logo}
                       alt={job.company}
-                      className="size-4 rounded-sm object-contain inline-block"
+                      loading="lazy"
+                      className="size-4 object-contain inline-block"
                     />
                   )}
                   {job.url ? (

@@ -1,4 +1,4 @@
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { Badge } from "@/components/ui/badge"
 import { TechIcon } from "@/components/TechIcon"
 import { resume } from "@/data/resume"
@@ -25,7 +25,7 @@ export function Skills() {
         {Object.entries(resume.skills).map(([category, items]) => (
           <div key={category}>
             <h3 className="text-sm font-medium text-muted-foreground mb-1.5">{category}</h3>
-            <motion.div
+            <m.div
               className="flex flex-wrap gap-2"
               variants={container}
               initial="hidden"
@@ -33,14 +33,14 @@ export function Skills() {
               viewport={{ once: true }}
             >
               {items.map((skill) => (
-                <motion.span key={skill} variants={item}>
+                <m.span key={skill} variants={item}>
                   <Badge variant="secondary" className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs">
                     <TechIcon name={skill} className="size-3.5 shrink-0" />
                     {skill}
                   </Badge>
-                </motion.span>
+                </m.span>
               ))}
-            </motion.div>
+            </m.div>
           </div>
         ))}
       </div>
