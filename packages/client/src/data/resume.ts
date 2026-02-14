@@ -150,7 +150,7 @@ const enResume: TranslatedResumeFields = {
   ],
   education: [
     {
-      degree: "Secondary School Diploma — Informatics & Mathematics",
+      degree: "Secondary School Diploma",
       description:
         "8-year programme with a focus on Informatics and Mathematics.",
     },
@@ -233,7 +233,7 @@ const skResume: TranslatedResumeFields = {
   ],
   education: [
     {
-      degree: "Maturitné vysvedčenie — Informatika a matematika",
+      degree: "Maturitné vysvedčenie",
       description: "8-ročný program so zameraním na informatiku a matematiku.",
     },
   ],
@@ -315,7 +315,7 @@ const csResume: TranslatedResumeFields = {
   ],
   education: [
     {
-      degree: "Maturitní vysvědčení — Informatika a matematika",
+      degree: "Maturitní vysvědčení",
       description: "8letý program se zaměřením na informatiku a matematiku.",
     },
   ],

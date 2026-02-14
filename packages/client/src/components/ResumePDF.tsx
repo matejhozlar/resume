@@ -139,7 +139,7 @@ interface ResumePDFProps {
 
 export function ResumePDF({ data, sectionTitles, photoDataUrl }: ResumePDFProps) {
   return (
-    <Document title={`${data.name} — CV`} author={data.name}>
+    <Document title={`${data.name} CV`} author={data.name}>
       <Page size="A4" style={styles.page}>
         {/* Header */}
         <View style={styles.header}>
