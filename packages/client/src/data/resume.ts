@@ -195,6 +195,12 @@ const enResume: TranslatedResumeFields = {
       "MQTT",
     ],
     Tools: ["Git", "Docker", "Azure", "Oracle", "Jira", "Figma", "Vite"],
+    "Spoken Languages": [
+      "Slovak (Native)",
+      "Czech (Fluent)",
+      "English (Fluent)",
+      "German (Basic)",
+    ],
   },
 };
 
@@ -271,6 +277,12 @@ const skResume: TranslatedResumeFields = {
       "MQTT",
     ],
     Nástroje: ["Git", "Docker", "Azure", "Oracle", "Jira", "Figma", "Vite"],
+    "Hovorené jazyky": [
+      "Slovenčina (Rodný)",
+      "Čeština (Plynulá)",
+      "Angličtina (Plynulá)",
+      "Nemčina (Základy)",
+    ],
   },
 };
 
@@ -347,6 +359,12 @@ const csResume: TranslatedResumeFields = {
       "MQTT",
     ],
     Nástroje: ["Git", "Docker", "Azure", "Oracle", "Jira", "Figma", "Vite"],
+    "Mluvené jazyky": [
+      "Slovenština (Rodilý)",
+      "Čeština (Plynulá)",
+      "Angličtina (Plynulá)",
+      "Němčina (Základy)",
+    ],
   },
 };
 
