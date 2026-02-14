@@ -66,7 +66,7 @@ export function Projects() {
               {/* Bottom — title, description, tags */}
               <div className="flex flex-col gap-1.5">
                 <h3 className="text-base font-semibold text-white">{project.name}</h3>
-                <p className="text-xs text-gray-300 leading-relaxed line-clamp-3">
+                <p className="text-xs text-gray-300 leading-relaxed">
                   {project.description}
                 </p>
                 <div className="flex flex-wrap gap-1 pt-0.5">

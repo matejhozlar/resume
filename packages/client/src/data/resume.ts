@@ -1,47 +1,47 @@
-import type { Locale, TranslatedResumeFields } from "@/i18n/types"
+import type { Locale, TranslatedResumeFields } from "@/i18n/types";
 
 export interface Job {
-  title: string
-  company: string
-  period: string
-  bullets: string[]
-  tags?: string[]
-  logo?: string
-  url?: string
+  title: string;
+  company: string;
+  period: string;
+  bullets: string[];
+  tags?: string[];
+  logo?: string;
+  url?: string;
 }
 
 export interface Education {
-  degree: string
-  school: string
-  period: string
-  description?: string
+  degree: string;
+  school: string;
+  period: string;
+  description?: string;
 }
 
 export interface Project {
-  name: string
-  description: string
-  tags: string[]
-  image: string
-  url?: string
-  repo?: string
+  name: string;
+  description: string;
+  tags: string[];
+  image: string;
+  url?: string;
+  repo?: string;
   badge?: {
-    image: string
-    url: string
-  }
+    image: string;
+    url: string;
+  };
 }
 
 export interface ResumeData {
-  name: string
-  role: string
-  location: string
-  email: string
-  github: string
-  linkedin: string
-  about: string
-  education: Education[]
-  projects: Project[]
-  experience: Job[]
-  skills: Record<string, string[]>
+  name: string;
+  role: string;
+  location: string;
+  email: string;
+  github: string;
+  linkedin: string;
+  about: string;
+  education: Education[];
+  projects: Project[];
+  experience: Job[];
+  skills: Record<string, string[]>;
 }
 
 /* ── Shared (locale-independent) data ── */
@@ -101,14 +101,14 @@ const resumeShared = {
     },
     {
       name: "Createrington",
-      tags: ["React", "JavaScript", "PostgreSQL", "WebSockets"],
+      tags: ["React", "JavaScript", "PostgreSQL"],
       image: "/assets/projects/createrington.webp",
       url: "https://create-rington.com",
       repo: "https://github.com/matejhozlar/mc-page",
     },
     {
       name: "Createrington Refactored",
-      tags: ["React", "TypeScript", "PostgreSQL", "WebSockets"],
+      tags: ["React", "TypeScript", "PostgreSQL"],
       image: "/assets/projects/createrington_new.webp",
       repo: "https://github.com/matejhozlar/createrington",
     },
@@ -119,7 +119,7 @@ const resumeShared = {
       repo: "https://github.com/matejhozlar/crypto-auto-docs",
     },
   ],
-}
+};
 
 /* ── Per-locale translated fields ── */
 
@@ -200,31 +200,177 @@ const enResume: TranslatedResumeFields = {
     ],
     Tools: ["Git", "Docker", "Azure", "Oracle", "Jira", "Figma", "Vite"],
   },
-}
+};
 
-// SK and CS scaffolded as English copies — fill in real translations later
-const skResume: TranslatedResumeFields = { ...enResume, experience: [...enResume.experience], education: [...enResume.education], projects: [...enResume.projects] }
-const csResume: TranslatedResumeFields = { ...enResume, experience: [...enResume.experience], education: [...enResume.education], projects: [...enResume.projects] }
+const skResume: TranslatedResumeFields = {
+  role: "Full-Stack Developer",
+  location: "Praha, Česká republika",
+  about:
+    "Ahoj, som Matej, full-stack developer žijúci v Prahe. Rád tvorím nástroje a platformy, ktoré ľudia skutočne využívajú. Môj vedľajší projekt Createrington prerástol do malej komunity používateľov, ktorí aktívne pomáhajú formovať jeho smerovanie a motivujú ma k zlepšovaniu.",
+  experience: [
+    {
+      title: "Krypto analytik",
+      bullets: [
+        "Tvorba hĺbkových analýz kryptomien a trhov publikovaných na altfins.com",
+        "Vývoj interných aplikácií na automatizované sledovanie a správu portfólií",
+        "Vývoj automatizačných nástrojov poháňaných AI na zefektívnenie výskumu a reportingu",
+      ],
+    },
+    {
+      title: "Full-stack vývojár",
+      bullets: [
+        "Vývoj viacerých full-stack aplikácií pre interné tímy aj externých klientov",
+        "Vytvorenie platformy na správu manuálov umožňujúcej klientom organizovať a pristupovať k technickej dokumentácii",
+        "Tvorba nástrojov na konfiguráciu vozidiel na zefektívnenie nastavovania a údržby flotíl",
+      ],
+    },
+    {
+      title: "Správca siete",
+      bullets: ["Konfigurácia a údržba sieťovej infraštruktúry spoločnosti"],
+    },
+  ],
+  education: [
+    {
+      degree: "Maturitné vysvedčenie — Informatika a matematika",
+      description: "8-ročný program so zameraním na informatiku a matematiku.",
+    },
+  ],
+  projects: [
+    {
+      description:
+        "Ľahký serverový Minecraft mod pre NeoForge, ktorý automaticky sleduje aktivitu hráčov a označuje ich ako AFK. Obsahuje konfigurovateľné časové limity, automatické vyhadzovanie, integráciu so scoreboard a systém blacklistu.",
+    },
+    {
+      description:
+        "Full-stack komunitný portál spájajúci Minecraft server, Discord a webového klienta do jedného celku. Obsahuje real-time multiplatformový chat, sledovanie herného času s automatickým prideľovaním rolí a simulovaný memecoin trh.",
+    },
+    {
+      description:
+        "Prebiehajúci kompletný prepis pôvodného portálu Createrington. Migrácia na TypeScript s tRPC API vrstvou, čistejšou architektúrou a vyleštenejším kódom pripravením na produkciu.",
+    },
+    {
+      description:
+        "Automatické aktualizácie portfólií krypto/akciových investorov. Dostupné pre všetky platformy.",
+    },
+  ],
+  skills: {
+    Jazyky: [
+      "TypeScript",
+      "JavaScript",
+      "Python",
+      "Java",
+      "C",
+      "C++",
+      "HTML",
+      "CSS",
+    ],
+    Frameworky: [
+      "React",
+      "Node.js",
+      "Express",
+      "tRPC",
+      "Tailwind CSS",
+      "PostgreSQL",
+      "MySQL",
+      "MQTT",
+    ],
+    Nástroje: ["Git", "Docker", "Azure", "Oracle", "Jira", "Figma", "Vite"],
+  },
+};
+
+const csResume: TranslatedResumeFields = {
+  role: "Full-Stack Developer",
+  location: "Praha, Česká republika",
+  about:
+    "Ahoj, jsem Matej, full-stack developer žijící v Praze. Rád vytvářím nástroje a platformy, které lidé skutečně využívají. Můj vedlejší projekt Createrington přerostl v malou komunitu uživatelů, kteří aktivně pomáhají formovat jeho směřování a motivují mě ke zlepšování.",
+  experience: [
+    {
+      title: "Krypto analytik",
+      bullets: [
+        "Tvorba hloubkových analýz kryptoměn a trhů publikovaných na altfins.com",
+        "Vývoj interních aplikací pro automatizované sledování a správu portfolií",
+        "Vývoj automatizačních nástrojů poháněných AI pro zefektivnění výzkumu a reportingu",
+      ],
+    },
+    {
+      title: "Full-stack vývojář",
+      bullets: [
+        "Vývoj více full-stack aplikací pro interní týmy i externí klienty",
+        "Vytvoření platformy pro správu manuálů umožňující klientům organizovat a přistupovat k technické dokumentaci",
+        "Tvorba nástrojů pro konfiguraci vozidel k zefektivnění nastavování a údržby flotil",
+      ],
+    },
+    {
+      title: "Správce sítě",
+      bullets: ["Konfigurace a údržba síťové infrastruktury společnosti"],
+    },
+  ],
+  education: [
+    {
+      degree: "Maturitní vysvědčení — Informatika a matematika",
+      description: "8letý program se zaměřením na informatiku a matematiku.",
+    },
+  ],
+  projects: [
+    {
+      description:
+        "Lehký serverový Minecraft mod pro NeoForge, který automaticky sleduje aktivitu hráčů a označuje je jako AFK. Obsahuje konfigurovatelné časové limity, automatické vyhazování, integraci se scoreboard a systém blacklistu.",
+    },
+    {
+      description:
+        "Full-stack komunitní portál spojující Minecraft server, Discord a webového klienta do jednoho celku. Obsahuje real-time multiplatformový chat, sledování herního času s automatickým přidělováním rolí a simulovaný memecoin trh.",
+    },
+    {
+      description:
+        "Probíhající kompletní přepis původního portálu Createrington. Migrace na TypeScript s tRPC API vrstvou, čistější architekturou a vyladěnějším kódem připraveným pro produkci.",
+    },
+    {
+      description:
+        "Automatické aktualizace portfolií krypto/akciových investorů. Dostupné pro všechny platformy.",
+    },
+  ],
+  skills: {
+    Jazyky: [
+      "TypeScript",
+      "JavaScript",
+      "Python",
+      "Java",
+      "C",
+      "C++",
+      "HTML",
+      "CSS",
+    ],
+    Frameworky: [
+      "React",
+      "Node.js",
+      "Express",
+      "tRPC",
+      "Tailwind CSS",
+      "PostgreSQL",
+      "MySQL",
+      "MQTT",
+    ],
+    Nástroje: ["Git", "Docker", "Azure", "Oracle", "Jira", "Figma", "Vite"],
+  },
+};
 
 const translatedResume: Record<Locale, TranslatedResumeFields> = {
   en: enResume,
   sk: skResume,
   cs: csResume,
-}
+};
 
 /* ── Merge shared + translated → ResumeData ── */
 
 export function getResolvedResume(locale: Locale): ResumeData {
-  const t = translatedResume[locale]
+  const t = translatedResume[locale];
 
   if (
     t.experience.length !== resumeShared.experience.length ||
     t.education.length !== resumeShared.education.length ||
     t.projects.length !== resumeShared.projects.length
   ) {
-    throw new Error(
-      `Resume array length mismatch for locale "${locale}"`,
-    )
+    throw new Error(`Resume array length mismatch for locale "${locale}"`);
   }
 
   return {
@@ -250,5 +396,5 @@ export function getResolvedResume(locale: Locale): ResumeData {
       description: t.projects[i].description,
     })),
     skills: t.skills,
-  }
+  };
 }

@@ -1,4 +1,4 @@
-import type { Locale, UiStrings } from "./types"
+import type { Locale, UiStrings } from "./types";
 
 const en: UiStrings = {
   nav: {
@@ -27,25 +27,25 @@ const en: UiStrings = {
     github: "GitHub",
     linkedin: "LinkedIn",
   },
-}
+};
 
 // SK and CS scaffolded as English copies — fill in real translations later
 const sk: UiStrings = {
   nav: {
-    about: "About",
-    experience: "Experience",
-    projects: "Projects",
-    skills: "Skills",
+    about: "O mne",
+    experience: "Skúsenosti",
+    projects: "Projekty",
+    skills: "Zručnosti",
   },
   sections: {
-    about: "About",
-    experience: "Experience",
-    projects: "Projects",
-    skills: "Skills",
-    education: "Education",
+    about: "O mne",
+    experience: "Skúsenosti",
+    projects: "Projekty",
+    skills: "Zručnosti",
+    education: "Vzdelanie",
   },
   actions: {
-    downloadCV: "Download CV",
+    downloadCV: "Stiahnúť CV",
     skipToContent: "Skip to content",
   },
   aria: {
@@ -57,24 +57,24 @@ const sk: UiStrings = {
     github: "GitHub",
     linkedin: "LinkedIn",
   },
-}
+};
 
 const cs: UiStrings = {
   nav: {
-    about: "About",
-    experience: "Experience",
-    projects: "Projects",
-    skills: "Skills",
+    about: "O mně",
+    experience: "Zkušenosti",
+    projects: "Projekty",
+    skills: "Dovednosti",
   },
   sections: {
-    about: "About",
-    experience: "Experience",
-    projects: "Projects",
-    skills: "Skills",
-    education: "Education",
+    about: "O mně",
+    experience: "Zkušenosti",
+    projects: "Projekty",
+    skills: "Dovednosti",
+    education: "Vzdelání",
   },
   actions: {
-    downloadCV: "Download CV",
+    downloadCV: "Stáhnout CV",
     skipToContent: "Skip to content",
   },
   aria: {
@@ -86,6 +86,6 @@ const cs: UiStrings = {
     github: "GitHub",
     linkedin: "LinkedIn",
   },
-}
+};
 
-export const uiStrings: Record<Locale, UiStrings> = { en, sk, cs }
+export const uiStrings: Record<Locale, UiStrings> = { en, sk, cs };
