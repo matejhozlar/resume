@@ -111,6 +111,29 @@ const resumeShared = {
       repo: "https://github.com/matejhozlar/createrington",
     },
     {
+      name: "Createrington Currency",
+      tags: ["Java"],
+      image: "/assets/projects/createrington_currency.webp",
+      badge: {
+        image:
+          "https://img.shields.io/curseforge/dt/1277058?logo=curseforge&label=Downloads&color=F16436&labelColor=2D2D2D&style=flat-square",
+        url: "https://www.curseforge.com/minecraft/mc-mods/create-rington-currency",
+      },
+      repo: "https://github.com/matejhozlar/createrington-currency",
+    },
+    {
+      name: "OmniEconomy",
+      tags: ["Java", "TypeScript"],
+      image: "/assets/projects/omnieconomy.webp",
+      url: "https://omnieconomy.xyz",
+      badge: {
+        image:
+          "https://img.shields.io/curseforge/dt/1371365?logo=curseforge&label=Downloads&color=F16436&labelColor=2D2D2D&style=flat-square",
+        url: "https://www.curseforge.com/minecraft/mc-mods/omnieconomy",
+      },
+      repo: "https://github.com/matejhozlar/omnieconomy",
+    },
+    {
       name: "Crypto Docs",
       tags: ["Python", "JavaScript", "HTML", "Electron"],
       image: "/assets/projects/crypto.webp",
@@ -167,6 +190,14 @@ const enResume: TranslatedResumeFields = {
     {
       description:
         "Ongoing ground-up rewrite of the original Createrington portal. Migrated to TypeScript with a tRPC API layer, cleaner architecture and a more polished, production-ready codebase.",
+    },
+    {
+      description:
+        "NeoForge economy mod that syncs player balances in real time across multiple Minecraft servers through the Createrington REST API. Features physical currency items in eight denominations, JWT-authenticated bank accounts, ATM blocks and a full command suite for deposits, withdrawals and player-to-player transactions.",
+    },
+    {
+      description:
+        "Comprehensive Minecraft economy system with a companion web dashboard. The NeoForge mod adds physical currency, player banks, ATM blocks, mob-drop income, a server-wide lottery and Create mod integration. Paired with a TypeScript web tool for configuration and monitoring.",
     },
     {
       description:
@@ -252,6 +283,14 @@ const skResume: TranslatedResumeFields = {
     },
     {
       description:
+        "NeoForge ekonomický mod synchronizujúci zostatky hráčov v reálnom čase naprieč viacerými Minecraft servermi cez Createrington REST API. Obsahuje fyzické menové predmety v ôsmich nominálnych hodnotách, bankové účty s JWT autentifikáciou, ATM bloky a kompletnú sadu príkazov na vklady, výbery a transakcie medzi hráčmi.",
+    },
+    {
+      description:
+        "Komplexný ekonomický systém pre Minecraft so sprievodným webovým dashboardom. NeoForge mod pridáva fyzickú menu, hráčske banky, ATM bloky, príjem z mob dropov, serverovú lotériu a integráciu s Create modom. Spárovaný s TypeScript webovým nástrojom na konfiguráciu a monitoring.",
+    },
+    {
+      description:
         "Multiplatformová automatizačná sada kombinujúca Python skripty s Electron desktopovou aplikáciou na udržiavanie kryptomenových portfóliových tabuliek aktuálnych. Získava živé ceny tokenov a TVL dáta cez CoinGecko a DefiLlama API, generuje výkonnostné tabuľky a podporuje CLI aj GUI pracovné postupy.",
     },
   ],
@@ -331,6 +370,14 @@ const csResume: TranslatedResumeFields = {
     {
       description:
         "Probíhající kompletní přepis původního portálu Createrington. Migrace na TypeScript s tRPC API vrstvou, čistější architekturou a vyladěnějším kódem připraveným pro produkci.",
+    },
+    {
+      description:
+        "NeoForge ekonomický mod synchronizující zůstatky hráčů v reálném čase napříč více Minecraft servery přes Createrington REST API. Obsahuje fyzické měnové předměty v osmi nominálních hodnotách, bankovní účty s JWT autentifikací, ATM bloky a kompletní sadu příkazů pro vklady, výběry a transakce mezi hráči.",
+    },
+    {
+      description:
+        "Komplexní ekonomický systém pro Minecraft s doprovodným webovým dashboardem. NeoForge mod přidává fyzickou měnu, hráčské banky, ATM bloky, příjem z mob dropů, serverovou loterii a integraci s Create modem. Spárován s TypeScript webovým nástrojem pro konfiguraci a monitoring.",
     },
     {
       description:
