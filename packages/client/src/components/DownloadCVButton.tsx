@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useCallback } from "react"
 import { Download, Loader2, ChevronDown } from "lucide-react"
 import { useLocale } from "@/hooks/useLocale"
 import { LOCALES, type Locale } from "@/i18n/types"
@@ -10,13 +10,21 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { PDFPreviewModal } from "@/components/PDFPreviewModal"
 
 export function DownloadCVButton() {
   const { locale, t } = useLocale()
   const [generating, setGenerating] = useState(false)
+  const [modalOpen, setModalOpen] = useState(false)
+  const [pdfBlob, setPdfBlob] = useState<Blob | null>(null)
+  const [pdfFilename, setPdfFilename] = useState("")
 
-  async function downloadPDF(targetLocale: Locale) {
+  async function generatePDF(targetLocale: Locale) {
     if (generating) return
+    const filename = `Matej_Hozlar_CV_${targetLocale.toUpperCase()}.pdf`
+    setPdfFilename(filename)
+    setPdfBlob(null)
+    setModalOpen(true)
     setGenerating(true)
 
     try {
@@ -39,12 +47,7 @@ export function DownloadCVButton() {
       const blob = await pdf(
         ResumePDF({ data, sectionTitles, photoDataUrl: photoUrl, qrDataUrl }),
       ).toBlob()
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement("a")
-      a.href = url
-      a.download = `Matej_Hozlar_CV_${targetLocale.toUpperCase()}.pdf`
-      a.click()
-      URL.revokeObjectURL(url)
+      setPdfBlob(blob)
     } catch (err) {
       console.error("PDF generation failed:", err)
     } finally {
@@ -52,35 +55,53 @@ export function DownloadCVButton() {
     }
   }
 
+  const handleModalChange = useCallback((open: boolean) => {
+    setModalOpen(open)
+    if (!open) {
+      setPdfBlob(null)
+      setPdfFilename("")
+    }
+  }, [])
+
   return (
-    <DropdownMenu modal={false}>
-      <DropdownMenuTrigger asChild>
-        <button
-          disabled={generating}
-          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-wait"
-        >
-          {generating ? (
-            <Loader2 className="size-4 animate-spin" />
-          ) : (
-            <Download className="size-4" />
-          )}
-          {t.actions.downloadCV}
-          <ChevronDown className="size-3" />
-        </button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        {LOCALES.map((l) => (
-          <DropdownMenuItem
-            key={l}
-            onClick={() => downloadPDF(l)}
-            className={
-              l === locale ? "font-medium" : "text-muted-foreground"
-            }
+    <>
+      <DropdownMenu modal={false}>
+        <DropdownMenuTrigger asChild>
+          <button
+            disabled={generating}
+            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-wait"
           >
-            {l.toUpperCase()}
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
+            {generating ? (
+              <Loader2 className="size-4 animate-spin" />
+            ) : (
+              <Download className="size-4" />
+            )}
+            {t.actions.downloadCV}
+            <ChevronDown className="size-3" />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          {LOCALES.map((l) => (
+            <DropdownMenuItem
+              key={l}
+              onClick={() => generatePDF(l)}
+              className={
+                l === locale ? "font-medium" : "text-muted-foreground"
+              }
+            >
+              {l.toUpperCase()}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <PDFPreviewModal
+        open={modalOpen}
+        onOpenChange={handleModalChange}
+        pdfBlob={pdfBlob}
+        generating={generating}
+        filename={pdfFilename}
+      />
+    </>
   )
 }

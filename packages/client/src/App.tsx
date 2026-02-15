@@ -59,7 +59,7 @@ function AppInner() {
     root.style.setProperty("--wipe-y", `${y}px`)
     root.style.setProperty("--wipe-radius", `${maxRadius}px`)
 
-    ;(document as any).startViewTransition(() => {
+    ;(document as unknown as { startViewTransition: (cb: () => void) => void }).startViewTransition(() => {
       flushSync(() => setDark((d) => !d))
     })
   }, [])

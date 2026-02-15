@@ -17,6 +17,12 @@ const en: UiStrings = {
   actions: {
     downloadCV: "Download CV",
     skipToContent: "Skip to content",
+    previewCV: "CV Preview",
+    generatingPDF: "Generating PDF…",
+    download: "Download",
+    close: "Close",
+    pdfPreviewUnavailable: "PDF preview is not available in your browser.",
+    downloadInstead: "Download PDF",
   },
   aria: {
     switchToLight: "Switch to light mode",
@@ -46,6 +52,12 @@ const sk: UiStrings = {
   actions: {
     downloadCV: "Stiahnúť CV",
     skipToContent: "Skip to content",
+    previewCV: "Náhľad CV",
+    generatingPDF: "Generujem PDF…",
+    download: "Stiahnuť",
+    close: "Zavrieť",
+    pdfPreviewUnavailable: "Náhľad PDF nie je vo vašom prehliadači dostupný.",
+    downloadInstead: "Stiahnuť PDF",
   },
   aria: {
     switchToLight: "Switch to light mode",
@@ -75,6 +87,12 @@ const cs: UiStrings = {
   actions: {
     downloadCV: "Stáhnout CV",
     skipToContent: "Skip to content",
+    previewCV: "Náhled CV",
+    generatingPDF: "Generuji PDF…",
+    download: "Stáhnout",
+    close: "Zavřít",
+    pdfPreviewUnavailable: "Náhled PDF není ve vašem prohlížeči dostupný.",
+    downloadInstead: "Stáhnout PDF",
   },
   aria: {
     switchToLight: "Switch to light mode",

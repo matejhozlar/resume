@@ -19,6 +19,12 @@ export interface UiStrings {
   actions: {
     downloadCV: string
     skipToContent: string
+    previewCV: string
+    generatingPDF: string
+    download: string
+    close: string
+    pdfPreviewUnavailable: string
+    downloadInstead: string
   }
   aria: {
     switchToLight: string
