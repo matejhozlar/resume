@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
+import { flushSync } from "react-dom"
 import { LazyMotion, domAnimation, m, AnimatePresence } from "framer-motion"
 import { Sun, Moon, Github, Linkedin, Mail, Menu, X } from "lucide-react"
 import { Header } from "@/components/Header"
@@ -31,11 +32,37 @@ function AppInner() {
     return saved ? saved === "dark" : true
   })
   const [cursor, setCursor] = useState({ x: 0, y: 0, visible: false })
+  const themeToggleRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark)
     localStorage.setItem("theme", dark ? "dark" : "light")
   }, [dark])
+
+  const handleThemeToggle = useCallback(() => {
+    const button = themeToggleRef.current
+    if (!button || !("startViewTransition" in document)) {
+      setDark((d) => !d)
+      return
+    }
+
+    const rect = button.getBoundingClientRect()
+    const x = rect.left + rect.width / 2
+    const y = rect.top + rect.height / 2
+    const maxRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y),
+    )
+
+    const root = document.documentElement
+    root.style.setProperty("--wipe-x", `${x}px`)
+    root.style.setProperty("--wipe-y", `${y}px`)
+    root.style.setProperty("--wipe-radius", `${maxRadius}px`)
+
+    ;(document as any).startViewTransition(() => {
+      flushSync(() => setDark((d) => !d))
+    })
+  }, [])
 
   // Global cursor glow
   useEffect(() => {
@@ -96,7 +123,8 @@ function AppInner() {
             ))}
             <LocaleSwitcher />
             <button
-              onClick={() => setDark(!dark)}
+              ref={themeToggleRef}
+              onClick={handleThemeToggle}
               aria-label={dark ? t.aria.switchToLight : t.aria.switchToDark}
               className="cursor-pointer rounded-full p-1.5 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
             >

@@ -164,6 +164,26 @@
   background: linear-gradient(to right, transparent, var(--border), transparent);
 }
 
+/* Theme wipe transition */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-new(root) {
+  animation: theme-wipe 0.5s ease-out;
+}
+
+@keyframes theme-wipe {
+  from {
+    clip-path: circle(0px at var(--wipe-x) var(--wipe-y));
+  }
+  to {
+    clip-path: circle(var(--wipe-radius) at var(--wipe-x) var(--wipe-y));
+  }
+}
+
 /* Name shimmer */
 @keyframes shimmer {
   0% {
