@@ -1,27 +1,29 @@
-import { useRef, useState } from "react"
-import { m } from "framer-motion"
-import { ExternalLink, Github } from "lucide-react"
-import { TechIcon } from "@/components/TechIcon"
-import { useLocale } from "@/hooks/useLocale"
+import { useRef, useState } from "react";
+import { m } from "framer-motion";
+import { ExternalLink, Github } from "lucide-react";
+import { TechIcon } from "@/components/TechIcon";
+import { useLocale } from "@/hooks/useLocale";
 
 const container = {
   hidden: {},
   visible: {
     transition: { staggerChildren: 0.12 },
   },
-}
+};
 
 const card = {
   hidden: { opacity: 0, y: 16 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
-}
+};
 
 export function Projects() {
-  const { t, data } = useLocale()
+  const { t, data } = useLocale();
 
   return (
     <section>
-      <h2 className="text-xl font-semibold tracking-tight">{t.sections.projects}</h2>
+      <h2 className="text-xl font-semibold tracking-tight">
+        {t.sections.projects}
+      </h2>
 
       <m.div
         className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4"
@@ -35,21 +37,37 @@ export function Projects() {
         ))}
       </m.div>
     </section>
-  )
+  );
 }
 
-function ProjectCard({ project }: { project: { name: string; description: string; tags: string[]; image: string; url?: string; repo?: string; badge?: { image: string; url: string } } }) {
-  const cardRef = useRef<HTMLDivElement>(null)
-  const [spotlight, setSpotlight] = useState({ x: 0, y: 0, visible: false })
+function ProjectCard({
+  project,
+}: {
+  project: {
+    name: string;
+    description: string;
+    tags: string[];
+    image: string;
+    url?: string;
+    repo?: string;
+    badge?: { image: string; url: string };
+  };
+}) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [spotlight, setSpotlight] = useState({ x: 0, y: 0, visible: false });
 
   function handleMouseMove(e: React.MouseEvent) {
-    const rect = cardRef.current?.getBoundingClientRect()
-    if (!rect) return
-    setSpotlight({ x: e.clientX - rect.left, y: e.clientY - rect.top, visible: true })
+    const rect = cardRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    setSpotlight({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+      visible: true,
+    });
   }
 
   function handleMouseLeave() {
-    setSpotlight((s) => ({ ...s, visible: false }))
+    setSpotlight((s) => ({ ...s, visible: false }));
   }
 
   return (
@@ -84,10 +102,13 @@ function ProjectCard({ project }: { project: { name: string; description: string
 
       {/* Content */}
       <div className="relative z-20 h-full flex flex-col justify-between p-4">
-        {/* Top row — badge + links */}
         <div className="flex items-start justify-between gap-2">
           {project.badge ? (
-            <a href={project.badge.url} target="_blank" rel="noopener noreferrer">
+            <a
+              href={project.badge.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <img
                 src={project.badge.image}
                 alt="Downloads"
@@ -95,7 +116,9 @@ function ProjectCard({ project }: { project: { name: string; description: string
                 className="h-5 rounded pointer-events-auto"
               />
             </a>
-          ) : <div />}
+          ) : (
+            <div />
+          )}
           <div className="flex gap-1.5">
             {project.repo && (
               <ExpandableLink href={project.repo} label="GitHub">
@@ -110,7 +133,6 @@ function ProjectCard({ project }: { project: { name: string; description: string
           </div>
         </div>
 
-        {/* Bottom — title, description, tags */}
         <div className="flex flex-col gap-1.5">
           <h3 className="text-base font-semibold text-white">{project.name}</h3>
           <p className="text-xs text-gray-300 leading-relaxed transition-all duration-300 lg:max-h-0 lg:opacity-0 lg:overflow-hidden lg:group-hover:max-h-24 lg:group-hover:opacity-100 lg:group-focus-visible:max-h-24 lg:group-focus-visible:opacity-100">
@@ -130,10 +152,18 @@ function ProjectCard({ project }: { project: { name: string; description: string
         </div>
       </div>
     </m.div>
-  )
+  );
 }
 
-function ExpandableLink({ href, label, children }: { href: string; label: string; children: React.ReactNode }) {
+function ExpandableLink({
+  href,
+  label,
+  children,
+}: {
+  href: string;
+  label: string;
+  children: React.ReactNode;
+}) {
   return (
     <a
       href={href}
@@ -146,5 +176,5 @@ function ExpandableLink({ href, label, children }: { href: string; label: string
         {label}
       </span>
     </a>
-  )
+  );
 }
