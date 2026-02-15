@@ -58,11 +58,14 @@ function ProjectCard({ project }: { project: { name: string; description: string
       variants={card}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="group relative h-64 rounded-xl overflow-hidden border border-border transition-all duration-300 hover:border-foreground/20 hover:shadow-[0_0_20px_rgba(255,255,255,0.08)]"
+      tabIndex={0}
+      role="article"
+      aria-label={project.name}
+      className="group relative h-64 rounded-xl overflow-hidden border border-border transition-all duration-300 hover:border-foreground/20 hover:shadow-[0_0_20px_rgba(255,255,255,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:border-foreground/20"
     >
       {/* Background image with hover zoom */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-500 ease-out group-hover:scale-110"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-500 ease-out group-hover:scale-110 group-focus-visible:scale-110"
         style={{ backgroundImage: `url('${project.image}')` }}
       />
 
@@ -110,7 +113,7 @@ function ProjectCard({ project }: { project: { name: string; description: string
         {/* Bottom — title, description, tags */}
         <div className="flex flex-col gap-1.5">
           <h3 className="text-base font-semibold text-white">{project.name}</h3>
-          <p className="text-xs text-gray-300 leading-relaxed transition-all duration-300 lg:max-h-0 lg:opacity-0 lg:overflow-hidden lg:group-hover:max-h-24 lg:group-hover:opacity-100">
+          <p className="text-xs text-gray-300 leading-relaxed transition-all duration-300 lg:max-h-0 lg:opacity-0 lg:overflow-hidden lg:group-hover:max-h-24 lg:group-hover:opacity-100 lg:group-focus-visible:max-h-24 lg:group-focus-visible:opacity-100">
             {project.description}
           </p>
           <div className="flex flex-wrap gap-1 pt-0.5">
