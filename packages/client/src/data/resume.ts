@@ -123,7 +123,7 @@ const resumeShared = {
     },
     {
       name: "OmniEconomy",
-      tags: ["Java", "TypeScript"],
+      tags: ["Java", "React", "TypeScript"],
       image: "/assets/projects/omnieconomy.webp",
       url: "https://omnieconomy.xyz",
       badge: {
