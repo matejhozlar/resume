@@ -27,9 +27,17 @@ export function DownloadCVButton() {
 
       const data = getResolvedResume(targetLocale)
       const sectionTitles = uiStrings[targetLocale].sections
-      const photoUrl = new URL("/assets/me.png", window.location.origin).href
+      const [QRCode, photoUrl] = await Promise.all([
+        import("qrcode"),
+        Promise.resolve(new URL("/assets/me.png", window.location.origin).href),
+      ])
+      const qrDataUrl = await QRCode.toDataURL("https://matejhoz.com", {
+        width: 80,
+        margin: 0,
+        color: { dark: "#111111", light: "#ffffff" },
+      })
       const blob = await pdf(
-        ResumePDF({ data, sectionTitles, photoDataUrl: photoUrl }),
+        ResumePDF({ data, sectionTitles, photoDataUrl: photoUrl, qrDataUrl }),
       ).toBlob()
       const url = URL.createObjectURL(blob)
       const a = document.createElement("a")

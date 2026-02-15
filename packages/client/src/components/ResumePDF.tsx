@@ -135,9 +135,10 @@ interface ResumePDFProps {
     skills: string
   }
   photoDataUrl?: string
+  qrDataUrl?: string
 }
 
-export function ResumePDF({ data, sectionTitles, photoDataUrl }: ResumePDFProps) {
+export function ResumePDF({ data, sectionTitles, photoDataUrl, qrDataUrl }: ResumePDFProps) {
   return (
     <Document title={`${data.name} CV`} author={data.name}>
       <Page size="A4" style={styles.page}>
@@ -149,8 +150,8 @@ export function ResumePDF({ data, sectionTitles, photoDataUrl }: ResumePDFProps)
           <View style={styles.headerText}>
             <Text style={styles.name}>{data.name}</Text>
             <Text style={styles.role}>{data.role}</Text>
+            <Text style={{ fontSize: 9, color: colors.gray, marginBottom: 4 }}>{data.location}</Text>
             <View style={styles.contactRow}>
-              <Text>{data.location}</Text>
               <Link src={`mailto:${data.email}`} style={styles.link}>
                 {data.email}
               </Link>
@@ -165,6 +166,9 @@ export function ResumePDF({ data, sectionTitles, photoDataUrl }: ResumePDFProps)
               </Link>
             </View>
           </View>
+          {qrDataUrl && (
+            <Image src={qrDataUrl} style={{ width: 48, height: 48 }} />
+          )}
         </View>
 
         {/* About */}
