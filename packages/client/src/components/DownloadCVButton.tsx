@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react"
+import { useState, useCallback, useRef } from "react"
 import { Download, Loader2, ChevronDown } from "lucide-react"
 import { useLocale } from "@/hooks/useLocale"
 import { LOCALES, type Locale } from "@/i18n/types"
@@ -18,6 +18,15 @@ export function DownloadCVButton() {
   const [modalOpen, setModalOpen] = useState(false)
   const [pdfBlob, setPdfBlob] = useState<Blob | null>(null)
   const [pdfFilename, setPdfFilename] = useState("")
+  const prefetched = useRef(false)
+
+  function prefetchPDFModules() {
+    if (prefetched.current) return
+    prefetched.current = true
+    import("@react-pdf/renderer")
+    import("@/components/ResumePDF")
+    import("qrcode")
+  }
 
   async function generatePDF(targetLocale: Locale) {
     if (generating) return
@@ -69,6 +78,8 @@ export function DownloadCVButton() {
         <DropdownMenuTrigger asChild>
           <button
             disabled={generating}
+            onPointerEnter={prefetchPDFModules}
+            onFocus={prefetchPDFModules}
             className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-wait"
           >
             {generating ? (
