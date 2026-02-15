@@ -52,7 +52,7 @@ export function PDFPreviewModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="flex w-[95vw] max-w-6xl sm:max-w-6xl h-[90vh] flex-col gap-0 p-0 overflow-hidden">
+      <DialogContent aria-describedby={undefined} className="flex w-[95vw] max-w-6xl sm:max-w-6xl h-[90vh] flex-col gap-0 p-0 overflow-hidden">
         <DialogHeader className="px-6 pt-6 pb-4">
           <DialogTitle>{t.actions.previewCV}</DialogTitle>
         </DialogHeader>

@@ -26,6 +26,7 @@ export function DownloadCVButton() {
     import("@react-pdf/renderer")
     import("@/components/ResumePDF")
     import("qrcode")
+    import("buffer")
   }
 
   async function generatePDF(targetLocale: Locale) {
@@ -37,10 +38,12 @@ export function DownloadCVButton() {
     setGenerating(true)
 
     try {
-      const [{ pdf }, { ResumePDF }] = await Promise.all([
+      const [{ pdf }, { ResumePDF }, { Buffer }] = await Promise.all([
         import("@react-pdf/renderer"),
         import("@/components/ResumePDF"),
+        import("buffer"),
       ])
+      globalThis.Buffer = Buffer
 
       const data = getResolvedResume(targetLocale)
       const sectionTitles = uiStrings[targetLocale].sections
