@@ -4,7 +4,7 @@ My personal portfolio and resume website.
 
 **[Live site](https://matejhoz.com)**
 
-![Preview](preview.png)
+![Preview](preview.webp)
 
 ## Getting Started
 
