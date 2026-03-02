@@ -19,4 +19,6 @@ jobs:
         run: pnpm build
 
       - name: Deploy
-        run: rsync -a --delete packages/client/dist/ /var/www/matejhoz/
+        run: |
+          rm -rf /var/www/matejhoz/*
+          cp -r packages/client/dist/* /var/www/matejhoz/
