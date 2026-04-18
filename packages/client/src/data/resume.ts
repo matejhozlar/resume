@@ -101,7 +101,7 @@ const resumeShared = {
       name: "Createrington",
       tags: ["React", "JavaScript", "PostgreSQL"],
       image: "/assets/projects/createrington.webp",
-      url: "https://create-rington.com",
+      url: "https://createrington.com",
       repo: "https://github.com/matejhozlar/mc-page",
     },
     {
