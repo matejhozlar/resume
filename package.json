@@ -1,6 +1,7 @@
 {
   "name": "resume",
   "private": true,
+  "packageManager": "pnpm@11.0.9",
   "scripts": {
     "dev": "pnpm --filter client dev",
     "build": "pnpm --filter client build",
@@ -16,5 +17,8 @@
   },
   "lint-staged": {
     "packages/**/*.{ts,tsx,js,mjs,cjs,json,css,md}": "prettier --write"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "msw"]
   }
 }
