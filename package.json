@@ -4,6 +4,17 @@
   "scripts": {
     "dev": "pnpm --filter client dev",
     "build": "pnpm --filter client build",
-    "preview": "pnpm --filter client preview"
+    "preview": "pnpm --filter client preview",
+    "format": "prettier --write ./packages",
+    "format:check": "prettier --check ./packages",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.8.3"
+  },
+  "lint-staged": {
+    "packages/**/*.{ts,tsx,js,mjs,cjs,json,css,md}": "prettier --write"
   }
 }

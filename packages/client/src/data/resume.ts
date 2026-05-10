@@ -98,17 +98,17 @@ const resumeShared = {
       repo: "https://github.com/matejhozlar/afk-status",
     },
     {
-      name: "Createrington",
-      tags: ["React", "JavaScript", "PostgreSQL"],
-      image: "/assets/projects/createrington.webp",
-      url: "https://createrington.com",
-      repo: "https://github.com/matejhozlar/mc-page",
-    },
-    {
       name: "Createrington Refactored",
       tags: ["React", "TypeScript", "PostgreSQL"],
       image: "/assets/projects/createrington_new.webp",
+      url: "https://createrington.com",
       repo: "https://github.com/matejhozlar/createrington",
+    },
+    {
+      name: "Createrington",
+      tags: ["React", "JavaScript", "PostgreSQL"],
+      image: "/assets/projects/createrington.webp",
+      repo: "https://github.com/matejhozlar/mc-page",
     },
     {
       name: "Createrington Currency",
