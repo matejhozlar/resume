@@ -6,19 +6,28 @@ import {
   Link,
   Image,
   StyleSheet,
-} from "@react-pdf/renderer"
-import type { ResumeData } from "@/data/resume"
+  Font,
+} from "@react-pdf/renderer";
+import type { ResumeData } from "@/data/resume";
+
+Font.register({
+  family: "Lato",
+  fonts: [
+    { src: "/fonts/Lato-Regular.ttf" },
+    { src: "/fonts/Lato-Bold.ttf", fontWeight: "bold" },
+  ],
+});
 
 const colors = {
   black: "#111",
   gray: "#555",
   lightGray: "#999",
   border: "#ddd",
-}
+};
 
 const styles = StyleSheet.create({
   page: {
-    fontFamily: "Helvetica",
+    fontFamily: "Lato",
     fontSize: 10,
     color: colors.black,
     paddingTop: 40,
@@ -40,7 +49,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 22,
-    fontFamily: "Helvetica-Bold",
+    fontWeight: "bold",
     marginBottom: 2,
   },
   role: {
@@ -60,7 +69,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 13,
-    fontFamily: "Helvetica-Bold",
+    fontWeight: "bold",
     marginBottom: 8,
     marginTop: 16,
     paddingBottom: 3,
@@ -81,7 +90,7 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   entryTitle: {
-    fontFamily: "Helvetica-Bold",
+    fontWeight: "bold",
     fontSize: 10,
   },
   entrySubtitle: {
@@ -117,40 +126,45 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   skillLabel: {
-    fontFamily: "Helvetica-Bold",
+    fontWeight: "bold",
     fontSize: 9,
   },
   skillValue: {
     fontSize: 9,
     color: colors.gray,
   },
-})
+});
 
 interface ResumePDFProps {
-  data: ResumeData
+  data: ResumeData;
   sectionTitles: {
-    about: string
-    experience: string
-    education: string
-    skills: string
-  }
-  photoDataUrl?: string
-  qrDataUrl?: string
+    about: string;
+    experience: string;
+    education: string;
+    skills: string;
+  };
+  photoDataUrl?: string;
+  qrDataUrl?: string;
 }
 
-export function ResumePDF({ data, sectionTitles, photoDataUrl, qrDataUrl }: ResumePDFProps) {
+export function ResumePDF({
+  data,
+  sectionTitles,
+  photoDataUrl,
+  qrDataUrl,
+}: ResumePDFProps) {
   return (
     <Document title={`${data.name} CV`} author={data.name}>
       <Page size="A4" style={styles.page}>
         {/* Header */}
         <View style={styles.header}>
-          {photoDataUrl && (
-            <Image src={photoDataUrl} style={styles.photo} />
-          )}
+          {photoDataUrl && <Image src={photoDataUrl} style={styles.photo} />}
           <View style={styles.headerText}>
             <Text style={styles.name}>{data.name}</Text>
             <Text style={styles.role}>{data.role}</Text>
-            <Text style={{ fontSize: 9, color: colors.gray, marginBottom: 4 }}>{data.location}</Text>
+            <Text style={{ fontSize: 9, color: colors.gray, marginBottom: 4 }}>
+              {data.location}
+            </Text>
             <View style={styles.contactRow}>
               <Link src={`mailto:${data.email}`} style={styles.link}>
                 {data.email}
@@ -181,7 +195,10 @@ export function ResumePDF({ data, sectionTitles, photoDataUrl, qrDataUrl }: Resu
         <View>
           <Text style={styles.sectionTitle}>{sectionTitles.experience}</Text>
           {data.experience.map((job) => (
-            <View key={`${job.company}-${job.period}`} style={styles.entryContainer}>
+            <View
+              key={`${job.company}-${job.period}`}
+              style={styles.entryContainer}
+            >
               <View style={styles.entryHeader}>
                 <View>
                   <Text style={styles.entryTitle}>{job.title}</Text>
@@ -191,13 +208,16 @@ export function ResumePDF({ data, sectionTitles, photoDataUrl, qrDataUrl }: Resu
               </View>
               {job.bullets.map((bullet, i) => (
                 <Text key={i} style={styles.bullet}>
-                  {"•  "}{bullet}
+                  {"•  "}
+                  {bullet}
                 </Text>
               ))}
               {job.tags && job.tags.length > 0 && (
                 <View style={styles.tagsRow}>
                   {job.tags.map((tag) => (
-                    <Text key={tag} style={styles.tag}>{tag}</Text>
+                    <Text key={tag} style={styles.tag}>
+                      {tag}
+                    </Text>
                   ))}
                 </View>
               )}
@@ -209,7 +229,10 @@ export function ResumePDF({ data, sectionTitles, photoDataUrl, qrDataUrl }: Resu
         <View>
           <Text style={styles.sectionTitle}>{sectionTitles.education}</Text>
           {data.education.map((edu) => (
-            <View key={`${edu.school}-${edu.period}`} style={styles.entryContainer}>
+            <View
+              key={`${edu.school}-${edu.period}`}
+              style={styles.entryContainer}
+            >
               <View style={styles.entryHeader}>
                 <View>
                   <Text style={styles.entryTitle}>{edu.degree}</Text>
@@ -238,5 +261,5 @@ export function ResumePDF({ data, sectionTitles, photoDataUrl, qrDataUrl }: Resu
         </View>
       </Page>
     </Document>
-  )
+  );
 }

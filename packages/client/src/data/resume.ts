@@ -59,7 +59,7 @@ const resumeShared = {
     },
     {
       company: "Honeywell",
-      period: "Mar 2025 – Jan 2026",
+      period: "Mar 2025 – May 2026",
       logo: "/assets/companies/honeywell.webp",
       tags: [
         "React",
