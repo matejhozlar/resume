@@ -1,6 +1,6 @@
-import { m } from "framer-motion"
-import { useLocale } from "@/hooks/useLocale"
-import { TechIcon } from "@/components/TechIcon"
+import { m } from "framer-motion";
+import { useLocale } from "@/hooks/useLocale";
+import { TechIcon } from "@/components/TechIcon";
 
 const container = {
   hidden: {},
@@ -9,19 +9,21 @@ const container = {
       staggerChildren: 0.12,
     },
   },
-}
+};
 
 const item = {
   hidden: { opacity: 0, x: -12 },
   visible: { opacity: 1, x: 0, transition: { duration: 0.4 } },
-}
+};
 
 export function Experience() {
-  const { t, data } = useLocale()
+  const { t, data } = useLocale();
 
   return (
     <section>
-      <h2 className="text-xl font-semibold tracking-tight">{t.sections.experience}</h2>
+      <h2 className="text-xl font-semibold tracking-tight">
+        {t.sections.experience}
+      </h2>
 
       <div className="relative mt-6">
         {/* Timeline line */}
@@ -45,7 +47,6 @@ export function Experience() {
               key={`${job.company}-${job.period}`}
               variants={item}
               className="relative flex gap-5 group"
-              whileHover={{ y: -2 }}
             >
               {/* Timeline marker */}
               <div className="relative z-10 flex-none pt-0.5">
@@ -64,7 +65,7 @@ export function Experience() {
               </div>
 
               {/* Content */}
-              <div className="flex-1 min-w-0 pb-1 rounded-lg px-3 py-2 -mx-3 -my-2 transition-shadow duration-300 group-hover:shadow-[0_2px_12px_rgba(255,255,255,0.06)]">
+              <div className="flex-1 min-w-0 pb-1">
                 <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-0.5">
                   <h3 className="font-medium">
                     {job.title}
@@ -84,7 +85,9 @@ export function Experience() {
                       )}
                     </span>
                   </h3>
-                  <span className="text-sm text-muted-foreground shrink-0">{job.period}</span>
+                  <span className="text-sm text-muted-foreground shrink-0">
+                    {job.period}
+                  </span>
                 </div>
 
                 {job.bullets.length > 0 && (
@@ -114,5 +117,5 @@ export function Experience() {
         </m.div>
       </div>
     </section>
-  )
+  );
 }
