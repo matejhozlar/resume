@@ -161,7 +161,12 @@
 .section-separator {
   border: none;
   height: 1px;
-  background: linear-gradient(to right, transparent, var(--border), transparent);
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--border),
+    transparent
+  );
 }
 
 /* Theme wipe transition */
@@ -182,30 +187,4 @@
   to {
     clip-path: circle(var(--wipe-radius) at var(--wipe-x) var(--wipe-y));
   }
-}
-
-/* Name shimmer */
-@keyframes shimmer {
-  0% {
-    background-position: -200% center;
-  }
-  100% {
-    background-position: 200% center;
-  }
-}
-
-.shimmer-text {
-  background: linear-gradient(
-    90deg,
-    var(--foreground) 0%,
-    var(--foreground) 40%,
-    oklch(1 0 0 / 80%) 50%,
-    var(--foreground) 60%,
-    var(--foreground) 100%
-  );
-  background-size: 200% auto;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shimmer 2s ease-in-out forwards;
 }

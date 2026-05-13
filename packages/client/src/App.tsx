@@ -1,20 +1,20 @@
-import { useState, useEffect, useRef, useCallback } from "react"
-import { flushSync } from "react-dom"
-import { LazyMotion, domAnimation, m, AnimatePresence } from "framer-motion"
-import { Sun, Moon, Github, Linkedin, Mail, Menu, X } from "lucide-react"
-import { Header } from "@/components/Header"
-import { About } from "@/components/About"
-import { Experience } from "@/components/Experience"
-import { Projects } from "@/components/Projects"
-import { Skills } from "@/components/Skills"
-import { LocaleProvider } from "@/i18n/LocaleContext"
-import { useLocale } from "@/hooks/useLocale"
-import { LocaleSwitcher } from "@/components/LocaleSwitcher"
+import { useState, useEffect, useRef, useCallback } from "react";
+import { flushSync } from "react-dom";
+import { LazyMotion, domAnimation, m, AnimatePresence } from "framer-motion";
+import { Sun, Moon, Github, Linkedin, Mail, Menu, X } from "lucide-react";
+import { Header } from "@/components/Header";
+import { About } from "@/components/About";
+import { Experience } from "@/components/Experience";
+import { Projects } from "@/components/Projects";
+import { Skills } from "@/components/Skills";
+import { LocaleProvider } from "@/i18n/LocaleContext";
+import { useLocale } from "@/hooks/useLocale";
+import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 12 },
   visible: { opacity: 1, y: 0 },
-}
+};
 
 const sections = [
   { id: "intro" as const, Component: Header },
@@ -22,67 +22,51 @@ const sections = [
   { id: "experience" as const, Component: Experience },
   { id: "projects" as const, Component: Projects },
   { id: "skills" as const, Component: Skills },
-]
+];
 
 function AppInner() {
-  const { t, data } = useLocale()
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const { t, data } = useLocale();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [dark, setDark] = useState(() => {
-    const saved = localStorage.getItem("theme")
-    return saved ? saved === "dark" : true
-  })
-  const [cursor, setCursor] = useState({ x: 0, y: 0, visible: false })
-  const themeToggleRef = useRef<HTMLButtonElement>(null)
+    const saved = localStorage.getItem("theme");
+    return saved ? saved === "dark" : true;
+  });
+  const themeToggleRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", dark)
-    localStorage.setItem("theme", dark ? "dark" : "light")
-  }, [dark])
+    document.documentElement.classList.toggle("dark", dark);
+    localStorage.setItem("theme", dark ? "dark" : "light");
+  }, [dark]);
 
   const handleThemeToggle = useCallback(() => {
-    const button = themeToggleRef.current
+    const button = themeToggleRef.current;
     if (!button || !("startViewTransition" in document)) {
-      setDark((d) => !d)
-      return
+      setDark((d) => !d);
+      return;
     }
 
-    const rect = button.getBoundingClientRect()
-    const x = rect.left + rect.width / 2
-    const y = rect.top + rect.height / 2
+    const rect = button.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
     const maxRadius = Math.hypot(
       Math.max(x, window.innerWidth - x),
       Math.max(y, window.innerHeight - y),
-    )
+    );
 
-    const root = document.documentElement
-    root.style.setProperty("--wipe-x", `${x}px`)
-    root.style.setProperty("--wipe-y", `${y}px`)
-    root.style.setProperty("--wipe-radius", `${maxRadius}px`)
-
-    ;(document as unknown as { startViewTransition: (cb: () => void) => void }).startViewTransition(() => {
-      flushSync(() => setDark((d) => !d))
-    })
-  }, [])
-
-  // Global cursor glow
-  useEffect(() => {
-    function handleMouseMove(e: MouseEvent) {
-      setCursor({ x: e.clientX, y: e.clientY, visible: true })
-    }
-    function handleMouseLeave() {
-      setCursor((c) => ({ ...c, visible: false }))
-    }
-    window.addEventListener("mousemove", handleMouseMove, { passive: true })
-    document.documentElement.addEventListener("mouseleave", handleMouseLeave)
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove)
-      document.documentElement.removeEventListener("mouseleave", handleMouseLeave)
-    }
-  }, [])
+    const root = document.documentElement;
+    root.style.setProperty("--wipe-x", `${x}px`);
+    root.style.setProperty("--wipe-y", `${y}px`);
+    root.style.setProperty("--wipe-radius", `${maxRadius}px`);
+    (
+      document as unknown as { startViewTransition: (cb: () => void) => void }
+    ).startViewTransition(() => {
+      flushSync(() => setDark((d) => !d));
+    });
+  }, []);
 
   const navLinks = sections
     .filter((s) => s.id !== "intro")
-    .map((s) => ({ ...s, label: t.nav[s.id as keyof typeof t.nav] }))
+    .map((s) => ({ ...s, label: t.nav[s.id as keyof typeof t.nav] }));
 
   return (
     <LazyMotion features={domAnimation}>
@@ -92,15 +76,6 @@ function AppInner() {
       >
         {t.actions.skipToContent}
       </a>
-
-      {/* Cursor glow */}
-      <div
-        className="pointer-events-none fixed inset-0 z-[999] transition-opacity duration-300 hidden lg:block"
-        style={{
-          opacity: cursor.visible ? 1 : 0,
-          background: `radial-gradient(600px circle at ${cursor.x}px ${cursor.y}px, rgba(255,255,255,0.03), transparent 60%)`,
-        }}
-      />
 
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
@@ -215,68 +190,40 @@ function AppInner() {
       {/* Footer */}
       <footer className="border-t border-border">
         <div className="max-w-3xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-          <span>&copy; {new Date().getFullYear()} {data.name}</span>
+          <span>
+            &copy; {new Date().getFullYear()} {data.name}
+          </span>
           <div className="flex items-center gap-4">
-            <MagneticIcon
+            <a
               href={`mailto:${data.email}`}
               aria-label={t.aria.email}
+              className="hover:text-foreground transition-colors"
             >
               <Mail className="size-4" />
-            </MagneticIcon>
-            <MagneticIcon
+            </a>
+            <a
               href={data.github}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={t.aria.github}
+              className="hover:text-foreground transition-colors"
             >
               <Github className="size-4" />
-            </MagneticIcon>
-            <MagneticIcon
+            </a>
+            <a
               href={data.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={t.aria.linkedin}
+              className="hover:text-foreground transition-colors"
             >
               <Linkedin className="size-4" />
-            </MagneticIcon>
+            </a>
           </div>
         </div>
       </footer>
     </LazyMotion>
-  )
-}
-
-function MagneticIcon({ children, ...props }: React.ComponentProps<"a">) {
-  const ref = useRef<HTMLAnchorElement>(null)
-
-  function handleMouseMove(e: React.MouseEvent) {
-    const el = ref.current
-    if (!el) return
-    const rect = el.getBoundingClientRect()
-    const x = e.clientX - rect.left - rect.width / 2
-    const y = e.clientY - rect.top - rect.height / 2
-    el.style.transition = "transform 0.15s ease-out"
-    el.style.transform = `translate(${x * 0.35}px, ${y * 0.35}px)`
-  }
-
-  function handleMouseLeave() {
-    const el = ref.current
-    if (!el) return
-    el.style.transition = "transform 0.3s ease-out"
-    el.style.transform = ""
-  }
-
-  return (
-    <a
-      ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="inline-block hover:text-foreground transition-colors"
-      {...props}
-    >
-      {children}
-    </a>
-  )
+  );
 }
 
 function App() {
@@ -284,7 +231,7 @@ function App() {
     <LocaleProvider>
       <AppInner />
     </LocaleProvider>
-  )
+  );
 }
 
-export default App
+export default App;
