@@ -25,7 +25,7 @@ export function Projects() {
       </h2>
 
       <m.div
-        className="mt-4 grid grid-cols-1 gap-3"
+        className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2"
         variants={container}
         initial="hidden"
         whileInView="visible"
@@ -55,16 +55,19 @@ function ProjectCard({
   return (
     <m.article
       variants={card}
-      className="flex gap-4 rounded-lg border border-border bg-card/30 p-4 transition-colors hover:border-foreground/20"
+      className="group flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card/30 transition-colors hover:border-foreground/20"
     >
-      <img
-        src={project.image}
-        alt=""
-        loading="lazy"
-        className="hidden sm:block size-20 shrink-0 rounded-md object-cover border border-border"
-      />
+      <div className="relative aspect-[2/1] w-full overflow-hidden border-b border-border bg-muted/30">
+        <img
+          src={project.image}
+          alt=""
+          loading="lazy"
+          className="size-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+        />
+        <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/[0.06]" />
+      </div>
 
-      <div className="flex-1 min-w-0">
+      <div className="flex flex-1 flex-col p-4">
         <div className="flex items-start justify-between gap-3">
           <h3 className="text-base font-medium text-foreground">
             {project.name}
@@ -99,7 +102,7 @@ function ProjectCard({
           {project.description}
         </p>
 
-        <div className="mt-3 flex flex-wrap items-center gap-1.5">
+        <div className="mt-auto flex flex-wrap items-center gap-1.5 pt-3">
           {project.tags.map((tag) => (
             <span
               key={tag}
