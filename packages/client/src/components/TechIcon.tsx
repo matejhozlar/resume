@@ -28,6 +28,8 @@ import {
   SiC,
   SiMqtt,
   SiElectron,
+  SiThreedotjs,
+  SiFastify,
 } from "react-icons/si";
 import { TbApi, TbWebhook } from "react-icons/tb";
 import { FaJava, FaMicrosoft } from "react-icons/fa";
@@ -67,6 +69,8 @@ const iconMap: Record<string, { icon: IconType; color: string }> = {
   Azure: { icon: FaMicrosoft, color: "#0078D4" },
   Oracle: { icon: SiOracle, color: "#F80000" },
   Electron: { icon: SiElectron, color: "#47848F" },
+  "three.js": { icon: SiThreedotjs, color: "#FFFFFF" },
+  Fastify: { icon: SiFastify, color: "#FFFFFF" },
 };
 
 export function TechIcon({

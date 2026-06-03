@@ -122,16 +122,10 @@ const resumeShared = {
       repo: "https://github.com/matejhozlar/createrington-currency",
     },
     {
-      name: "OmniEconomy",
-      tags: ["Java", "React", "TypeScript"],
-      image: "/assets/projects/omnieconomy.webp",
-      url: "https://omnieconomy.xyz",
-      badge: {
-        image:
-          "https://img.shields.io/curseforge/dt/1371365?logo=curseforge&label=Downloads&color=F16436&labelColor=2D2D2D&style=flat-square",
-        url: "https://www.curseforge.com/minecraft/mc-mods/omnieconomy",
-      },
-      repo: "https://github.com/matejhozlar/omnieconomy",
+      name: "Createrington Skin API",
+      tags: ["TypeScript", "three.js", "Fastify", "PostgreSQL", "Redis"],
+      image: "/assets/projects/skin-api.webp",
+      url: "https://api.createrington.com",
     },
     {
       name: "Crypto Docs",
@@ -197,7 +191,7 @@ const enResume: TranslatedResumeFields = {
     },
     {
       description:
-        "Comprehensive Minecraft economy system with a companion web dashboard. The NeoForge mod adds physical currency, player banks, ATM blocks, mob-drop income, a server-wide lottery and Create mod integration. Paired with a TypeScript web tool for configuration and monitoring.",
+        "High-performance REST API that renders Minecraft player skins into named poses and streams them back as PNG images. Built on Fastify with a three.js and headless-gl pipeline running across a multi-process worker pool, fronted by two-tier in-memory and Redis caching that keeps warm responses in the tens of milliseconds. PostgreSQL-backed accounts add API keys, SSO login, usage quotas and rate limiting, with a React dashboard and a published TypeScript SDK.",
     },
     {
       description:
@@ -287,7 +281,7 @@ const skResume: TranslatedResumeFields = {
     },
     {
       description:
-        "Komplexný ekonomický systém pre Minecraft so sprievodným webovým dashboardom. NeoForge mod pridáva fyzickú menu, hráčske banky, ATM bloky, príjem z mob dropov, serverovú lotériu a integráciu s Create modom. Spárovaný s TypeScript webovým nástrojom na konfiguráciu a monitoring.",
+        "Vysokovýkonné REST API, ktoré renderuje Minecraft skiny hráčov do pomenovaných póz a vracia ich ako PNG obrázky. Postavené na Fastify s three.js a headless-gl renderovacím pipeline bežiacim naprieč multiprocesovým poolom workerov, s dvojúrovňovou in-memory a Redis cache, ktorá udržiava teplé odpovede v desiatkach milisekúnd. Účty postavené na PostgreSQL pridávajú API kľúče, SSO prihlásenie, kvóty využitia a rate limiting, spolu s React dashboardom a publikovaným TypeScript SDK.",
     },
     {
       description:
@@ -377,7 +371,7 @@ const csResume: TranslatedResumeFields = {
     },
     {
       description:
-        "Komplexní ekonomický systém pro Minecraft s doprovodným webovým dashboardem. NeoForge mod přidává fyzickou měnu, hráčské banky, ATM bloky, příjem z mob dropů, serverovou loterii a integraci s Create modem. Spárován s TypeScript webovým nástrojem pro konfiguraci a monitoring.",
+        "Vysoce výkonné REST API, které renderuje Minecraft skiny hráčů do pojmenovaných póz a vrací je jako PNG obrázky. Postaveno na Fastify s three.js a headless-gl renderovacím pipeline běžícím napříč multiprocesovým poolem workerů, s dvouúrovňovou in-memory a Redis cache, která udržuje teplé odpovědi v desítkách milisekund. Účty postavené na PostgreSQL přidávají API klíče, SSO přihlášení, kvóty využití a rate limiting, spolu s React dashboardem a publikovaným TypeScript SDK.",
     },
     {
       description:
