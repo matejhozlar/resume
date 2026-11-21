@@ -30,8 +30,10 @@ import {
   SiElectron,
   SiThreedotjs,
   SiFastify,
+  SiDotnet,
+  SiAppletv,
 } from "react-icons/si";
-import { TbApi, TbWebhook } from "react-icons/tb";
+import { TbApi, TbBrandCSharp, TbWebhook } from "react-icons/tb";
 import { FaJava, FaMicrosoft } from "react-icons/fa";
 import { GiCube } from "react-icons/gi";
 
@@ -71,6 +73,9 @@ const iconMap: Record<string, { icon: IconType; color: string }> = {
   Electron: { icon: SiElectron, color: "#47848F" },
   "three.js": { icon: SiThreedotjs, color: "#FFFFFF" },
   Fastify: { icon: SiFastify, color: "#FFFFFF" },
+  ".NET": { icon: SiDotnet, color: "#512BD4" },
+  "C#": { icon: TbBrandCSharp, color: "#9B4F96" },
+  tvOS: { icon: SiAppletv, color: "#FFFFFF" },
 };
 
 export function TechIcon({

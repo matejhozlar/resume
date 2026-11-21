@@ -51,6 +51,13 @@ const resumeShared = {
   linkedin: "https://www.linkedin.com/in/matej-hozl%C3%A1r-6175b5353/",
   experience: [
     {
+      company: "ICNET",
+      period: "Jun 2026 – Present",
+      logo: "/assets/companies/icnet.webp",
+      url: "https://www.icnet.eu",
+      tags: [".NET", "C#", "React", "tvOS"],
+    },
+    {
       company: "BLAUHILL CAPITAL",
       period: "Apr 2024 – Present",
       logo: "/assets/companies/altfins.webp",
@@ -105,10 +112,15 @@ const resumeShared = {
       repo: "https://github.com/matejhozlar/createrington",
     },
     {
-      name: "Createrington",
-      tags: ["React", "JavaScript", "PostgreSQL"],
-      image: "/assets/projects/createrington.webp",
-      repo: "https://github.com/matejhozlar/mc-page",
+      name: "Climbable Ropes for Create Aeronautics",
+      tags: ["Java"],
+      image: "/assets/projects/climbable_ropes.webp",
+      badge: {
+        image:
+          "https://img.shields.io/curseforge/dt/1528764?logo=curseforge&label=Downloads&color=F16436&labelColor=2D2D2D&style=flat-square",
+        url: "https://www.curseforge.com/minecraft/mc-mods/create-aeronautics-climbable-ropes",
+      },
+      repo: "https://github.com/matejhozlar/Create-Aeronautics-Climbable-Ropes",
     },
     {
       name: "Createrington Currency",
@@ -142,6 +154,14 @@ const enResume: TranslatedResumeFields = {
   about:
     "Hi, I'm Matej, a full-stack developer based in Prague, Czech Republic. I enjoy building tools and platforms that people genuinely find useful. My side project Createrington has grown into a small community of users who actively help shape its direction and keep me motivated to improve.",
   experience: [
+    {
+      title: "Full-stack Developer",
+      bullets: [
+        "Building full-stack applications end to end, from backend services and databases to frontends",
+        "Developing .NET backends and React frontends for client projects",
+        "Building an Apple tvOS app",
+      ],
+    },
     {
       title: "Crypto Research Analyst",
       bullets: [
@@ -183,7 +203,7 @@ const enResume: TranslatedResumeFields = {
     },
     {
       description:
-        "Ongoing ground-up rewrite of the original Createrington portal. Migrated to TypeScript with a tRPC API layer, cleaner architecture and a more polished, production-ready codebase.",
+        "NeoForge addon for Create: Aeronautics that lets players grab vertical ropes with an empty hand and climb them, something the base mod doesn't support. Adds climbing animations, controls for jumping off and letting go, and zipline riding on plunger ropes.",
     },
     {
       description:
@@ -236,6 +256,14 @@ const skResume: TranslatedResumeFields = {
     "Ahoj, som Matej, full-stack developer žijúci v Prahe. Rád tvorím nástroje a platformy, ktoré ľudia skutočne využívajú. Môj vedľajší projekt Createrington prerástol do malej komunity používateľov, ktorí aktívne pomáhajú formovať jeho smerovanie a motivujú ma k zlepšovaniu.",
   experience: [
     {
+      title: "Full-stack vývojár",
+      bullets: [
+        "Vývoj full-stack aplikácií od backendových služieb a databáz až po frontend",
+        "Vývoj .NET backendov a React frontendov pre klientske projekty",
+        "Vývoj aplikácie pre Apple tvOS",
+      ],
+    },
+    {
       title: "Krypto analytik",
       bullets: [
         "Tvorba hĺbkových analýz kryptomien a trhov publikovaných na altfins.com",
@@ -273,7 +301,7 @@ const skResume: TranslatedResumeFields = {
     },
     {
       description:
-        "Prebiehajúci kompletný prepis pôvodného portálu Createrington. Migrácia na TypeScript s tRPC API vrstvou, čistejšou architektúrou a vyleštenejším kódom pripravením na produkciu.",
+        "NeoForge doplnok pre Create: Aeronautics, ktorý hráčom umožňuje chytiť sa vertikálnych lán prázdnou rukou a šplhať po nich, čo základný mod nepodporuje. Pridáva animácie šplhania, ovládanie na zoskočenie a pustenie sa a jazdu po lanách ako na zipline.",
     },
     {
       description:
@@ -326,6 +354,14 @@ const csResume: TranslatedResumeFields = {
     "Ahoj, jsem Matej, full-stack developer žijící v Praze. Rád vytvářím nástroje a platformy, které lidé skutečně využívají. Můj vedlejší projekt Createrington přerostl v malou komunitu uživatelů, kteří aktivně pomáhají formovat jeho směřování a motivují mě ke zlepšování.",
   experience: [
     {
+      title: "Full-stack vývojář",
+      bullets: [
+        "Vývoj full-stack aplikací od backendových služeb a databází až po frontend",
+        "Vývoj .NET backendů a React frontendů pro klientské projekty",
+        "Vývoj aplikace pro Apple tvOS",
+      ],
+    },
+    {
       title: "Krypto analytik",
       bullets: [
         "Tvorba hloubkových analýz kryptoměn a trhů publikovaných na altfins.com",
@@ -363,7 +399,7 @@ const csResume: TranslatedResumeFields = {
     },
     {
       description:
-        "Probíhající kompletní přepis původního portálu Createrington. Migrace na TypeScript s tRPC API vrstvou, čistější architekturou a vyladěnějším kódem připraveným pro produkci.",
+        "NeoForge doplněk pro Create: Aeronautics, který hráčům umožňuje chytit se vertikálních lan prázdnou rukou a šplhat po nich, což základní mod nepodporuje. Přidává animace šplhání, ovládání pro seskok a puštění a jízdu po lanech jako na zipline.",
     },
     {
       description:
