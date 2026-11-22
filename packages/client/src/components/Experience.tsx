@@ -56,6 +56,8 @@ export function Experience() {
                       src={job.logo}
                       alt={job.company}
                       loading="lazy"
+                      width={20}
+                      height={20}
                       className="size-5 object-contain"
                     />
                   </div>
