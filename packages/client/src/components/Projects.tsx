@@ -62,6 +62,8 @@ function ProjectCard({
           src={project.image}
           alt=""
           loading="lazy"
+          width={1200}
+          height={600}
           className="size-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
         />
         <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/[0.06]" />
@@ -123,7 +125,9 @@ function ProjectCard({
                 src={project.badge.image}
                 alt="Downloads"
                 loading="lazy"
-                className="h-5 rounded"
+                width={125}
+                height={20}
+                className="h-5 w-auto rounded"
               />
             </a>
           )}
